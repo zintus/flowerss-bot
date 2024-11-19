@@ -30,27 +30,27 @@ func (s *RemoveSubscription) Command() string {
 }
 
 func (s *RemoveSubscription) Description() string {
-	return "退订RSS源"
+	return "Unsubscribe from RSS feed"
 }
 
 func (s *RemoveSubscription) removeForChannel(ctx tb.Context, channelName string) error {
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
-		return ctx.Send("频道退订请使用' /unsub @ChannelID URL ' 命令")
+		return ctx.Send("To unsubscribe a channel, use the command: '/unsub @ChannelID URL'")
 	}
 
 	channelChat, err := s.bot.ChatByUsername(channelName)
 	if err != nil {
-		return ctx.Reply("获取频道信息错误")
+		return ctx.Reply("Error getting channel information")
 	}
 
 	if !chat.IsChatAdmin(s.bot, channelChat, ctx.Sender().ID) {
-		return ctx.Reply("非频道管理员无法执行此操作")
+		return ctx.Reply("Only channel administrators can perform this operation")
 	}
 
 	source, err := s.core.GetSourceByURL(context.Background(), sourceURL)
 	if err != nil {
-		return ctx.Reply("获取订阅信息错误")
+		return ctx.Reply("Error getting subscription information")
 	}
 
 	log.Infof("%d for [%d]%s unsubscribe %s", ctx.Chat().ID, source.ID, source.Title, source.Link)
@@ -59,11 +59,11 @@ func (s *RemoveSubscription) removeForChannel(ctx tb.Context, channelName string
 			"%d for [%d]%s unsubscribe %s failed, %v",
 			ctx.Chat().ID, source.ID, source.Title, source.Link, err,
 		)
-		return ctx.Reply("退订失败")
+		return ctx.Reply("Unsubscribe failed")
 	}
 	return ctx.Send(
 		fmt.Sprintf(
-			"频道 [%s](https://t.me/%s) 退订 [%s](%s) 成功",
+			"Channel [%s](https://t.me/%s) successfully unsubscribed from [%s](%s)",
 			channelChat.Title, channelChat.Username, source.Title, source.Link,
 		),
 		&tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown},
@@ -75,11 +75,11 @@ func (s *RemoveSubscription) removeForChat(ctx tb.Context) error {
 	if sourceURL == "" {
 		sources, err := s.core.GetUserSubscribedSources(context.Background(), ctx.Chat().ID)
 		if err != nil {
-			return ctx.Reply("获取订阅列表失败")
+			return ctx.Reply("Failed to get subscription list")
 		}
 
 		if len(sources) == 0 {
-			return ctx.Reply("没有订阅")
+			return ctx.Reply("No subscriptions")
 		}
 
 		var unsubFeedItemButtons [][]tb.InlineButton
@@ -100,16 +100,16 @@ func (s *RemoveSubscription) removeForChat(ctx tb.Context) error {
 				},
 			)
 		}
-		return ctx.Reply("请选择你要退订的源", &tb.ReplyMarkup{InlineKeyboard: unsubFeedItemButtons})
+		return ctx.Reply("Please select the feed you want to unsubscribe from", &tb.ReplyMarkup{InlineKeyboard: unsubFeedItemButtons})
 	}
 
 	if !chat.IsChatAdmin(s.bot, ctx.Chat(), ctx.Sender().ID) {
-		return ctx.Reply("非管理员无法执行此操作")
+		return ctx.Reply("Only administrators can perform this operation")
 	}
 
 	source, err := s.core.GetSourceByURL(context.Background(), sourceURL)
 	if err != nil {
-		return ctx.Reply("未订阅该RSS源")
+		return ctx.Reply("Not subscribed to this RSS feed")
 	}
 
 	log.Infof("%d unsubscribe [%d]%s %s", ctx.Chat().ID, source.ID, source.Title, source.Link)
@@ -118,10 +118,10 @@ func (s *RemoveSubscription) removeForChat(ctx tb.Context) error {
 			"%d for [%d]%s unsubscribe %s failed, %v",
 			ctx.Chat().ID, source.ID, source.Title, source.Link, err,
 		)
-		return ctx.Reply("退订失败")
+		return ctx.Reply("Unsubscribe failed")
 	}
 	return ctx.Send(
-		fmt.Sprintf("[%s](%s) 退订成功！", source.Title, source.Link),
+		fmt.Sprintf("[%s](%s) successfully unsubscribed!", source.Title, source.Link),
 		&tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown},
 	)
 }
@@ -160,12 +160,12 @@ func (r *RemoveSubscriptionItemButton) Description() string {
 
 func (r *RemoveSubscriptionItemButton) Handle(ctx tb.Context) error {
 	if ctx.Callback() == nil {
-		return ctx.Edit("内部错误！")
+		return ctx.Edit("Internal error!")
 	}
 
 	attachData, err := session.UnmarshalAttachment(ctx.Callback().Data)
 	if err != nil {
-		return ctx.Edit("退订错误！")
+		return ctx.Edit("Unsubscribe error!")
 	}
 
 	userID := attachData.GetUserId()
@@ -180,7 +180,7 @@ func (r *RemoveSubscriptionItemButton) Handle(ctx tb.Context) error {
 		return ctx.Edit("退订错误！")
 	}
 
-	rtnMsg := fmt.Sprintf("[%d] <a href=\"%s\">%s</a> 退订成功", sourceID, source.Link, source.Title)
+	rtnMsg := fmt.Sprintf("[%d] <a href=\"%s\">%s</a> successfully unsubscribed", sourceID, source.Link, source.Title)
 	return ctx.Edit(rtnMsg, &tb.SendOptions{ParseMode: tb.ModeHTML})
 }
 
