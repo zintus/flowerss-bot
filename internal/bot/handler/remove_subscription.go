@@ -172,12 +172,12 @@ func (r *RemoveSubscriptionItemButton) Handle(ctx tb.Context) error {
 	sourceID := uint(attachData.GetSourceId())
 	source, err := r.core.GetSource(context.Background(), sourceID)
 	if err != nil {
-		return ctx.Edit("退订错误！")
+		return ctx.Edit("Unsubscribe error!")
 	}
 
 	if err := r.core.Unsubscribe(context.Background(), userID, sourceID); err != nil {
 		log.Errorf("unsubscribe data %s failed, %v", ctx.Callback().Data, err)
-		return ctx.Edit("退订错误！")
+		return ctx.Edit("Unsubscribe error!")
 	}
 
 	rtnMsg := fmt.Sprintf("[%d] <a href=\"%s\">%s</a> successfully unsubscribed", sourceID, source.Link, source.Title)
