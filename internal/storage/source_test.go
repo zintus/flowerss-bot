@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/indes/flowerss-bot/internal/model"
+	"github.com/zintus/flowerss-bot/internal/model"
 )
 
 func TestSourceStorageImpl(t *testing.T) {

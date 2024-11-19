@@ -7,9 +7,9 @@ import (
 	"github.com/spf13/cast"
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/indes/flowerss-bot/internal/bot/message"
-	"github.com/indes/flowerss-bot/internal/bot/session"
-	"github.com/indes/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/bot/message"
+	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/core"
 )
 
 type SetFeedTag struct {

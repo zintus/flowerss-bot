@@ -1,12 +1,12 @@
 # flowerss bot
 
-[![Build Status](https://github.com/indes/flowerss-bot/workflows/Release/badge.svg)](https://github.com/indes/flowerss-bot/actions?query=workflow%3ARelease)
-[![Test Status](https://github.com/indes/flowerss-bot/workflows/Test/badge.svg)](https://github.com/indes/flowerss-bot/actions?query=workflow%3ATest)
-![Build Docker Image](https://github.com/indes/flowerss-bot/workflows/Build%20Docker%20Image/badge.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/indes/flowerss-bot)](https://goreportcard.com/report/github.com/indes/flowerss-bot)
-![GitHub](https://img.shields.io/github/license/indes/flowerss-bot.svg)
+[![Build Status](https://github.com/zintus/flowerss-bot/workflows/Release/badge.svg)](https://github.com/zintus/flowerss-bot/actions?query=workflow%3ARelease)
+[![Test Status](https://github.com/zintus/flowerss-bot/workflows/Test/badge.svg)](https://github.com/zintus/flowerss-bot/actions?query=workflow%3ATest)
+![Build Docker Image](https://github.com/zintus/flowerss-bot/workflows/Build%20Docker%20Image/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zintus/flowerss-bot)](https://goreportcard.com/report/github.com/zintus/flowerss-bot)
+![GitHub](https://img.shields.io/github/license/zintus/flowerss-bot.svg)
 
-[Installation and Usage Documentation](https://flowerss-bot.now.sh/)  
+[Installation and Usage Documentation](https://flowerss-bot.now.sh/)
 
 <img src="https://github.com/rssflow/img/raw/master/images/rssflow_demo.gif" width = "300"/>
 
@@ -19,7 +19,7 @@
 
 ## Installation and Usage
 
-For detailed installation and usage instructions, please refer to the project's [documentation](https://flowerss-bot.now.sh/).  
+For detailed installation and usage instructions, please refer to the project's [documentation](https://flowerss-bot.now.sh/).
 
 Available commands:
 
@@ -38,4 +38,5 @@ Available commands:
 /unsuball Unsubscribe from all feeds
 /help Help
 ```
+
 For detailed usage instructions, please refer to the project's [documentation](https://flowerss-bot.now.sh/#/usage).

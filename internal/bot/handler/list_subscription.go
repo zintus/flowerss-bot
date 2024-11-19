@@ -7,11 +7,11 @@ import (
 
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/indes/flowerss-bot/internal/bot/chat"
-	"github.com/indes/flowerss-bot/internal/bot/message"
-	"github.com/indes/flowerss-bot/internal/core"
-	"github.com/indes/flowerss-bot/internal/log"
-	"github.com/indes/flowerss-bot/internal/model"
+	"github.com/zintus/flowerss-bot/internal/bot/chat"
+	"github.com/zintus/flowerss-bot/internal/bot/message"
+	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/log"
+	"github.com/zintus/flowerss-bot/internal/model"
 )
 
 const (

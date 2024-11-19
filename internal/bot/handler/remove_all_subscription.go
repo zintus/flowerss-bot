@@ -5,7 +5,7 @@ import (
 
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/indes/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/core"
 )
 
 type RemoveAllSubscription struct {

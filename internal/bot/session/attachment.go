@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/indes/flowerss-bot/internal/log"
+	"github.com/zintus/flowerss-bot/internal/log"
 )
 
 // Marshal 编码成字符串

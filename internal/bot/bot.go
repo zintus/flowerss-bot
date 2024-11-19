@@ -9,13 +9,13 @@ import (
 	"go.uber.org/zap"
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/indes/flowerss-bot/internal/bot/handler"
-	"github.com/indes/flowerss-bot/internal/bot/middleware"
-	"github.com/indes/flowerss-bot/internal/bot/preview"
-	"github.com/indes/flowerss-bot/internal/config"
-	"github.com/indes/flowerss-bot/internal/core"
-	"github.com/indes/flowerss-bot/internal/log"
-	"github.com/indes/flowerss-bot/internal/model"
+	"github.com/zintus/flowerss-bot/internal/bot/handler"
+	"github.com/zintus/flowerss-bot/internal/bot/middleware"
+	"github.com/zintus/flowerss-bot/internal/bot/preview"
+	"github.com/zintus/flowerss-bot/internal/config"
+	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/log"
+	"github.com/zintus/flowerss-bot/internal/model"
 )
 
 type Bot struct {

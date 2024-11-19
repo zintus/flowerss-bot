@@ -1,4 +1,4 @@
-module github.com/indes/flowerss-bot
+module github.com/zintus/flowerss-bot
 
 go 1.18
 

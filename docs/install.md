@@ -2,20 +2,18 @@
 
 ## 二进制部署
 
-从 [Releases](https://github.com/indes/flowerss-bot/releases) 页面下载对应的版本解压运行即可。
+从 [Releases](https://github.com/zintus/flowerss-bot/releases) 页面下载对应的版本解压运行即可。
 
 ## Docker 部署
 
 1.下载配置文件
 在项目目录下新建 `config.yml` 文件
 
-
 ```bash
 mkdir ~/flowerss &&\
 wget -O ~/flowerss/config.yml \
-    https://raw.githubusercontent.com/indes/flowerss-bot/master/config.yml.sample
+    https://raw.githubusercontent.com/zintus/flowerss-bot/master/config.yml.sample
 ```
-
 
 2.修改配置文件
 
@@ -23,7 +21,8 @@ wget -O ~/flowerss/config.yml \
 vim ~/flowerss/config.yml
 ```
 
-修改配置文件中sqlite路径（如果使用sqlite作为数据库）：
+修改配置文件中 sqlite 路径（如果使用 sqlite 作为数据库）：
+
 ```yaml
 sqlite:
   path: /root/.flowerss/data.db
@@ -32,18 +31,16 @@ sqlite:
 3.运行
 
 ```shell script
-docker run -d -v ~/flowerss:/root/.flowerss indes/flowerss-bot
+docker run -d -v ~/flowerss:/root/.flowerss zintus/flowerss-bot
 ```
 
 ## 源码编译部署
 
 ```shell script
-git clone https://github.com/indes/flowerss-bot && cd flowerss-bot
+git clone https://github.com/zintus/flowerss-bot && cd flowerss-bot
 make build
 ./flowerss-bot
 ```
-
-
 
 ## 配置
 
@@ -79,17 +76,17 @@ allowed_users:
 
 配置说明：
 
-| 配置项                     | 含义                                      | 是否必填                                       |
-| --------------------------| ----------------------------------------- | ------------------------------------------ |
-| bot_token                 | Telegram Bot Token                        | 必填                                       |
-| telegraph_token           | Telegraph Token, 用于转存原文到 Telegraph   | 可忽略（不转存原文到 Telegraph ）          |
-| preview_text              | 纯文字预览字数（不借助Telegraph）            |可忽略（默认0, 0为禁用）                    |
-| user_agent                | User Agent                                |可忽略                                     |
-| disable_web_page_preview  | 是否禁用 web 页面预览                       | 可忽略（默认 false, true 为禁用）          |
-| update_interval           | RSS 源扫描间隔（分钟）                      | 可忽略（默认 10）                          |
-| error_threshold           | 源最大出错次数                              |可忽略（默认 100）                          |
-| socks5                    | 用于无法正常 Telegram API 的环境            | 可忽略（能正常连接上 Telegram API 服务器） |
-| mysql                     | MySQL 数据库配置                           | 可忽略（使用 SQLite ）                     |
-| sqlite                    | SQLite 配置                               | 可忽略（已配置mysql时，该项失效）          |
-| telegram.endpoint         | 自定义telegram bot api url                | 可忽略（使用默认api url）          |
-| allowed_users             | 允许使用bot的用户telegram id，                        | 可忽略，为空时所有用户都能使用bot          |
+| 配置项                   | 含义                                      | 是否必填                                   |
+| ------------------------ | ----------------------------------------- | ------------------------------------------ |
+| bot_token                | Telegram Bot Token                        | 必填                                       |
+| telegraph_token          | Telegraph Token, 用于转存原文到 Telegraph | 可忽略（不转存原文到 Telegraph ）          |
+| preview_text             | 纯文字预览字数（不借助 Telegraph）        | 可忽略（默认 0, 0 为禁用）                 |
+| user_agent               | User Agent                                | 可忽略                                     |
+| disable_web_page_preview | 是否禁用 web 页面预览                     | 可忽略（默认 false, true 为禁用）          |
+| update_interval          | RSS 源扫描间隔（分钟）                    | 可忽略（默认 10）                          |
+| error_threshold          | 源最大出错次数                            | 可忽略（默认 100）                         |
+| socks5                   | 用于无法正常 Telegram API 的环境          | 可忽略（能正常连接上 Telegram API 服务器） |
+| mysql                    | MySQL 数据库配置                          | 可忽略（使用 SQLite ）                     |
+| sqlite                   | SQLite 配置                               | 可忽略（已配置 mysql 时，该项失效）        |
+| telegram.endpoint        | 自定义 telegram bot api url               | 可忽略（使用默认 api url）                 |
+| allowed_users            | 允许使用 bot 的用户 telegram id，         | 可忽略，为空时所有用户都能使用 bot         |

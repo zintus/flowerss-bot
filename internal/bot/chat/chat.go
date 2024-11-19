@@ -3,7 +3,7 @@ package chat
 import (
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/indes/flowerss-bot/internal/log"
+	"github.com/zintus/flowerss-bot/internal/log"
 )
 
 func IsChatAdmin(bot *tb.Bot, chat *tb.Chat, userID int64) bool {

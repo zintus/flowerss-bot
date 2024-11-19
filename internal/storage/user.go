@@ -6,7 +6,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/indes/flowerss-bot/internal/model"
+	"github.com/zintus/flowerss-bot/internal/model"
 )
 
 type UserStorageImpl struct {

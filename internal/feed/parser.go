@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/indes/flowerss-bot/pkg/client"
+	"github.com/zintus/flowerss-bot/pkg/client"
 
 	"github.com/mmcdole/gofeed"
 )

@@ -8,7 +8,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
-	"github.com/indes/flowerss-bot/internal/model"
+	"github.com/zintus/flowerss-bot/internal/model"
 )
 
 func GetTestDB(t *testing.T) *gorm.DB {
