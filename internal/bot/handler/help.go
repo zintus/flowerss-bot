@@ -16,26 +16,26 @@ func (h *Help) Command() string {
 }
 
 func (h *Help) Description() string {
-	return "帮助"
+	return "Help"
 }
 
 func (h *Help) Handle(ctx tb.Context) error {
 	message := `
-	命令：
-	/sub 订阅源
-	/unsub  取消订阅
-	/list 查看当前订阅源
-	/set 设置订阅
-	/check 检查当前订阅
-	/setfeedtag 设置订阅标签
-	/setinterval 设置订阅刷新频率
-	/activeall 开启所有订阅
-	/pauseall 暂停所有订阅
-	/help 帮助
-	/import 导入 OPML 文件
-	/export 导出 OPML 文件
-	/unsuball 取消所有订阅
-	详细使用方法请看：https://github.com/indes/flowerss-bot
+	Commands:
+	/sub Subscribe to RSS feed
+	/unsub Unsubscribe from feed
+	/list View current subscriptions
+	/set Configure subscription settings
+	/check Check current subscriptions
+	/setfeedtag Set subscription tags
+	/setinterval Set subscription refresh interval
+	/activeall Activate all subscriptions
+	/pauseall Pause all subscriptions
+	/help Help
+	/import Import OPML file
+	/export Export OPML file
+	/unsuball Unsubscribe from all feeds
+	For detailed usage instructions visit: https://github.com/zintus/flowerss-bot
 	`
 	return ctx.Send(message)
 }
