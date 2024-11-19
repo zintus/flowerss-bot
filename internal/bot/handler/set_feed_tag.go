@@ -25,7 +25,7 @@ func (s *SetFeedTag) Command() string {
 }
 
 func (s *SetFeedTag) Description() string {
-	return "设置rss订阅标签"
+	return "Set RSS subscription tags"
 }
 
 func (s *SetFeedTag) getMessageWithoutMention(ctx tb.Context) string {
@@ -40,7 +40,7 @@ func (s *SetFeedTag) Handle(ctx tb.Context) error {
 	msg := s.getMessageWithoutMention(ctx)
 	args := strings.Split(strings.TrimSpace(msg), " ")
 	if len(args) < 1 {
-		return ctx.Reply("/setfeedtag [sourceID] [tag1] [tag2] 设置订阅标签（最多设置三个Tag，以空格分割）")
+		return ctx.Reply("/setfeedtag [sourceID] [tag1] [tag2] Set subscription tags (max 3 tags, separated by spaces)")
 	}
 
 	// 截短参数
@@ -56,9 +56,9 @@ func (s *SetFeedTag) Handle(ctx tb.Context) error {
 	}
 
 	if err := s.core.SetSubscriptionTag(context.Background(), subscribeUserID, sourceID, args[1:]); err != nil {
-		return ctx.Reply("订阅标签设置失败!")
+		return ctx.Reply("Failed to set subscription tags!")
 	}
-	return ctx.Reply("订阅标签设置成功!")
+	return ctx.Reply("Subscription tags set successfully!")
 }
 
 func (s *SetFeedTag) Middlewares() []tb.MiddlewareFunc {

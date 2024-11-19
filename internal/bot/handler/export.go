@@ -26,7 +26,7 @@ func NewExport(core *core.Core) *Export {
 }
 
 func (e *Export) Description() string {
-	return "导出OPML"
+	return "Export OPML"
 }
 
 func (e *Export) Command() string {
@@ -37,12 +37,12 @@ func (e *Export) getChannelSources(bot *tb.Bot, opUserID int64, channelName stri
 	// 导出channel订阅
 	channelChat, err := bot.ChatByUsername(channelName)
 	if err != nil {
-		return nil, errors.New("无法获取频道信息")
+		return nil, errors.New("Unable to get channel information")
 	}
 
 	adminList, err := bot.AdminsOf(channelChat)
 	if err != nil {
-		return nil, errors.New("无法获取频道管理员信息")
+		return nil, errors.New("Unable to get channel administrator information")
 	}
 
 	senderIsAdmin := false
@@ -54,13 +54,13 @@ func (e *Export) getChannelSources(bot *tb.Bot, opUserID int64, channelName stri
 	}
 
 	if !senderIsAdmin {
-		return nil, errors.New("非频道管理员无法执行此操作")
+		return nil, errors.New("Only channel administrators can perform this operation")
 	}
 
 	sources, err := e.core.GetUserSubscribedSources(context.Background(), channelChat.ID)
 	if err != nil {
 		zap.S().Error(err)
-		return nil, errors.New("获取订阅源信息失败")
+		return nil, errors.New("Failed to get subscription source information")
 	}
 	return sources, nil
 }
@@ -73,7 +73,7 @@ func (e *Export) Handle(ctx tb.Context) error {
 		sources, err = e.core.GetUserSubscribedSources(context.Background(), ctx.Chat().ID)
 		if err != nil {
 			log.Error(err)
-			return ctx.Send("导出失败")
+			return ctx.Send("Export failed")
 		}
 	} else {
 		var err error
@@ -85,12 +85,12 @@ func (e *Export) Handle(ctx tb.Context) error {
 	}
 
 	if len(sources) == 0 {
-		return ctx.Send("订阅列表为空")
+		return ctx.Send("Subscription list is empty")
 	}
 
 	opmlStr, err := opml.ToOPML(sources)
 	if err != nil {
-		return ctx.Send("导出失败")
+		return ctx.Send("Export failed")
 	}
 	opmlFile := &tb.Document{File: tb.FromReader(strings.NewReader(opmlStr))}
 	opmlFile.FileName = fmt.Sprintf("subscriptions_%d.opml", time.Now().Unix())

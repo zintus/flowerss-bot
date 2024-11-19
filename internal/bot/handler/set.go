@@ -32,7 +32,7 @@ func (s *Set) Command() string {
 }
 
 func (s *Set) Description() string {
-	return "设置订阅"
+	return "Configure subscription"
 }
 
 func (s *Set) Handle(ctx tb.Context) error {
@@ -44,10 +44,10 @@ func (s *Set) Handle(ctx tb.Context) error {
 
 	sources, err := s.core.GetUserSubscribedSources(context.Background(), ownerID)
 	if err != nil {
-		return ctx.Reply("获取订阅失败")
+		return ctx.Reply("Failed to get subscriptions")
 	}
 	if len(sources) <= 0 {
-		return ctx.Reply("当前没有订阅")
+		return ctx.Reply("No current subscriptions")
 	}
 
 	// 配置按钮
@@ -79,7 +79,7 @@ func (s *Set) Handle(ctx tb.Context) error {
 	}
 
 	return ctx.Reply(
-		"请选择你要设置的源", &tb.ReplyMarkup{
+		"Please select the feed you want to configure", &tb.ReplyMarkup{
 			InlineKeyboard: setFeedItemBtns,
 		},
 	)
@@ -92,15 +92,15 @@ func (s *Set) Middlewares() []tb.MiddlewareFunc {
 const (
 	SetFeedItemButtonUnique = "set_feed_item_btn"
 	feedSettingTmpl         = `
-订阅<b>设置</b>
-[id] {{ .source.ID }}
-[标题] {{ .source.Title }}
+Subscription <b>Settings</b>
+[ID] {{ .source.ID }}
+[Title] {{ .source.Title }}
 [Link] {{.source.Link }}
-[抓取更新] {{if ge .source.ErrorCount .Count }}暂停{{else if lt .source.ErrorCount .Count }}抓取中{{end}}
-[抓取频率] {{ .sub.Interval }}分钟
-[通知] {{if eq .sub.EnableNotification 0}}关闭{{else if eq .sub.EnableNotification 1}}开启{{end}}
-[Telegraph] {{if eq .sub.EnableTelegraph 0}}关闭{{else if eq .sub.EnableTelegraph 1}}开启{{end}}
-[Tag] {{if .sub.Tag}}{{ .sub.Tag }}{{else}}无{{end}}
+[Updates] {{if ge .source.ErrorCount .Count }}Paused{{else if lt .source.ErrorCount .Count }}Active{{end}}
+[Interval] {{ .sub.Interval }} minutes
+[Notifications] {{if eq .sub.EnableNotification 0}}Off{{else if eq .sub.EnableNotification 1}}On{{end}}
+[Telegraph] {{if eq .sub.EnableTelegraph 0}}Off{{else if eq .sub.EnableTelegraph 1}}On{{end}}
+[Tags] {{if .sub.Tag}}{{ .sub.Tag }}{{else}}None{{end}}
 `
 )
 

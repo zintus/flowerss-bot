@@ -42,7 +42,7 @@ func (b *NotificationSwitchButton) Handle(ctx tb.Context) error {
 
 	attachData, err := session.UnmarshalAttachment(ctx.Callback().Data)
 	if err != nil {
-		return ctx.Edit("系统错误！")
+		return ctx.Edit("System error!")
 	}
 
 	subscriberID := attachData.GetUserId()
@@ -73,7 +73,7 @@ func (b *NotificationSwitchButton) Handle(ctx tb.Context) error {
 	}
 	text := new(bytes.Buffer)
 	_ = t.Execute(text, map[string]interface{}{"source": source, "sub": sub, "Count": config.ErrorThreshold})
-	_ = ctx.Respond(&tb.CallbackResponse{Text: "修改成功"})
+	_ = ctx.Respond(&tb.CallbackResponse{Text: "Successfully updated"})
 	return ctx.Edit(
 		text.String(),
 		&tb.SendOptions{ParseMode: tb.ModeHTML},

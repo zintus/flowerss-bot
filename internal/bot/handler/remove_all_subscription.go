@@ -20,21 +20,21 @@ func (r RemoveAllSubscription) Command() string {
 }
 
 func (r RemoveAllSubscription) Description() string {
-	return "取消所有订阅"
+	return "Unsubscribe from all feeds"
 }
 
 func (r RemoveAllSubscription) Handle(ctx tb.Context) error {
-	reply := "是否退订当前用户的所有订阅？"
+	reply := "Do you want to unsubscribe from all feeds?"
 	var confirmKeys [][]tb.InlineButton
 	confirmKeys = append(
 		confirmKeys, []tb.InlineButton{
 			tb.InlineButton{
 				Unique: UnSubAllButtonUnique,
-				Text:   "确认",
+				Text:   "Confirm",
 			},
 			tb.InlineButton{
 				Unique: CancelUnSubAllButtonUnique,
-				Text:   "取消",
+				Text:   "Cancel",
 			},
 		},
 	)
@@ -69,9 +69,9 @@ func (r *RemoveAllSubscriptionButton) Description() string {
 func (r *RemoveAllSubscriptionButton) Handle(ctx tb.Context) error {
 	err := r.core.UnsubscribeAllSource(context.Background(), ctx.Sender().ID)
 	if err != nil {
-		return ctx.Edit("退订失败")
+		return ctx.Edit("Unsubscribe failed")
 	}
-	return ctx.Edit("退订成功")
+	return ctx.Edit("Successfully unsubscribed")
 }
 
 func (r *RemoveAllSubscriptionButton) Middlewares() []tb.MiddlewareFunc {
@@ -94,7 +94,7 @@ func (r *CancelRemoveAllSubscriptionButton) Description() string {
 }
 
 func (r *CancelRemoveAllSubscriptionButton) Handle(ctx tb.Context) error {
-	return ctx.Edit("操作取消")
+	return ctx.Edit("Operation cancelled")
 }
 
 func (r *CancelRemoveAllSubscriptionButton) Middlewares() []tb.MiddlewareFunc {
