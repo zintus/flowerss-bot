@@ -47,7 +47,8 @@ func NewBot(core *core.Core) *Bot {
 		log.Error(err)
 		return nil
 	}
-	b.tb.Use(middleware.UserFilter(), middleware.PreLoadMentionChat(), middleware.IsChatAdmin())
+	// Pass b.core (which is appCore) to LoadUserLanguage
+	b.tb.Use(middleware.UserFilter(), middleware.PreLoadMentionChat(), middleware.LoadUserLanguage(b.core), middleware.IsChatAdmin())
 	return b
 }
 

@@ -1,6 +1,13 @@
 package handler
 
-import tb "gopkg.in/telebot.v3"
+import (
+	tb "gopkg.in/telebot.v3"
+
+	"github.com/zintus/flowerss-bot/internal/bot/middleware"
+	"github.com/zintus/flowerss-bot/internal/i18n"
+)
+
+const DefaultLanguage = "en" // Define DefaultLanguage for fallback
 
 type Import struct {
 }
@@ -13,12 +20,23 @@ func (i *Import) Command() string {
 	return "/import"
 }
 
+func getLangCode(ctx tb.Context) string {
+	langCode := DefaultLanguage
+	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
+		if val, ok := langVal.(string); ok && val != "" {
+			langCode = val
+		}
+	}
+	return langCode
+}
+
 func (i *Import) Description() string {
-	return "Import OPML file"
+	return i18n.Localize(DefaultLanguage, "import_command_desc")
 }
 
 func (i *Import) Handle(ctx tb.Context) error {
-	reply := "Please send the OPML file directly. If importing for a channel, include the channel ID when sending, e.g. @telegram"
+	langCode := getLangCode(ctx)
+	reply := i18n.Localize(langCode, "import_handle_instruction")
 	return ctx.Reply(reply)
 }
 
