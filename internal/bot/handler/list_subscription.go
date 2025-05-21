@@ -9,7 +9,7 @@ import (
 
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
 	"github.com/zintus/flowerss-bot/internal/bot/message"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
@@ -18,7 +18,6 @@ import (
 
 const (
 	MaxSubsSizePerPage = 50
-	DefaultLanguage    = "en" // Define DefaultLanguage for fallback
 )
 
 type ListSubscription struct {
@@ -29,26 +28,18 @@ func NewListSubscription(core *core.Core) *ListSubscription {
 	return &ListSubscription{core: core}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// Using the shared utility function instead of local implementation
 
 func (l *ListSubscription) Command() string {
 	return "/list"
 }
 
 func (l *ListSubscription) Description() string {
-	return i18n.Localize(DefaultLanguage, "listsub_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "listsub_command_desc")
 }
 
 func (l *ListSubscription) listChatSubscription(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	// private chat or group
 	if ctx.Chat().Type != tb.ChatPrivate && !chat.IsChatAdmin(ctx.Bot(), ctx.Chat(), ctx.Sender().ID) {
 		return ctx.Send(i18n.Localize(langCode, "err_permission_denied"))
@@ -65,7 +56,7 @@ func (l *ListSubscription) listChatSubscription(ctx tb.Context) error {
 }
 
 func (l *ListSubscription) listChannelSubscription(ctx tb.Context, channelName string) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	channelChat, err := ctx.Bot().ChatByUsername(channelName)
 	if err != nil {
 		return ctx.Send(i18n.Localize(langCode, "err_get_channel_info_failed"))

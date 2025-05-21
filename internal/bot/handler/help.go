@@ -3,6 +3,7 @@ package handler
 import (
 	tb "gopkg.in/telebot.v3"
 
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
@@ -18,12 +19,12 @@ func (h *Help) Command() string {
 }
 
 func (h *Help) Description() string {
-	return i18n.Localize("en", "help_command_desc") // Assuming "en" for descriptions
+	return i18n.Localize(util.DefaultLanguage, "help_command_desc") // Using DefaultLanguage for command descriptions
 }
 
 func (h *Help) Handle(ctx tb.Context) error {
-	// TODO: Replace "en" with the actual user's language preference when available
-	helpText := i18n.Localize("en", "help_message_text")
+	langCode := util.GetLangCode(ctx)
+	helpText := i18n.Localize(langCode, "help_message_text")
 	return ctx.Send(helpText)
 }
 

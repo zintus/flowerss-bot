@@ -8,8 +8,8 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
@@ -18,7 +18,6 @@ import (
 
 const (
 	NotificationSwitchButtonUnique = "set_toggle_notice_btn"
-	DefaultLanguage                = "en" // Define DefaultLanguage for fallback
 )
 
 // Copied from set.go and modified to accept langCode
@@ -102,15 +101,7 @@ func NewNotificationSwitchButton(bot *tb.Bot, core *core.Core) *NotificationSwit
 	return &NotificationSwitchButton{bot: bot, core: core}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// Using the shared utility function instead of local implementation
 
 func (b *NotificationSwitchButton) CallbackUnique() string {
 	return "\f" + NotificationSwitchButtonUnique
@@ -121,7 +112,7 @@ func (b *NotificationSwitchButton) Description() string {
 }
 
 func (b *NotificationSwitchButton) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	c := ctx.Callback()
 	if c == nil {
 		return ctx.Respond(&tb.CallbackResponse{Text: i18n.Localize(langCode, "notify_switch_err_callback_nil")})
