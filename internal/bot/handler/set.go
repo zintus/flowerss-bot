@@ -9,11 +9,15 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
+	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/model"
 )
+
+const DefaultLanguage = "en" // Define DefaultLanguage for fallback
 
 type Set struct {
 	bot  *tb.Bot
@@ -27,15 +31,26 @@ func NewSet(bot *tb.Bot, core *core.Core) *Set {
 	}
 }
 
+func getLangCode(ctx tb.Context) string {
+	langCode := DefaultLanguage
+	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
+		if val, ok := langVal.(string); ok && val != "" {
+			langCode = val
+		}
+	}
+	return langCode
+}
+
 func (s *Set) Command() string {
 	return "/set"
 }
 
 func (s *Set) Description() string {
-	return "Configure subscription"
+	return i18n.Localize(DefaultLanguage, "set_command_desc")
 }
 
 func (s *Set) Handle(ctx tb.Context) error {
+	langCode := getLangCode(ctx)
 	mentionChat, _ := session.GetMentionChatFromCtxStore(ctx)
 	ownerID := ctx.Message().Chat.ID
 	if mentionChat != nil {
@@ -44,34 +59,25 @@ func (s *Set) Handle(ctx tb.Context) error {
 
 	sources, err := s.core.GetUserSubscribedSources(context.Background(), ownerID)
 	if err != nil {
-		return ctx.Reply("Failed to get subscriptions")
+		return ctx.Reply(i18n.Localize(langCode, "set_err_get_subs_failed"))
 	}
 	if len(sources) <= 0 {
-		return ctx.Reply("No current subscriptions")
+		return ctx.Reply(i18n.Localize(langCode, "set_info_no_subs"))
 	}
 
-	// 配置按钮
-	var replyButton []tb.ReplyButton
-	replyKeys := [][]tb.ReplyButton{}
 	setFeedItemBtns := [][]tb.InlineButton{}
 	for _, source := range sources {
-		// 添加按钮
-		text := fmt.Sprintf("%s %s", source.Title, source.Link)
-		replyButton = []tb.ReplyButton{
-			tb.ReplyButton{Text: text},
-		}
-		replyKeys = append(replyKeys, replyButton)
 		attachData := &session.Attachment{
-			UserId:   ctx.Chat().ID,
+			UserId:   ctx.Chat().ID, // Note: this might be different from ownerID if mentionChat is used
 			SourceId: uint32(source.ID),
 		}
 
 		data := session.Marshal(attachData)
 		setFeedItemBtns = append(
 			setFeedItemBtns, []tb.InlineButton{
-				tb.InlineButton{
+				{
 					Unique: SetFeedItemButtonUnique,
-					Text:   fmt.Sprintf("[%d] %s", source.ID, source.Title),
+					Text:   fmt.Sprintf("[%d] %s", source.ID, source.Title), // Button text can remain as is
 					Data:   data,
 				},
 			},
@@ -79,7 +85,7 @@ func (s *Set) Handle(ctx tb.Context) error {
 	}
 
 	return ctx.Reply(
-		"Please select the feed you want to configure", &tb.ReplyMarkup{
+		i18n.Localize(langCode, "set_info_select_feed_to_configure"), &tb.ReplyMarkup{
 			InlineKeyboard: setFeedItemBtns,
 		},
 	)
@@ -92,15 +98,15 @@ func (s *Set) Middlewares() []tb.MiddlewareFunc {
 const (
 	SetFeedItemButtonUnique = "set_feed_item_btn"
 	feedSettingTmpl         = `
-Subscription <b>Settings</b>
-[ID] {{ .source.ID }}
-[Title] {{ .source.Title }}
-[Link] {{.source.Link }}
-[Updates] {{if ge .source.ErrorCount .Count }}Paused{{else if lt .source.ErrorCount .Count }}Active{{end}}
-[Interval] {{ .sub.Interval }} minutes
-[Notifications] {{if eq .sub.EnableNotification 0}}Off{{else if eq .sub.EnableNotification 1}}On{{end}}
-[Telegraph] {{if eq .sub.EnableTelegraph 0}}Off{{else if eq .sub.EnableTelegraph 1}}On{{end}}
-[Tags] {{if .sub.Tag}}{{ .sub.Tag }}{{else}}None{{end}}
+{{ .L "set_tmpl_header_settings" }}
+{{ .L "set_tmpl_label_id" }} {{ .source.ID }}
+{{ .L "set_tmpl_label_title" }} {{ .source.Title }}
+{{ .L "set_tmpl_label_link" }} {{ .source.Link }}
+{{ .L "set_tmpl_label_updates" }} {{if ge .source.ErrorCount .Count }}{{ .L "set_tmpl_status_paused" }}{{else}}{{ .L "set_tmpl_status_active" }}{{end}}
+{{ .L "set_tmpl_label_interval" }} {{ .sub.Interval }} {{ .L "set_tmpl_unit_minutes" }}
+{{ .L "set_tmpl_label_notifications" }} {{if eq .sub.EnableNotification 0}}{{ .L "set_tmpl_status_off" }}{{else}}{{ .L "set_tmpl_status_on" }}{{end}}
+{{ .L "set_tmpl_label_telegraph" }} {{if eq .sub.EnableTelegraph 0}}{{ .L "set_tmpl_status_off" }}{{else}}{{ .L "set_tmpl_status_on" }}{{end}}
+{{ .L "set_tmpl_label_tags" }} {{if .sub.Tag}}{{ .sub.Tag }}{{else}}{{ .L "set_tmpl_status_none" }}{{end}}
 `
 )
 
@@ -122,89 +128,112 @@ func (r *SetFeedItemButton) Description() string {
 }
 
 func (r *SetFeedItemButton) Handle(ctx tb.Context) error {
+	langCode := getLangCode(ctx)
 	attachData, err := session.UnmarshalAttachment(ctx.Callback().Data)
 	if err != nil {
-		return ctx.Edit("退订错误！")
+		return ctx.Edit(i18n.Localize(langCode, "set_err_button_settings_error"))
 	}
 
 	subscriberID := attachData.GetUserId()
-	// 如果订阅者与按钮点击者id不一致，需要验证管理员权限
 	if subscriberID != ctx.Callback().Sender.ID {
 		channelChat, err := r.bot.ChatByUsername(fmt.Sprintf("%d", subscriberID))
 		if err != nil {
-			return ctx.Edit("获取订阅信息失败")
+			return ctx.Edit(i18n.Localize(langCode, "set_err_get_sub_info_failed_button"))
 		}
 
 		if !chat.IsChatAdmin(r.bot, channelChat, ctx.Callback().Sender.ID) {
-			return ctx.Edit("获取订阅信息失败")
+			return ctx.Edit(i18n.Localize(langCode, "set_err_get_sub_info_failed_button")) // Or a more specific permission error
 		}
 	}
 
 	sourceID := uint(attachData.GetSourceId())
 	source, err := r.core.GetSource(context.Background(), sourceID)
 	if err != nil {
-		return ctx.Edit("找不到该订阅源")
+		return ctx.Edit(i18n.Localize(langCode, "set_err_source_not_found"))
 	}
 
 	sub, err := r.core.GetSubscription(context.Background(), subscriberID, source.ID)
 	if err != nil {
-		return ctx.Edit("用户未订阅该rss")
+		return ctx.Edit(i18n.Localize(langCode, "set_err_user_not_subscribed"))
 	}
 
-	t := template.New("setting template")
-	_, _ = t.Parse(feedSettingTmpl)
+	funcMap := template.FuncMap{
+		"L": func(key string, args ...interface{}) string {
+			return i18n.Localize(langCode, key, args...)
+		},
+	}
+	t := template.New("setting template").Funcs(funcMap)
+	_, err = t.Parse(feedSettingTmpl)
+	if err != nil {
+		// Log error, return generic message
+		return ctx.Edit(i18n.Localize(langCode, "set_err_button_settings_error"))
+	}
+
 	text := new(bytes.Buffer)
-	_ = t.Execute(text, map[string]interface{}{"source": source, "sub": sub, "Count": config.ErrorThreshold})
+	err = t.Execute(text, map[string]interface{}{"source": source, "sub": sub, "Count": config.ErrorThreshold})
+	if err != nil {
+		// Log error, return generic message
+		return ctx.Edit(i18n.Localize(langCode, "set_err_button_settings_error"))
+	}
+
 	return ctx.Edit(
 		text.String(),
 		&tb.SendOptions{ParseMode: tb.ModeHTML},
-		&tb.ReplyMarkup{InlineKeyboard: genFeedSetBtn(ctx.Callback(), sub, source)},
+		&tb.ReplyMarkup{InlineKeyboard: genFeedSetBtn(ctx.Callback(), sub, source, langCode)},
 	)
 }
 
 func genFeedSetBtn(
-	c *tb.Callback, sub *model.Subscribe, source *model.Source,
+	c *tb.Callback, sub *model.Subscribe, source *model.Source, langCode string,
 ) [][]tb.InlineButton {
 	setSubTagKey := tb.InlineButton{
 		Unique: SetSubscriptionTagButtonUnique,
-		Text:   "标签设置",
+		Text:   i18n.Localize(langCode, "set_btn_tag_settings"),
 		Data:   c.Data,
 	}
 
+	var notificationTextKey string
+	if sub.EnableNotification == 1 {
+		notificationTextKey = "set_btn_disable_notifications"
+	} else {
+		notificationTextKey = "set_btn_enable_notifications"
+	}
 	toggleNoticeKey := tb.InlineButton{
 		Unique: NotificationSwitchButtonUnique,
-		Text:   "开启通知",
+		Text:   i18n.Localize(langCode, notificationTextKey),
 		Data:   c.Data,
 	}
-	if sub.EnableNotification == 1 {
-		toggleNoticeKey.Text = "关闭通知"
-	}
 
+	var telegraphTextKey string
+	if sub.EnableTelegraph == 1 {
+		telegraphTextKey = "set_btn_disable_telegraph"
+	} else {
+		telegraphTextKey = "set_btn_enable_telegraph"
+	}
 	toggleTelegraphKey := tb.InlineButton{
 		Unique: TelegraphSwitchButtonUnique,
-		Text:   "开启 Telegraph 转码",
+		Text:   i18n.Localize(langCode, telegraphTextKey),
 		Data:   c.Data,
 	}
-	if sub.EnableTelegraph == 1 {
-		toggleTelegraphKey.Text = "关闭 Telegraph 转码"
-	}
 
+	var updatesTextKey string
+	if source.ErrorCount >= config.ErrorThreshold {
+		updatesTextKey = "set_btn_resume_updates"
+	} else {
+		updatesTextKey = "set_btn_pause_updates"
+	}
 	toggleEnabledKey := tb.InlineButton{
 		Unique: SubscriptionSwitchButtonUnique,
-		Text:   "暂停更新",
+		Text:   i18n.Localize(langCode, updatesTextKey),
 		Data:   c.Data,
-	}
-
-	if source.ErrorCount >= config.ErrorThreshold {
-		toggleEnabledKey.Text = "重启更新"
 	}
 
 	feedSettingKeys := [][]tb.InlineButton{
-		[]tb.InlineButton{
+		{ // Row 1
 			toggleEnabledKey,
 			toggleNoticeKey,
 		},
-		[]tb.InlineButton{
+		{ // Row 2
 			toggleTelegraphKey,
 			setSubTagKey,
 		},

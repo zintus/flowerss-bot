@@ -7,12 +7,21 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 	"github.com/zintus/flowerss-bot/internal/opml"
 
 	tb "gopkg.in/telebot.v3"
+)
+
+const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+
+var (
+	ErrNotOPMLFile   = errors.New("ondocument: not an opml file")
+	ErrGetFileFailed = errors.New("ondocument: failed to retrieve file")
 )
 
 type OnDocument struct {
@@ -32,32 +41,50 @@ func (o *OnDocument) Command() string {
 }
 
 func (o *OnDocument) Description() string {
-	return ""
+	return "" // This is tb.OnDocument, not a user-visible description string
+}
+
+func getLangCode(ctx tb.Context) string {
+	langCode := DefaultLanguage
+	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
+		if val, ok := langVal.(string); ok && val != "" {
+			langCode = val
+		}
+	}
+	return langCode
 }
 
 func (o *OnDocument) getOPML(ctx tb.Context) (*opml.OPML, error) {
 	if !strings.HasSuffix(ctx.Message().Document.FileName, ".opml") {
-		return nil, errors.New("请发送正确的 OPML 文件")
+		return nil, ErrNotOPMLFile
 	}
 
 	fileRead, err := o.bot.File(&ctx.Message().Document.File)
 	if err != nil {
-		return nil, errors.New("获取文件失败")
+		return nil, ErrGetFileFailed // Wrapped error or direct return? For now, direct.
 	}
 
 	opmlFile, err := opml.ReadOPML(fileRead)
 	if err != nil {
-		log.Errorf("parser opml failed, %v", err)
-		return nil, errors.New("获取文件失败")
+		log.Errorf("parser opml failed, %v", err) // Keep original logging
+		return nil, ErrGetFileFailed              // Assuming parsing error means file retrieval/read issue at a high level
 	}
 	return opmlFile, nil
 }
 
 func (o *OnDocument) Handle(ctx tb.Context) error {
+	langCode := getLangCode(ctx)
 	opmlFile, err := o.getOPML(ctx)
 	if err != nil {
+		if errors.Is(err, ErrNotOPMLFile) {
+			return ctx.Reply(i18n.Localize(langCode, "ondoc_err_not_opml"))
+		} else if errors.Is(err, ErrGetFileFailed) {
+			return ctx.Reply(i18n.Localize(langCode, "ondoc_err_get_file_failed"))
+		}
+		// For any other error type from getOPML, if any, pass through original message.
 		return ctx.Reply(err.Error())
 	}
+
 	userID := ctx.Chat().ID
 	v := ctx.Get(session.StoreKeyMentionChat.String())
 	if mentionChat, ok := v.(*tb.Chat); ok && mentionChat != nil {
@@ -84,7 +111,7 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 
 			err = o.core.AddSubscription(context.Background(), userID, source.ID)
 			if err != nil {
-				if err == core.ErrSubscriptionExist {
+				if errors.Is(err, core.ErrSubscriptionExist) { // Used errors.Is for consistency
 					successImportList[successIndex] = outline
 					successIndex++
 				} else {
@@ -103,9 +130,9 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 	wg.Wait()
 
 	var msg strings.Builder
-	msg.WriteString(fmt.Sprintf("<b>导入成功：%d，导入失败：%d</b>\n", successIndex, failIndex))
+	msg.WriteString(i18n.Localize(langCode, "ondoc_import_summary_format", successIndex, failIndex))
 	if successIndex != 0 {
-		msg.WriteString("<b>以下订阅源导入成功:</b>\n")
+		msg.WriteString(i18n.Localize(langCode, "ondoc_import_success_header"))
 		for i := 0; i < successIndex; i++ {
 			line := successImportList[i]
 			if line.Text != "" {
@@ -116,12 +143,11 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 				msg.WriteString(fmt.Sprintf("[%d] %s\n", i+1, line.XMLURL))
 			}
 		}
-
 		msg.WriteString("\n")
 	}
 
 	if failIndex != 0 {
-		msg.WriteString("<b>以下订阅源导入失败:</b>\n")
+		msg.WriteString(i18n.Localize(langCode, "ondoc_import_failure_header"))
 		for i := 0; i < failIndex; i++ {
 			line := failImportList[i]
 			if line.Text != "" {
@@ -130,7 +156,6 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 				msg.WriteString(fmt.Sprintf("[%d] %s\n", i+1, line.XMLURL))
 			}
 		}
-
 	}
 
 	return ctx.Reply(

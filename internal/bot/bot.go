@@ -14,6 +14,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/bot/preview"
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n" // Added
 	"github.com/zintus/flowerss-bot/internal/log"
 	"github.com/zintus/flowerss-bot/internal/model"
 )
@@ -70,6 +71,7 @@ func (b *Bot) registerCommands(appCore *core.Core) error {
 		handler.NewActiveAll(appCore),
 		handler.NewHelp(),
 		handler.NewVersion(),
+		handler.NewLanguageHandler(appCore), // Added here
 	}
 
 	for _, h := range commandHandlers {
@@ -142,6 +144,12 @@ func (b *Bot) BroadcastNews(source *model.Source, subs []*model.Subscribe, conte
 		previewText := preview.TrimDescription(content.Description, config.PreviewText)
 
 		for _, sub := range subs {
+			user, errUser := b.core.GetUser(context.Background(), sub.UserID)
+			langCode := "en" // Default
+			if errUser == nil && user != nil && user.LanguageCode != "" {
+				langCode = user.LanguageCode
+			}
+
 			tpldata := &config.TplData{
 				SourceTitle:     source.Title,
 				ContentTitle:    content.Title,
@@ -150,6 +158,7 @@ func (b *Bot) BroadcastNews(source *model.Source, subs []*model.Subscribe, conte
 				TelegraphURL:    content.TelegraphURL,
 				Tags:            sub.Tag,
 				EnableTelegraph: sub.EnableTelegraph == 1 && content.TelegraphURL != "",
+				LangCode:        langCode, // Added
 			}
 
 			u := &tb.User{
@@ -207,13 +216,17 @@ func (b *Bot) BroadcastSourceError(source *model.Source) {
 	}
 	var u tb.User
 	for _, sub := range subs {
-		message := fmt.Sprintf(
-			"[%s](%s) 已经累计连续%d次更新失败，暂停更新", source.Title, source.Link, config.ErrorThreshold,
-		)
+		user, errUser := b.core.GetUser(context.Background(), sub.UserID)
+		langCode := "en" // Default
+		if errUser == nil && user != nil && user.LanguageCode != "" {
+			langCode = user.LanguageCode
+		}
+
+		localizedMessage := i18n.Localize(langCode, "bot_broadcast_source_error_format", source.Title, source.Link, config.ErrorThreshold)
 		u.ID = sub.UserID
 		_, _ = b.tb.Send(
-			&u, message, &tb.SendOptions{
-				ParseMode: tb.ModeMarkdown,
+			&u, localizedMessage, &tb.SendOptions{
+				ParseMode: tb.ModeMarkdown, // Assuming ModeMarkdown is desired for this error message
 			},
 		)
 	}

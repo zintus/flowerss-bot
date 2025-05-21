@@ -5,8 +5,12 @@ import (
 
 	tb "gopkg.in/telebot.v3"
 
+	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 )
+
+const DefaultLanguage = "en" // Define DefaultLanguage for fallback
 
 type RemoveAllSubscription struct {
 }
@@ -15,26 +19,37 @@ func NewRemoveAllSubscription() *RemoveAllSubscription {
 	return &RemoveAllSubscription{}
 }
 
+func getLangCode(ctx tb.Context) string {
+	langCode := DefaultLanguage
+	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
+		if val, ok := langVal.(string); ok && val != "" {
+			langCode = val
+		}
+	}
+	return langCode
+}
+
 func (r RemoveAllSubscription) Command() string {
 	return "/unsuball"
 }
 
 func (r RemoveAllSubscription) Description() string {
-	return "Unsubscribe from all feeds"
+	return i18n.Localize(DefaultLanguage, "unsuball_command_desc")
 }
 
 func (r RemoveAllSubscription) Handle(ctx tb.Context) error {
-	reply := "Do you want to unsubscribe from all feeds?"
+	langCode := getLangCode(ctx)
+	reply := i18n.Localize(langCode, "unsuball_confirm_message")
 	var confirmKeys [][]tb.InlineButton
 	confirmKeys = append(
 		confirmKeys, []tb.InlineButton{
-			tb.InlineButton{
+			{
 				Unique: UnSubAllButtonUnique,
-				Text:   "Confirm",
+				Text:   i18n.Localize(langCode, "btn_confirm"),
 			},
-			tb.InlineButton{
+			{
 				Unique: CancelUnSubAllButtonUnique,
-				Text:   "Cancel",
+				Text:   i18n.Localize(langCode, "btn_cancel"),
 			},
 		},
 	)
@@ -67,11 +82,12 @@ func (r *RemoveAllSubscriptionButton) Description() string {
 }
 
 func (r *RemoveAllSubscriptionButton) Handle(ctx tb.Context) error {
+	langCode := getLangCode(ctx)
 	err := r.core.UnsubscribeAllSource(context.Background(), ctx.Sender().ID)
 	if err != nil {
-		return ctx.Edit("Unsubscribe failed")
+		return ctx.Edit(i18n.Localize(langCode, "unsuball_err_unsubscribe_failed"))
 	}
-	return ctx.Edit("Successfully unsubscribed")
+	return ctx.Edit(i18n.Localize(langCode, "unsuball_success_unsubscribed"))
 }
 
 func (r *RemoveAllSubscriptionButton) Middlewares() []tb.MiddlewareFunc {
@@ -94,7 +110,8 @@ func (r *CancelRemoveAllSubscriptionButton) Description() string {
 }
 
 func (r *CancelRemoveAllSubscriptionButton) Handle(ctx tb.Context) error {
-	return ctx.Edit("Operation cancelled")
+	langCode := getLangCode(ctx)
+	return ctx.Edit(i18n.Localize(langCode, "unsuball_info_operation_cancelled"))
 }
 
 func (r *CancelRemoveAllSubscriptionButton) Middlewares() []tb.MiddlewareFunc {

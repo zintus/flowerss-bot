@@ -9,10 +9,14 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/message"
+	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 )
+
+const DefaultLanguage = "en" // Define DefaultLanguage for fallback
 
 type SetUpdateInterval struct {
 	core *core.Core
@@ -22,12 +26,22 @@ func NewSetUpdateInterval(core *core.Core) *SetUpdateInterval {
 	return &SetUpdateInterval{core: core}
 }
 
+func getLangCode(ctx tb.Context) string {
+	langCode := DefaultLanguage
+	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
+		if val, ok := langVal.(string); ok && val != "" {
+			langCode = val
+		}
+	}
+	return langCode
+}
+
 func (s *SetUpdateInterval) Command() string {
 	return "/setinterval"
 }
 
 func (s *SetUpdateInterval) Description() string {
-	return "Set subscription refresh interval"
+	return i18n.Localize(DefaultLanguage, "setinterval_command_desc")
 }
 
 func (s *SetUpdateInterval) getMessageWithoutMention(ctx tb.Context) string {
@@ -39,15 +53,17 @@ func (s *SetUpdateInterval) getMessageWithoutMention(ctx tb.Context) string {
 }
 
 func (s *SetUpdateInterval) Handle(ctx tb.Context) error {
+	langCode := getLangCode(ctx)
 	msg := s.getMessageWithoutMention(ctx)
 	args := strings.Split(strings.TrimSpace(msg), " ")
-	if len(args) < 2 {
-		return ctx.Reply("/setinterval [interval] [sourceID] Set subscription refresh interval (multiple source IDs allowed, separated by spaces)")
+	// Check if args[0] is empty, which means only command was sent or only mention
+	if len(args) < 2 || args[0] == "" {
+		return ctx.Reply(i18n.Localize(langCode, "setinterval_usage_hint"))
 	}
 
 	interval, err := strconv.Atoi(args[0])
 	if interval <= 0 || err != nil {
-		return ctx.Reply("Please enter a valid refresh interval")
+		return ctx.Reply(i18n.Localize(langCode, "setinterval_err_invalid_interval"))
 	}
 
 	subscribeUserID := ctx.Message().Chat.ID
@@ -62,10 +78,10 @@ func (s *SetUpdateInterval) Handle(ctx tb.Context) error {
 			context.Background(), subscribeUserID, sourceID, interval,
 		); err != nil {
 			log.Errorf("SetSubscriptionInterval failed, %v", err)
-			return ctx.Reply("Failed to set refresh interval!")
+			return ctx.Reply(i18n.Localize(langCode, "setinterval_err_set_failed"))
 		}
 	}
-	return ctx.Reply("Refresh interval set successfully!")
+	return ctx.Reply(i18n.Localize(langCode, "setinterval_success_set"))
 }
 
 func (s *SetUpdateInterval) Middlewares() []tb.MiddlewareFunc {
