@@ -11,7 +11,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 type PauseAll struct {
 	core *core.Core
@@ -25,15 +25,7 @@ func (p *PauseAll) Command() string {
 	return "/pauseall"
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (p *PauseAll) Description() string {
 	return i18n.Localize(DefaultLanguage, "pauseall_command_desc")

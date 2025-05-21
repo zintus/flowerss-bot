@@ -10,7 +10,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 type RemoveAllSubscription struct {
 }

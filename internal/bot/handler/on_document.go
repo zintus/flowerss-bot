@@ -17,7 +17,7 @@ import (
 	tb "gopkg.in/telebot.v3"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 var (
 	ErrNotOPMLFile   = errors.New("ondocument: not an opml file")
@@ -44,15 +44,7 @@ func (o *OnDocument) Description() string {
 	return "" // This is tb.OnDocument, not a user-visible description string
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (o *OnDocument) getOPML(ctx tb.Context) (*opml.OPML, error) {
 	if !strings.HasSuffix(ctx.Message().Document.FileName, ".opml") {
