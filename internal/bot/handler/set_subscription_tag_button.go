@@ -6,12 +6,13 @@ import (
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
 	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
 const (
 	SetSubscriptionTagButtonUnique = "set_set_sub_tag_btn"
-	// DefaultLanguage is defined in common.go
+	// Use util.DefaultLanguage instead of local declaration
 )
 
 type SetSubscriptionTagButton struct {
@@ -22,15 +23,7 @@ func NewSetSubscriptionTagButton(bot *tb.Bot) *SetSubscriptionTagButton {
 	return &SetSubscriptionTagButton{bot: bot}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// Use util.GetLangCode instead of local implementation
 
 func (b *SetSubscriptionTagButton) CallbackUnique() string {
 	return "\f" + SetSubscriptionTagButtonUnique
@@ -56,7 +49,7 @@ func (b *SetSubscriptionTagButton) feedSetAuth(c *tb.Callback, attachData *sessi
 }
 
 func (b *SetSubscriptionTagButton) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	c := ctx.Callback()
 	attachData, err := session.UnmarshalAttachment(ctx.Callback().Data)
 	if err != nil {

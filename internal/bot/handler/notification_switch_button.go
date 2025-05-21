@@ -20,9 +20,9 @@ const (
 	NotificationSwitchButtonUnique = "set_toggle_notice_btn"
 )
 
-// feedSettingTmpl is defined in set.go
+// Use feedSettingTmpl from set.go
 
-// genFeedSetBtn is defined in set.go
+// Use genFeedSetBtn from set.go
 
 type NotificationSwitchButton struct {
 	bot  *tb.Bot

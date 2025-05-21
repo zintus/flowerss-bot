@@ -10,11 +10,12 @@ import (
 	"github.com/zintus/flowerss-bot/internal/bot/message"
 	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
-// DefaultLanguage is defined in common.go
+// Use util.DefaultLanguage instead of local declaration
 
 type SetFeedTag struct {
 	core *core.Core
@@ -24,14 +25,14 @@ func NewSetFeedTag(core *core.Core) *SetFeedTag {
 	return &SetFeedTag{core: core}
 }
 
-// getLangCode is defined in common.go
+// Use util.GetLangCode instead of local implementation
 
 func (s *SetFeedTag) Command() string {
 	return "/setfeedtag"
 }
 
 func (s *SetFeedTag) Description() string {
-	return i18n.Localize(DefaultLanguage, "setfeedtag_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "setfeedtag_command_desc")
 }
 
 func (s *SetFeedTag) getMessageWithoutMention(ctx tb.Context) string {
@@ -43,7 +44,7 @@ func (s *SetFeedTag) getMessageWithoutMention(ctx tb.Context) string {
 }
 
 func (s *SetFeedTag) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	msg := s.getMessageWithoutMention(ctx)
 	args := strings.Split(strings.TrimSpace(msg), " ")
 	// Check if args[0] is empty, which means only command was sent or only mention

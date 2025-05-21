@@ -11,13 +11,14 @@ import (
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
 	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/model"
 )
 
-// DefaultLanguage is defined in common.go
+// Use util.DefaultLanguage instead of local declaration
 
 type Set struct {
 	bot  *tb.Bot
@@ -31,18 +32,18 @@ func NewSet(bot *tb.Bot, core *core.Core) *Set {
 	}
 }
 
-// getLangCode is defined in common.go
+// Use util.GetLangCode instead of local implementation
 
 func (s *Set) Command() string {
 	return "/set"
 }
 
 func (s *Set) Description() string {
-	return i18n.Localize(DefaultLanguage, "set_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "set_command_desc")
 }
 
 func (s *Set) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	mentionChat, _ := session.GetMentionChatFromCtxStore(ctx)
 	ownerID := ctx.Message().Chat.ID
 	if mentionChat != nil {
@@ -120,7 +121,7 @@ func (r *SetFeedItemButton) Description() string {
 }
 
 func (r *SetFeedItemButton) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	attachData, err := session.UnmarshalAttachment(ctx.Callback().Data)
 	if err != nil {
 		return ctx.Edit(i18n.Localize(langCode, "set_err_button_settings_error"))
