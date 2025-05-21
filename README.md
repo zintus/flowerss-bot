@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/zintus/flowerss-bot/workflows/Release/badge.svg)](https://github.com/zintus/flowerss-bot/actions?query=workflow%3ARelease)
 [![Test Status](https://github.com/zintus/flowerss-bot/workflows/Test/badge.svg)](https://github.com/zintus/flowerss-bot/actions?query=workflow%3ATest)
+[![Go Check](https://github.com/zintus/flowerss-bot/workflows/Go%20Check/badge.svg)](https://github.com/zintus/flowerss-bot/actions?query=workflow%3A%22Go+Check%22)
 ![Build Docker Image](https://github.com/zintus/flowerss-bot/workflows/Build%20Docker%20Image/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zintus/flowerss-bot)](https://goreportcard.com/report/github.com/zintus/flowerss-bot)
 ![GitHub](https://img.shields.io/github/license/zintus/flowerss-bot.svg)
