@@ -7,7 +7,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 type Import struct {
 }
@@ -20,15 +20,7 @@ func (i *Import) Command() string {
 	return "/import"
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (i *Import) Description() string {
 	return i18n.Localize(DefaultLanguage, "import_command_desc")

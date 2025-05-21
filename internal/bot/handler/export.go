@@ -19,7 +19,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/opml"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 var (
 	ErrExportGetChannelInfo      = errors.New("export: unable to get channel information")
@@ -36,15 +36,7 @@ func NewExport(core *core.Core) *Export {
 	return &Export{core: core}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (e *Export) Description() string {
 	return i18n.Localize(DefaultLanguage, "export_command_desc")

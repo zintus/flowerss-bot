@@ -14,7 +14,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/log"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 var (
 	ErrGetChannelInfoFailedForPerms = errors.New("failed to get channel info for permissions")
@@ -34,15 +34,7 @@ func (a *AddSubscription) Command() string {
 	return "/sub"
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (a *AddSubscription) Description() string {
 	return i18n.Localize(DefaultLanguage, "addsub_command_desc")
