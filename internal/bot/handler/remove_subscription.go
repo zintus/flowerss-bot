@@ -8,14 +8,12 @@ import (
 
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
 	"github.com/zintus/flowerss-bot/internal/bot/message"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 )
-
-// DefaultLanguage is defined in common.go
 
 type RemoveSubscription struct {
 	bot  *tb.Bot
@@ -29,18 +27,16 @@ func NewRemoveSubscription(bot *tb.Bot, core *core.Core) *RemoveSubscription {
 	}
 }
 
-// getLangCode is defined in common.go
-
 func (s *RemoveSubscription) Command() string {
 	return "/unsub"
 }
 
 func (s *RemoveSubscription) Description() string {
-	return i18n.Localize(DefaultLanguage, "unsub_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "unsub_command_desc")
 }
 
 func (s *RemoveSubscription) removeForChannel(ctx tb.Context, channelName string) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
 		return ctx.Send(i18n.Localize(langCode, "unsub_hint_channel_usage"))
@@ -75,7 +71,7 @@ func (s *RemoveSubscription) removeForChannel(ctx tb.Context, channelName string
 }
 
 func (s *RemoveSubscription) removeForChat(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
 		sources, err := s.core.GetUserSubscribedSources(context.Background(), ctx.Chat().ID)
@@ -164,7 +160,7 @@ func (r *RemoveSubscriptionItemButton) Description() string {
 }
 
 func (r *RemoveSubscriptionItemButton) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx) // Add langCode retrieval
+	langCode := util.GetLangCode(ctx)
 	if ctx.Callback() == nil {
 		return ctx.Edit(i18n.Localize(langCode, "err_internal_error"))
 	}

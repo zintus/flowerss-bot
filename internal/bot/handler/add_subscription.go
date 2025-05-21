@@ -8,13 +8,11 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/message"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 )
-
-// DefaultLanguage is defined in common.go
 
 var (
 	ErrGetChannelInfoFailedForPerms = errors.New("failed to get channel info for permissions")
@@ -34,14 +32,12 @@ func (a *AddSubscription) Command() string {
 	return "/sub"
 }
 
-// getLangCode is defined in common.go
-
 func (a *AddSubscription) Description() string {
-	return i18n.Localize(DefaultLanguage, "addsub_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "addsub_command_desc")
 }
 
 func (a *AddSubscription) addSubscriptionForChat(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
 		hint := i18n.Localize(langCode, "addsub_hint_no_url_chat", a.Command())
@@ -95,7 +91,7 @@ func (a *AddSubscription) hasChannelPrivilege(bot *tb.Bot, channelChat *tb.Chat,
 }
 
 func (a *AddSubscription) addSubscriptionForChannel(ctx tb.Context, channelName string) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
 		return ctx.Send(i18n.Localize(langCode, "addsub_hint_no_url_channel"))

@@ -5,12 +5,10 @@ import (
 
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
-
-// DefaultLanguage is defined in common.go
 
 type RemoveAllSubscription struct {
 }
@@ -19,18 +17,16 @@ func NewRemoveAllSubscription() *RemoveAllSubscription {
 	return &RemoveAllSubscription{}
 }
 
-// getLangCode is defined in common.go
-
 func (r RemoveAllSubscription) Command() string {
 	return "/unsuball"
 }
 
 func (r RemoveAllSubscription) Description() string {
-	return i18n.Localize(DefaultLanguage, "unsuball_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "unsuball_command_desc")
 }
 
 func (r RemoveAllSubscription) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	reply := i18n.Localize(langCode, "unsuball_confirm_message")
 	var confirmKeys [][]tb.InlineButton
 	confirmKeys = append(
@@ -74,7 +70,7 @@ func (r *RemoveAllSubscriptionButton) Description() string {
 }
 
 func (r *RemoveAllSubscriptionButton) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	err := r.core.UnsubscribeAllSource(context.Background(), ctx.Sender().ID)
 	if err != nil {
 		return ctx.Edit(i18n.Localize(langCode, "unsuball_err_unsubscribe_failed"))
@@ -102,7 +98,7 @@ func (r *CancelRemoveAllSubscriptionButton) Description() string {
 }
 
 func (r *CancelRemoveAllSubscriptionButton) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	return ctx.Edit(i18n.Localize(langCode, "unsuball_info_operation_cancelled"))
 }
 

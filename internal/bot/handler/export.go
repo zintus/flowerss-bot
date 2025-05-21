@@ -11,15 +11,13 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/message"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 	"github.com/zintus/flowerss-bot/internal/model"
 	"github.com/zintus/flowerss-bot/internal/opml"
 )
-
-// DefaultLanguage is defined in common.go
 
 var (
 	ErrExportGetChannelInfo      = errors.New("export: unable to get channel information")
@@ -36,10 +34,8 @@ func NewExport(core *core.Core) *Export {
 	return &Export{core: core}
 }
 
-// getLangCode is defined in common.go
-
 func (e *Export) Description() string {
-	return i18n.Localize(DefaultLanguage, "export_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "export_command_desc")
 }
 
 func (e *Export) Command() string {
@@ -78,7 +74,7 @@ func (e *Export) getChannelSources(bot *tb.Bot, opUserID int64, channelName stri
 }
 
 func (e *Export) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	mention := message.MentionFromMessage(ctx.Message())
 	var sources []*model.Source
 	var err error

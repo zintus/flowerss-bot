@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
@@ -16,8 +16,6 @@ import (
 
 	tb "gopkg.in/telebot.v3"
 )
-
-// DefaultLanguage is defined in common.go
 
 var (
 	ErrNotOPMLFile   = errors.New("ondocument: not an opml file")
@@ -44,8 +42,6 @@ func (o *OnDocument) Description() string {
 	return "" // This is tb.OnDocument, not a user-visible description string
 }
 
-// getLangCode is defined in common.go
-
 func (o *OnDocument) getOPML(ctx tb.Context) (*opml.OPML, error) {
 	if !strings.HasSuffix(ctx.Message().Document.FileName, ".opml") {
 		return nil, ErrNotOPMLFile
@@ -65,7 +61,7 @@ func (o *OnDocument) getOPML(ctx tb.Context) (*opml.OPML, error) {
 }
 
 func (o *OnDocument) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	opmlFile, err := o.getOPML(ctx)
 	if err != nil {
 		if errors.Is(err, ErrNotOPMLFile) {

@@ -5,15 +5,13 @@ import (
 	"fmt"
 	"strings" // For strings.Join and other manipulations
 
-	"github.com/zintus/flowerss-bot/internal/bot/middleware" // For UserLanguageKey
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	// "github.com/zintus/flowerss-bot/internal/model" // Not strictly needed for this simplified version
 
 	tb "gopkg.in/telebot.v3"
 )
-
-const DefaultLanguageHandler = "en" // Or use i18n.DefaultLanguage if made public
 
 type Language struct {
 	core *core.Core
@@ -28,22 +26,11 @@ func (l *Language) Command() string {
 }
 
 func (l *Language) Description() string {
-	return i18n.Localize(DefaultLanguageHandler, "language_command_desc")
-}
-
-// Helper to get language code from context
-func getLangCodeFromContext(ctx tb.Context) string { // Renamed as per self-correction
-	langCode := DefaultLanguageHandler
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
+	return i18n.Localize(util.DefaultLanguage, "language_command_desc")
 }
 
 func (l *Language) Handle(ctx tb.Context) error {
-	langCode := getLangCodeFromContext(ctx)
+	langCode := util.GetLangCode(ctx)
 	args := ctx.Args()
 
 	if len(args) == 0 {

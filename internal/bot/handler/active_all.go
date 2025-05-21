@@ -5,13 +5,11 @@ import (
 
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
-
-// DefaultLanguage is defined in common.go
 
 type ActiveAll struct {
 	core *core.Core
@@ -27,16 +25,11 @@ func (a *ActiveAll) Command() string {
 
 func (a *ActiveAll) Description() string {
 	// Assuming "en" for command descriptions as they aren't user-specific yet in terms of language context
-	return i18n.Localize(DefaultLanguage, "activeall_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "activeall_command_desc")
 }
 
 func (a *ActiveAll) Handle(ctx tb.Context) error {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
+	langCode := util.GetLangCode(ctx)
 
 	mentionChat, _ := session.GetMentionChatFromCtxStore(ctx)
 	subscribeUserID := ctx.Chat().ID

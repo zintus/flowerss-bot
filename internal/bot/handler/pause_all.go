@@ -5,13 +5,11 @@ import (
 
 	tb "gopkg.in/telebot.v3"
 
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
-
-// DefaultLanguage is defined in common.go
 
 type PauseAll struct {
 	core *core.Core
@@ -25,14 +23,12 @@ func (p *PauseAll) Command() string {
 	return "/pauseall"
 }
 
-// getLangCode is defined in common.go
-
 func (p *PauseAll) Description() string {
-	return i18n.Localize(DefaultLanguage, "pauseall_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "pauseall_command_desc")
 }
 
 func (p *PauseAll) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	subscribeUserID := ctx.Message().Chat.ID
 	var channelChat *tb.Chat
 	v := ctx.Get(session.StoreKeyMentionChat.String())

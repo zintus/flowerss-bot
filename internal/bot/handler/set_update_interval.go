@@ -9,14 +9,12 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/message"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 )
-
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
 
 type SetUpdateInterval struct {
 	core *core.Core
@@ -26,22 +24,12 @@ func NewSetUpdateInterval(core *core.Core) *SetUpdateInterval {
 	return &SetUpdateInterval{core: core}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
-
 func (s *SetUpdateInterval) Command() string {
 	return "/setinterval"
 }
 
 func (s *SetUpdateInterval) Description() string {
-	return i18n.Localize(DefaultLanguage, "setinterval_command_desc")
+	return i18n.Localize(util.DefaultLanguage, "setinterval_command_desc")
 }
 
 func (s *SetUpdateInterval) getMessageWithoutMention(ctx tb.Context) string {
@@ -53,7 +41,7 @@ func (s *SetUpdateInterval) getMessageWithoutMention(ctx tb.Context) string {
 }
 
 func (s *SetUpdateInterval) Handle(ctx tb.Context) error {
-	langCode := getLangCode(ctx)
+	langCode := util.GetLangCode(ctx)
 	msg := s.getMessageWithoutMention(ctx)
 	args := strings.Split(strings.TrimSpace(msg), " ")
 	// Check if args[0] is empty, which means only command was sent or only mention
