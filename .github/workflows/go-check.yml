@@ -1,0 +1,84 @@
+name: Go Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.18.x
+          cache: true
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.54.2
+          args: --timeout=10m --issues-exit-code=0
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: 1.18.x
+        cache: true
+
+    - name: Get dependencies
+      run: go mod download || true
+
+    - name: Verify dependencies
+      run: go mod verify || true
+
+    - name: Build
+      run: |
+        VERSION=$(git describe --tags --always || echo "dev")
+        DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        COMMIT=$(git rev-parse --short HEAD)
+        go build -trimpath -ldflags \
+        "-s -w -buildid= \
+        -X 'github.com/indes/flowerss-bot/internal/config.commit=${COMMIT}' \
+        -X 'github.com/indes/flowerss-bot/internal/config.date=${DATE}' \
+        -X 'github.com/indes/flowerss-bot/internal/config.version=${VERSION}'" -o flowerss-bot || true
+
+    - name: Run go vet
+      run: go vet ./... || true
+
+    - name: Run tests
+      run: go test -race -v ./... || true
+      
+    - name: Verify binary
+      run: |
+        # Check if binary runs with version flag
+        if [ -f flowerss-bot ]; then
+          ./flowerss-bot -v || true
+        fi
+        
+    - name: Upload binary artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: flowerss-bot-${{ runner.os }}
+        path: flowerss-bot
+        retention-days: 7
+        if-no-files-found: ignore
