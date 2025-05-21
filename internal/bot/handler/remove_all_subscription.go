@@ -19,15 +19,7 @@ func NewRemoveAllSubscription() *RemoveAllSubscription {
 	return &RemoveAllSubscription{}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (r RemoveAllSubscription) Command() string {
 	return "/unsuball"

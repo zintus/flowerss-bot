@@ -15,7 +15,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/log"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 type RemoveSubscription struct {
 	bot  *tb.Bot
@@ -29,15 +29,7 @@ func NewRemoveSubscription(bot *tb.Bot, core *core.Core) *RemoveSubscription {
 	}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (s *RemoveSubscription) Command() string {
 	return "/unsub"

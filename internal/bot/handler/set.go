@@ -17,7 +17,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/model"
 )
 
-const DefaultLanguage = "en" // Define DefaultLanguage for fallback
+// DefaultLanguage is defined in common.go
 
 type Set struct {
 	bot  *tb.Bot
@@ -31,15 +31,7 @@ func NewSet(bot *tb.Bot, core *core.Core) *Set {
 	}
 }
 
-func getLangCode(ctx tb.Context) string {
-	langCode := DefaultLanguage
-	if langVal := ctx.Get(middleware.UserLanguageKey); langVal != nil {
-		if val, ok := langVal.(string); ok && val != "" {
-			langCode = val
-		}
-	}
-	return langCode
-}
+// getLangCode is defined in common.go
 
 func (s *Set) Command() string {
 	return "/set"
