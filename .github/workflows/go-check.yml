@@ -75,7 +75,7 @@ jobs:
         fi
         
     - name: Upload binary artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: flowerss-bot-${{ runner.os }}
