@@ -144,7 +144,10 @@ func (b *NotificationSwitchButton) Handle(ctx tb.Context) error {
 	}
 
 	sourceID := uint(attachData.GetSourceId())
-	source, _ := b.core.GetSource(context.Background(), sourceID) // Error ignored in original, keeping behavior
+	source, err := b.core.GetSource(context.Background(), sourceID)
+	if err != nil {
+		return ctx.Respond(&tb.CallbackResponse{Text: i18n.Localize(langCode, "notify_switch_err_generic")})
+	}
 
 	err = b.core.ToggleSubscriptionNotice(context.Background(), subscriberID, sourceID)
 	if err != nil {
