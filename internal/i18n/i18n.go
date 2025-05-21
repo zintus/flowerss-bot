@@ -3,7 +3,6 @@ package i18n
 import (
 	"encoding/json"
 	"fmt"
-	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -86,4 +85,10 @@ func AvailableLanguages() []string {
 		keys = append(keys, k)
 	}
 	return keys
+}
+
+// ResetTranslationsForTest resets the translations map for testing purposes.
+// This function should only be used in tests.
+func ResetTranslationsForTest() {
+	translations = make(map[string]map[string]string)
 }

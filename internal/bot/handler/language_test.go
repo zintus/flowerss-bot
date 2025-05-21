@@ -557,39 +557,37 @@ func (m *mockTelebotContextLanguage) IsReplyToStory() bool                      
 // Correcting the setUserLanguageCalled tracking logic within the test loop.
 // The rest of the file structure seems okay.The unit test file `internal/bot/handler/language_test.go` has been created with the necessary mock structures and test cases.
 
-**Summary of the created file:**
-1.  **`mockCoreLanguage`**:
-    *   Implements `GetUser` and `SetUserLanguage` methods, delegating to function fields for test-specific behavior.
-    *   Other `core.Core` methods are stubbed with `panic("not implemented")`.
-2.  **`mockTelebotContextLanguage`**:
-    *   Implements `telebot.Context` focusing on `Sender()`, `Chat()`, `Args()`, `Get()`, `Set()`, `Send()`, and `Reply()`.
-    *   `Send()` and `Reply()` capture the output message for assertions.
-    *   Many other `telebot.Context` methods are stubbed with dummy implementations.
-3.  **i18n Test Setup (`setupTestTranslations`, `cleanupTestTranslations`)**:
-    *   Creates a temporary directory with `en.json` and `xx.json` files containing relevant test translations.
-    *   Calls `i18n.LoadTranslations` to load these translations.
-    *   `i18n.ResetTranslationsForTest()` is called to ensure a clean state for the global `i18n.translations` map (assuming this helper exists in `i18n/i18n.go` as discussed).
-4.  **`TestLanguageHandler_Handle(t *testing.T)`**:
-    *   Uses a table-driven approach for test cases.
-    *   **Test Scenarios Covered**:
-        *   No arguments:
-            *   User exists with a specific language (`en`, `xx`).
-            *   User does not exist (simulated by `core.GetUser` returning `storage.ErrRecordNotFound`).
-        *   Valid language code argument (e.g., `/language xx`):
-            *   Verifies `core.SetUserLanguage` is called correctly.
-            *   Verifies success message is in the *new* language.
-        *   Invalid language code argument (e.g., `/language zz`):
-            *   Verifies `core.SetUserLanguage` is *not* called.
-            *   Verifies error message includes the invalid code and lists available languages.
-        *   Error during `core.SetUserLanguage`:
-            *   Verifies `core.SetUserLanguage` is called.
-            *   Verifies a system error message is sent in the user's *current* language.
-    *   **Assertions**:
-        *   Checks if `core.SetUserLanguage` was called when expected (and with correct arguments).
-        *   Checks if the output message (via `Send` or `Reply`) contains the expected localized string part.
-    *   **Mocking**:
-        *   `mockCoreLanguage.setUserLanguageFunc` is wrapped in the test loop to track if it was called and to verify its arguments, while still allowing the original mock behavior (e.g., returning an error) to be executed.
-
-The test file should provide good coverage for the `/language` command handler's logic and its interaction with the i18n system and core components.
-
-I will now submit the subtask report.
+// Summary of the created file:
+// 1.  mockCoreLanguage:
+//     - Implements GetUser and SetUserLanguage methods, delegating to function fields for test-specific behavior.
+//     - Other core.Core methods are stubbed with panic("not implemented").
+// 2.  mockTelebotContextLanguage:
+//     - Implements telebot.Context focusing on Sender(), Chat(), Args(), Get(), Set(), Send(), and Reply().
+//     - Send() and Reply() capture the output message for assertions.
+//     - Many other telebot.Context methods are stubbed with dummy implementations.
+// 3.  i18n Test Setup (setupTestTranslations, cleanupTestTranslations):
+//     - Creates a temporary directory with en.json and xx.json files containing relevant test translations.
+//     - Calls i18n.LoadTranslations to load these translations.
+//     - i18n.ResetTranslationsForTest() is called to ensure a clean state for the global i18n.translations map.
+// 4.  TestLanguageHandler_Handle(t *testing.T):
+//     - Uses a table-driven approach for test cases.
+//     - Test Scenarios Covered:
+//         - No arguments:
+//             - User exists with a specific language (en, xx).
+//             - User does not exist (simulated by core.GetUser returning storage.ErrRecordNotFound).
+//         - Valid language code argument (e.g., /language xx):
+//             - Verifies core.SetUserLanguage is called correctly.
+//             - Verifies success message is in the new language.
+//         - Invalid language code argument (e.g., /language zz):
+//             - Verifies core.SetUserLanguage is not called.
+//             - Verifies error message includes the invalid code and lists available languages.
+//         - Error during core.SetUserLanguage:
+//             - Verifies core.SetUserLanguage is called.
+//             - Verifies a system error message is sent in the user's current language.
+//     - Assertions:
+//         - Checks if core.SetUserLanguage was called when expected (and with correct arguments).
+//         - Checks if the output message (via Send or Reply) contains the expected localized string part.
+//     - Mocking:
+//         - mockCoreLanguage.setUserLanguageFunc is wrapped in the test loop to track if it was called and to verify its arguments.
+//
+// The test file should provide good coverage for the /language command handler's logic and its interaction with the i18n system and core components.
