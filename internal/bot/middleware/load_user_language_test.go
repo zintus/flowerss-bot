@@ -412,32 +412,5 @@ func (m *mockTelebotContext) IsStory() bool                                     
 // If the middleware internally uses other methods, they would need to be mocked as well.
 
 // Ensure all core.Core methods are present on mockCore for interface satisfaction,
-// even if they just panic. This was added to the mockCore definition.The test file `internal/bot/middleware/load_user_language_test.go` has been created and populated with the mock structures for `core.Core` and `telebot.Context`, as well as the initial test cases.
-
-**Summary of what has been done:**
-1.  **File Creation**: `internal/bot/middleware/load_user_language_test.go` was created.
-2.  **`mockCore`**:
-    *   Defined with `getUserFunc` and `createUserFunc` fields.
-    *   Implemented `GetUser` and `CreateUser` methods that delegate to these functions.
-    *   Added panic implementations for all other methods of the `core.Core` interface (assuming `core.Core` is an interface with all those methods; if it's a struct, these are not strictly needed unless an interface is extracted for testing).
-3.  **`mockTelebotContext`**:
-    *   Defined with `sender *tb.User` and `store map[string]interface{}`.
-    *   Implemented `Sender()`, `Get(key string)`, and `Set(key string, val interface{})`.
-    *   Included a large number of dummy implementations for other `tb.Context` methods to satisfy the interface.
-4.  **`TestLoadUserLanguage`**:
-    *   Defined a test table with structs for various scenarios.
-    *   Each test case includes:
-        *   `name`: Description of the test.
-        *   `setupMockCore`: A function to configure the `mockCore`'s `getUserFunc` and `createUserFunc` for that specific test.
-        *   `sender`: A `*tb.User` to be returned by the mock context's `Sender()` method.
-        *   `expectedLangInCtx`: The language code expected to be set in the context's store.
-        *   `expectCreateUser`: A boolean indicating if `appCore.CreateUser` is expected to be called.
-        *   `createUserCalled`: A boolean field (part of the test struct, to be set by the mock `createUserFunc`) to track if `CreateUser` was actually invoked.
-    *   The test loop iterates through these cases, sets up the mocks, creates the middleware, and executes it with a test handler.
-    *   The test handler verifies that `next(c)` is called and checks the language code set in the context.
-    *   After the middleware execution, the test verifies if `CreateUser` was called when expected.
-    *   The logic for tracking `createUserCalled` inside the test loop has been adjusted to ensure it's correctly reset and reflects the call for the specific test case.
-
-The structure is now in place to run these tests. The mock for `telebot.Context` is extensive but many methods are simple nil/zero returns as they are not directly used by the `LoadUserLanguage` middleware itself.
-
-I will now submit the subtask report.
+// Additional methods to fully satisfy the tb.Context interface
+// These are just stubs that return nil or default values
