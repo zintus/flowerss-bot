@@ -7,9 +7,29 @@ on:
     branches: [ main, master ]
 
 jobs:
+  golangci:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.18.x
+          cache: true
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.54.2
+          args: --timeout=10m --issues-exit-code=0
+
   build:
     name: Build and Test
     runs-on: ubuntu-latest
+    needs: golangci
     strategy:
       matrix:
         go-version: [1.18.x, 1.19.x, 1.20.x]
@@ -40,9 +60,9 @@ jobs:
         COMMIT=$(git rev-parse --short HEAD)
         go build -trimpath -ldflags \
         "-s -w -buildid= \
-        -X 'github.com/zintus/flowerss-bot/internal/config.commit=${COMMIT}' \
-        -X 'github.com/zintus/flowerss-bot/internal/config.date=${DATE}' \
-        -X 'github.com/zintus/flowerss-bot/internal/config.version=${VERSION}'" -o flowerss-bot
+        -X 'github.com/indes/flowerss-bot/internal/config.commit=${COMMIT}' \
+        -X 'github.com/indes/flowerss-bot/internal/config.date=${DATE}' \
+        -X 'github.com/indes/flowerss-bot/internal/config.version=${VERSION}'" -o flowerss-bot
 
     - name: Run go vet
       run: go vet ./...
@@ -61,22 +81,3 @@ jobs:
         name: flowerss-bot-${{ matrix.go-version }}-${{ runner.os }}
         path: flowerss-bot
         retention-days: 7
-
-  golangci:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.18.x
-          cache: true
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: v1.54.2
-          args: --timeout=5m

@@ -1,7 +1,10 @@
 run:
-  timeout: 5m
+  timeout: 10m
   skip-dirs:
     - vendor
+  skip-files:
+    - ".*\\.pb\\.go$"
+    - ".*\\.gen\\.go$"
 
 linters:
   disable-all: true
@@ -18,3 +21,6 @@ issues:
     - path: _test\.go
       linters:
         - errcheck
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-use-default: false
