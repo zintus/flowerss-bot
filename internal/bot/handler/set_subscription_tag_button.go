@@ -11,7 +11,7 @@ import (
 
 const (
 	SetSubscriptionTagButtonUnique = "set_set_sub_tag_btn"
-	DefaultLanguage                = "en" // Define DefaultLanguage for fallback
+	// DefaultLanguage is defined in common.go
 )
 
 type SetSubscriptionTagButton struct {
