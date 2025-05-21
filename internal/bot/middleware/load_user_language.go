@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors" // Required for errors.Is
 
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/log" // Or use "go.uber.org/zap" if that's what handlers use
 	"github.com/zintus/flowerss-bot/internal/model"
@@ -13,7 +14,6 @@ import (
 )
 
 const UserLanguageKey = "user_lang"
-const DefaultLanguage = "en" // Fallback if everything else fails
 
 // LoadUserLanguage retrieves the user's language preference and stores it in the context.
 // If the user is not found, it creates a new user record with default language 'en'.
@@ -22,7 +22,7 @@ func LoadUserLanguage(appCore *core.Core) tb.MiddlewareFunc {
 		return func(c tb.Context) error {
 			if c.Sender() == nil {
 				log.Warnf("No sender information in context, cannot load user language.")
-				c.Set(UserLanguageKey, DefaultLanguage) // Set a default
+				c.Set(UserLanguageKey, util.DefaultLanguage) // Set a default
 				return next(c)
 			}
 
@@ -40,7 +40,7 @@ func LoadUserLanguage(appCore *core.Core) tb.MiddlewareFunc {
 					if createErr := appCore.CreateUser(context.Background(), newUser); createErr != nil {
 						log.Errorf("Failed to create user %d: %v", userID, createErr)
 						// Even if creation fails, set a default lang and continue
-						c.Set(UserLanguageKey, DefaultLanguage)
+						c.Set(UserLanguageKey, util.DefaultLanguage)
 						return next(c)
 					}
 					// User created, lang is default 'en' from DB or model
@@ -48,18 +48,18 @@ func LoadUserLanguage(appCore *core.Core) tb.MiddlewareFunc {
 					// If newUser.LanguageCode is not populated by CreateUser, it might be empty string here.
 					// The model's default is 'en', so it should be 'en' after creation and retrieval.
 					// To be absolutely certain, we could fetch the user again, but let's assume 'en'.
-					c.Set(UserLanguageKey, DefaultLanguage) // Safest to set 'en' as it's the default
+					c.Set(UserLanguageKey, util.DefaultLanguage) // Safest to set 'en' as it's the default
 					return next(c)
 				}
 				
 				log.Errorf("Failed to get user %d: %v. Using default language.", userID, err)
-				c.Set(UserLanguageKey, DefaultLanguage)
+				c.Set(UserLanguageKey, util.DefaultLanguage)
 				return next(c)
 			}
 
 			if user.LanguageCode == "" {
 				 log.Warnf("User %d has empty LanguageCode, defaulting to 'en'. Consider updating user record.", userID)
-				 c.Set(UserLanguageKey, DefaultLanguage)
+				 c.Set(UserLanguageKey, util.DefaultLanguage)
 			} else {
 				 c.Set(UserLanguageKey, user.LanguageCode)
 			}
