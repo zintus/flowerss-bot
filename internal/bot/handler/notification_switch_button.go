@@ -13,7 +13,6 @@ import (
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
-	"github.com/zintus/flowerss-bot/internal/model"
 )
 
 // NotificationSwitchButtonUnique is defined in common.go

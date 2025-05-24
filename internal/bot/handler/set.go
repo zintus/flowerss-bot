@@ -9,13 +9,11 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
 	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
-	"github.com/zintus/flowerss-bot/internal/model"
 )
 
 // Use util.DefaultLanguage instead of local declaration

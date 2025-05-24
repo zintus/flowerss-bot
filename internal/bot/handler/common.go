@@ -2,7 +2,6 @@
 package handler
 
 import (
-	"fmt"
 	"text/template"
 
 	tb "gopkg.in/telebot.v3"

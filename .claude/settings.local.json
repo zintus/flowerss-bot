@@ -9,7 +9,10 @@
       "Bash(go vet:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(golangci-lint run:*)",
+      "Bash(make:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }
