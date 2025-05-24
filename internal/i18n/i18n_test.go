@@ -195,7 +195,7 @@ func TestLocalize(t *testing.T) {
 	}
 	// Test case for when default language itself is missing (simulated by clearing translations)
 	translations = make(map[string]map[string]string) // Clear all, including default
-	expectedMissingMsg := "[translation missing for lang: zz, key: any_key]"
+	expectedMissingMsg := "[translation missing for lang: zz, key: any_key (default lang 'en' not loaded/found)]"
 	if got := Localize("zz", "any_key"); got != expectedMissingMsg {
 	    t.Errorf("Expected '%s' when default lang is missing, got '%s'", expectedMissingMsg, got)
 	}

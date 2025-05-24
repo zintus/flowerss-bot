@@ -12,7 +12,8 @@
       "Bash(git push:*)",
       "Bash(golangci-lint run:*)",
       "Bash(make:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(sed:*)"
     ],
     "deny": []
   }
