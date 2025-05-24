@@ -7,9 +7,12 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/mmcdole/gofeed"                        // For gofeed.Item
 	"github.com/zintus/flowerss-bot/internal/model"
 	"github.com/zintus/flowerss-bot/internal/storage" // Required for storage.ErrRecordNotFound
+	"github.com/zintus/flowerss-bot/internal/feed"    // For feed.FeedParser
+	"github.com/zintus/flowerss-bot/pkg/client"       // For client.HttpClient
+	// core import is not needed here if types are fully qualified or core itself isn't used directly
 
 	tb "gopkg.in/telebot.v3"
 )
@@ -38,8 +41,8 @@ func (m *mockCore) CreateUser(ctx context.Context, user *model.User) error {
 // Implement other core.Core methods with panic for completeness if they were part of an interface.
 // For this specific middleware, only GetUser and CreateUser are relevant.
 // Dummy implementations for other methods if core.Core was a broader interface.
-func (m *mockCore) FeedParser() *core.FeedParser                                     { panic("not implemented") }
-func (m *mockCore) HttpClient() *core.HttpClient                                     { panic("not implemented") }
+func (m *mockCore) FeedParser() *feed.FeedParser                                     { panic("not implemented") } // Changed core.FeedParser to feed.FeedParser
+func (m *mockCore) HttpClient() *client.HttpClient                                   { panic("not implemented") } // Changed core.HttpClient to client.HttpClient
 func (m *mockCore) Init() error                                                        { panic("not implemented") }
 func (m *mockCore) GetUserSubscribedSources(ctx context.Context, userID int64) ([]*model.Source, error) { panic("not implemented") }
 func (m *mockCore) AddSubscription(ctx context.Context, userID int64, sourceID uint) error { panic("not implemented") }
@@ -48,7 +51,7 @@ func (m *mockCore) GetSourceByURL(ctx context.Context, sourceURL string) (*model
 func (m *mockCore) GetSource(ctx context.Context, id uint) (*model.Source, error)      { panic("not implemented") }
 func (m *mockCore) GetSources(ctx context.Context) ([]*model.Source, error)            { panic("not implemented") }
 func (m *mockCore) CreateSource(ctx context.Context, sourceURL string) (*model.Source, error) { panic("not implemented") }
-func (m *mockCore) AddSourceContents(ctx context.Context, source *model.Source, items []*core.FeedItem) ([]*model.Content, error) { panic("not implemented") }
+func (m *mockCore) AddSourceContents(ctx context.Context, source *model.Source, items []*gofeed.Item) ([]*model.Content, error) { panic("not implemented") } // Changed core.FeedItem to gofeed.Item
 func (m *mockCore) UnsubscribeAllSource(ctx context.Context, userID int64) error      { panic("not implemented") }
 func (m *mockCore) GetSubscription(ctx context.Context, userID int64, sourceID uint) (*model.Subscribe, error) { panic("not implemented") }
 func (m *mockCore) SetSubscriptionTag(ctx context.Context, userID int64, sourceID uint, tags []string) error { panic("not implemented") }
@@ -285,7 +288,7 @@ func (m *mockTelebotContext) Delete() error                                     
 func (m *mockTelebotContext) DeleteAfter(d int) error                                    { return nil }
 func (m *mockTelebotContext) Respond(resp ...*tb.CallbackResponse) error                 { return nil }
 func (m *mockTelebotContext) Answer(resp *tb.QueryResponse) error                        { return nil }
-func (m *mockTelebotContext) NativeType() tb.UpdateType                                  { return tb.UpdateType("") }
+func (m *mockTelebotContext) NativeType() string                                         { return "" } // Changed tb.UpdateType to string
 func (m *mockTelebotContext) Chat() *tb.Chat                                             { if m.sender != nil { return &tb.Chat{ID: m.sender.ID}} ; return nil } // Simplified
 func (m *mockTelebotContext) User() *tb.User                                             { return m.sender }
 func (m *mockTelebotContext) Recipient() tb.Recipient                                    { if m.sender != nil { return m.sender } ; return nil }
@@ -295,7 +298,7 @@ func (m *mockTelebotContext) Data() string                                      
 func (m *mockTelebotContext) Args() []string                                             { return nil }
 func (m *mockTelebotContext) TopicByID(id int) string                                    { return "" }
 func (m *mockTelebotContext) Update() tb.Update                                          { return tb.Update{} }
-func (m *mockTelebotContext) Session() *tb.Session                                       { return nil }
+func (m *mockTelebotContext) Session() interface{}                                       { return nil } // Changed *tb.Session to interface{}
 func (m *mockTelebotContext) Accept(opts ...interface{}) error                           { return nil }
 func (m *mockTelebotContext) Promote(pr tb.Rights, opts ...interface{}) error            { return nil }
 func (m *mockTelebotContext) Restrict(p tb.Rights, opts ...interface{}) error            { return nil }
@@ -348,25 +351,26 @@ func (m *mockTelebotContext) TopicIconColor() int                               
 func (m *mockTelebotContext) TopicIconEmojiID() string                                   { return "" }
 func (m *mockTelebotContext) MessageEffectID() string                                    { return "" }
 func (m *mockTelebotContext) WebAppData() *tb.WebAppData                                 { return nil }
-func (m *mockTelebotContext) BoostAdded() *tb.ChatBoostAdded                             { return nil }
-func (m *mockTelebotContext) Reaction() *tb.MessageReaction                              { return nil }
-func (m *mockTelebotContext) Reactions() *tb.MessageReactions                            { return nil }
-func (m *mockTelebotContext) BusinessConnectionID() string                               { return "" }
-func (m *mockTelebotContext) BusinessConnection() *tb.BusinessConnection                 { return nil }
-func (m *mockTelebotContext) BusinessMessage() *tb.Message                               { return nil }
-func (m *mockTelebotContext) EditedBusinessMessage() *tb.Message                         { return nil }
-func (m *mockTelebotContext) DeletedBusinessMessages() *tb.BusinessMessagesDeleted       { return nil }
-func (m *mockTelebotContext) PaidMedia() *tb.PaidMediaInfo                               { return nil }
-func (m *mockTelebotContext) ReplyToStory() *tb.Story                                    { return nil }
-func (m *mockTelebotContext) Story() *tb.Story                                           { return nil }
-func (m *mockTelebotContext) BoostRemoved() *tb.ChatBoostRemoved                         { return nil }
-func (m *mockTelebotContext) BoostUpdated() *tb.ChatBoostUpdated                         { return nil }
-func (m *mockTelebotContext) GiveawayCreated() *tb.GiveawayCreated                       { return nil }
-func (m *mockTelebotContext) Giveaway() *tb.Giveaway                                     { return nil }
-func (m *mockTelebotContext) GiveawayCompleted() *tb.GiveawayCompleted                   { return nil }
-func (m *mockTelebotContext) GiveawayWinners() *tb.GiveawayWinners                       { return nil }
-func (m *mockTelebotContext) MessageOrigin() tb.MessageOrigin                            { return nil }
-func (m *mockTelebotContext) ForwardOrigin() tb.MessageOrigin                            { return nil }
+// Removed methods returning types not in v3.1.0:
+// BoostAdded() *tb.ChatBoostAdded
+// Reaction() *tb.MessageReaction
+// Reactions() *tb.MessageReactions
+// BusinessConnectionID() string
+// BusinessConnection() *tb.BusinessConnection
+// BusinessMessage() *tb.Message
+// EditedBusinessMessage() *tb.Message
+// DeletedBusinessMessages() *tb.BusinessMessagesDeleted
+// PaidMedia() *tb.PaidMediaInfo
+// ReplyToStory() *tb.Story
+// Story() *tb.Story
+// BoostRemoved() *tb.ChatBoostRemoved
+// BoostUpdated() *tb.ChatBoostUpdated
+// GiveawayCreated() *tb.GiveawayCreated
+// Giveaway() *tb.Giveaway
+// GiveawayCompleted() *tb.GiveawayCompleted
+// GiveawayWinners() *tb.GiveawayWinners
+// MessageOrigin() tb.MessageOrigin
+// ForwardOrigin() tb.MessageOrigin
 func (m *mockTelebotContext) IsForwarded() bool                                          { return false }
 func (m *mockTelebotContext) IsReplyToReply() bool                                       { return false }
 func (m *mockTelebotContext) SenderChat() *tb.Chat                                       { return nil }
@@ -391,20 +395,22 @@ func (m *mockTelebotContext) IsVideoChatStarted() bool                          
 func (m *mockTelebotContext) IsVideoChatEnded() bool                                     { return false }
 func (m *mockTelebotContext) IsVideoChatParticipantsInvited() bool                       { return false }
 func (m *mockTelebotContext) IsWebAppData() bool                                         { return false }
-func (m *mockTelebotContext) IsBoostAdded() bool                                         { return false }
-func (m *mockTelebotContext) IsBoostRemoved() bool                                       { return false }
-func (m *mockTelebotContext) IsBoostUpdated() bool                                       { return false }
+// Removed Is... methods related to types not in v3.1.0
+// IsBoostAdded() bool
+// IsBoostRemoved() bool
+// IsBoostUpdated() bool
+// IsMessageReaction() bool
+// IsMessageReactions() bool
+// IsBusinessConnection() bool
+// IsBusinessMessage() bool
+// IsEditedBusinessMessage() bool
+// IsDeletedBusinessMessages() bool
+// IsPaidMedia() bool
+// IsReplyToStory() bool
+// IsStory() bool
 func (m *mockTelebotContext) IsUsersShared() bool                                        { return false }
 func (m *mockTelebotContext) IsChatShared() bool                                         { return false }
-func (m *mockTelebotContext) IsMessageReaction() bool                                    { return false }
-func (m *mockTelebotContext) IsMessageReactions() bool                                   { return false }
-func (m *mockTelebotContext) IsBusinessConnection() bool                                 { return false }
-func (m *mockTelebotContext) IsBusinessMessage() bool                                    { return false }
-func (m *mockTelebotContext) IsEditedBusinessMessage() bool                              { return false }
-func (m *mockTelebotContext) IsDeletedBusinessMessages() bool                            { return false }
-func (m *mockTelebotContext) IsPaidMedia() bool                                          { return false }
-func (m *mockTelebotContext) IsReplyToStory() bool                                       { return false }
-func (m *mockTelebotContext) IsStory() bool                                              { return false }
+
 
 // This is a simplified mock. A full tb.Context mock is extensive.
 // The test cases will primarily rely on Sender(), Get(), and Set().

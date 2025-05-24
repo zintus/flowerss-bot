@@ -47,25 +47,29 @@ func LoadTranslations(localeDir string) error {
 // Localize returns the localized string for the given key and language.
 // It falls back to the default language if the key is not found in the given language.
 func Localize(langCode string, key string, args ...interface{}) string {
-	langMap, ok := translations[langCode]
-	if !ok {
-		langMap = translations[defaultLanguage]
-		if !ok {
-			return fmt.Sprintf("[translation missing for lang: %s, key: %s]", langCode, key)
+	langMap, langOk := translations[langCode] // Use a different variable name for this 'ok'
+	if !langOk { // If the specific language code is not found
+		langMap = translations[defaultLanguage] // Fallback to default language map
+		if langMap == nil { // Check if the default language map itself is missing (e.g., "en.json" not loaded)
+			// Return a message indicating the original langCode and key, and that default was also not found.
+			return fmt.Sprintf("[translation missing for lang: %s, key: %s (default lang '%s' not loaded/found)]", langCode, key, defaultLanguage)
 		}
 	}
 
-	formatString, ok := langMap[key]
-	if !ok {
-		// Try fallback to default language if not already using it
-		if langCode != defaultLanguage {
-			langMap = translations[defaultLanguage]
-			if langMap != nil {
-				formatString, ok = langMap[key]
-			}
+	formatString, keyOk := langMap[key] // keyOk refers to key's presence in the current langMap
+	if !keyOk { // If key is not in the current langMap (which might be the original or default)
+		// If we weren't already using the default language, and the key was not found,
+		// it means we tried the specific lang, it failed (either lang or key), and now we are effectively checking the default.
+		// If langCode was already defaultLanguage, this block won't be entered, correctly.
+		if langCode != defaultLanguage && translations[defaultLanguage] != nil {
+			// Explicitly try fetching from default language map if we haven't already.
+			// This handles the case where langCode existed, but the key was missing,
+			// and we need to check the default language for the key.
+			formatString, keyOk = translations[defaultLanguage][key]
 		}
-		if !ok {
-			return fmt.Sprintf("[translation missing for key: %s]", key)
+
+		if !keyOk { // If key is still not found (even after trying default if applicable)
+			return fmt.Sprintf("[translation missing for key: %s (in lang '%s' and default '%s')]", key, langCode, defaultLanguage)
 		}
 	}
 

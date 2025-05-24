@@ -169,11 +169,20 @@ func TestLocalize(t *testing.T) {
 	if Localize("yy", "hello") != "Hello" { // Fallback to en for non-existent language "yy"
 		t.Errorf("Expected 'Hello' (fallback for yy), got '%s'", Localize("yy", "hello"))
 	}
-	if Localize("xx", "non_existent_key") != "[translation missing for key: non_existent_key]" {
-		t.Errorf("Expected missing key placeholder, got '%s'", Localize("xx", "non_existent_key"))
+	// For a key missing in "xx" but present in "en" (default)
+	if Localize("xx", "only_in_en") != "Only English" { // Fallback to en
+		t.Errorf("Expected 'Only English' (fallback for xx), got '%s'", Localize("xx", "only_in_en"))
 	}
-	if Localize("yy", "non_existent_key_in_yy") != "[translation missing for key: non_existent_key_in_yy]" { // Also tests fallback to default which also doesn't have it
-		t.Errorf("Expected missing key placeholder, got '%s'", Localize("yy", "non_existent_key_in_yy"))
+	// For a key missing in "xx" AND also missing in "en" (default)
+	// The new error message format is "[translation missing for key: %s (in lang '%s' and default '%s')]"
+	expectedMissingKeyInXxAndEn := "[translation missing for key: non_existent_key (in lang 'xx' and default 'en')]"
+	if Localize("xx", "non_existent_key") != expectedMissingKeyInXxAndEn {
+		t.Errorf("Expected '%s', got '%s'", expectedMissingKeyInXxAndEn, Localize("xx", "non_existent_key"))
+	}
+	// For a key missing in "yy" (non-existent lang) AND also missing in "en" (default)
+	expectedMissingKeyInYyAndEn := "[translation missing for key: non_existent_key_in_yy (in lang 'yy' and default 'en')]"
+	if Localize("yy", "non_existent_key_in_yy") != expectedMissingKeyInYyAndEn {
+		t.Errorf("Expected '%s', got '%s'", expectedMissingKeyInYyAndEn, Localize("yy", "non_existent_key_in_yy"))
 	}
 	if Localize("en", "world_format", "Tester") != "World Tester" {
 		t.Errorf("Expected 'World Tester', got '%s'", Localize("en", "world_format", "Tester"))
