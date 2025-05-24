@@ -4,16 +4,13 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
 	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
-const (
-	SetSubscriptionTagButtonUnique = "set_set_sub_tag_btn"
-	// Use util.DefaultLanguage instead of local declaration
-)
+// SetSubscriptionTagButtonUnique is defined in common.go
+// Use util.DefaultLanguage instead of local declaration
 
 type SetSubscriptionTagButton struct {
 	bot *tb.Bot

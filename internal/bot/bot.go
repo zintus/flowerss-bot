@@ -2,7 +2,6 @@ package bot
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -115,7 +114,7 @@ func (b *Bot) Run() error {
 	if err := b.registerCommands(b.core); err != nil {
 		return err
 	}
-	log.Infof("bot start %s", config.AppVersionInfo())
+	log.Infof("bot start %s", config.AppVersionInfo("en"))
 	b.tb.Start()
 	return nil
 }

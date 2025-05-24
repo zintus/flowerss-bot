@@ -13,25 +13,10 @@ import (
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n"
-	"github.com/zintus/flowerss-bot/internal/model"
 )
 
-const (
-	SubscriptionSwitchButtonUnique = "set_toggle_update_btn"
-)
-
-// Import from set.go
-const feedSettingTmpl = `
-{{ .L "set_tmpl_header_settings" }}
-{{ .L "set_tmpl_label_id" }} {{ .source.ID }}
-{{ .L "set_tmpl_label_title" }} {{ .source.Title }}
-{{ .L "set_tmpl_label_link" }} {{ .source.Link }}
-{{ .L "set_tmpl_label_updates" }} {{if ge .source.ErrorCount .Count }}{{ .L "set_tmpl_status_paused" }}{{else}}{{ .L "set_tmpl_status_active" }}{{end}}
-{{ .L "set_tmpl_label_interval" }} {{ .sub.Interval }} {{ .L "set_tmpl_unit_minutes" }}
-{{ .L "set_tmpl_label_notifications" }} {{if eq .sub.EnableNotification 0}}{{ .L "set_tmpl_status_off" }}{{else}}{{ .L "set_tmpl_status_on" }}{{end}}
-{{ .L "set_tmpl_label_telegraph" }} {{if eq .sub.EnableTelegraph 0}}{{ .L "set_tmpl_status_off" }}{{else}}{{ .L "set_tmpl_status_on" }}{{end}}
-{{ .L "set_tmpl_label_tags" }} {{if .sub.Tag}}{{ .sub.Tag }}{{else}}{{ .L "set_tmpl_status_none" }}{{end}}
-`
+// SubscriptionSwitchButtonUnique is defined in common.go
+// feedSettingTmpl is defined in common.go
 
 type SubscriptionSwitchButton struct {
 	bot  *tb.Bot
@@ -87,13 +72,9 @@ func (b *SubscriptionSwitchButton) Handle(ctx tb.Context) error {
 
 	source, _ := b.core.GetSource(context.Background(), sourceID) // Error ignored in original
 
-	funcMap := template.FuncMap{
-		"L": func(key string, args ...interface{}) string {
-			return i18n.Localize(langCode, key, args...)
-		},
-	}
-	t := template.New("setting template").Funcs(funcMap)
-	_, err = t.Parse(feedSettingTmpl)
+	// Use common getTemplateFuncMap and feedSettingTmpl
+	t := template.New("setting template").Funcs(getTemplateFuncMap(langCode))
+	_, err = t.Parse(feedSettingTmpl) // feedSettingTmpl is now from common.go
 	if err != nil {
 		// Log error, return generic message
 		return ctx.Respond(&tb.CallbackResponse{Text: i18n.Localize(langCode, "notify_switch_err_generic")})
@@ -108,71 +89,15 @@ func (b *SubscriptionSwitchButton) Handle(ctx tb.Context) error {
 
 	_ = ctx.Respond(&tb.CallbackResponse{Text: i18n.Localize(langCode, "subswitch_success_updated")})
 	
-	// Use the genFeedSetBtn from set.go
+	// Use genFeedSetBtn from common.go
 	return ctx.Edit(
 		text.String(),
 		&tb.SendOptions{ParseMode: tb.ModeHTML},
-		&tb.ReplyMarkup{InlineKeyboard: genFeedSetBtnFromSet(c, sub, source, langCode)},
+		&tb.ReplyMarkup{InlineKeyboard: genFeedSetBtn(c, sub, source, langCode)},
 	)
 }
 
-// Wrapper for the genFeedSetBtn function from set.go
-func genFeedSetBtnFromSet(c *tb.Callback, sub *model.Subscribe, source *model.Source, langCode string) [][]tb.InlineButton {
-	// Create buttons with the same constants as in set.go
-	setSubTagKey := tb.InlineButton{
-		Unique: "set_set_sub_tag_btn", // SetSubscriptionTagButtonUnique
-		Text:   i18n.Localize(langCode, "set_btn_tag_settings"),
-		Data:   c.Data,
-	}
-
-	var notificationTextKey string
-	if sub.EnableNotification == 1 {
-		notificationTextKey = "set_btn_disable_notifications"
-	} else {
-		notificationTextKey = "set_btn_enable_notifications"
-	}
-	toggleNoticeKey := tb.InlineButton{
-		Unique: "set_toggle_notice_btn", // NotificationSwitchButtonUnique
-		Text:   i18n.Localize(langCode, notificationTextKey),
-		Data:   c.Data,
-	}
-
-	var telegraphTextKey string
-	if sub.EnableTelegraph == 1 {
-		telegraphTextKey = "set_btn_disable_telegraph"
-	} else {
-		telegraphTextKey = "set_btn_enable_telegraph"
-	}
-	toggleTelegraphKey := tb.InlineButton{
-		Unique: "set_toggle_telegraph_btn", // TelegraphSwitchButtonUnique
-		Text:   i18n.Localize(langCode, telegraphTextKey),
-		Data:   c.Data,
-	}
-
-	var updatesTextKey string
-	if source.ErrorCount >= config.ErrorThreshold {
-		updatesTextKey = "set_btn_resume_updates"
-	} else {
-		updatesTextKey = "set_btn_pause_updates"
-	}
-	toggleEnabledKey := tb.InlineButton{
-		Unique: SubscriptionSwitchButtonUnique,
-		Text:   i18n.Localize(langCode, updatesTextKey),
-		Data:   c.Data,
-	}
-
-	feedSettingKeys := [][]tb.InlineButton{
-		{
-			toggleEnabledKey,
-			toggleNoticeKey,
-		},
-		{
-			toggleTelegraphKey,
-			setSubTagKey,
-		},
-	}
-	return feedSettingKeys
-}
+// genFeedSetBtnFromSet is removed, using genFeedSetBtn from common.go
 
 func (b *SubscriptionSwitchButton) Middlewares() []tb.MiddlewareFunc {
 	return nil

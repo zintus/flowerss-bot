@@ -8,7 +8,6 @@ import (
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/message"
-	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
 	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
