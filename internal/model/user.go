@@ -2,6 +2,7 @@ package model
 
 // User subscriber
 type User struct {
-	ID int64 `gorm:"primary_key"`
+	ID           int64 `gorm:"primary_key"`
+	LanguageCode string `gorm:"size:10;default:'en'"` // Added field
 	EditTime
 }

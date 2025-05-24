@@ -3,7 +3,9 @@ package handler
 import (
 	tb "gopkg.in/telebot.v3"
 
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/config"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
 type Version struct {
@@ -18,11 +20,12 @@ func (c *Version) Command() string {
 }
 
 func (c *Version) Description() string {
-	return "Bot version information"
+	return i18n.Localize(util.DefaultLanguage, "version_command_desc")
 }
 
 func (c *Version) Handle(ctx tb.Context) error {
-	return ctx.Send(config.AppVersionInfo())
+	langCode := util.GetLangCode(ctx)
+	return ctx.Send(config.AppVersionInfo(langCode))
 }
 
 func (c *Version) Middlewares() []tb.MiddlewareFunc {

@@ -25,7 +25,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.54.2
-          args: --timeout=10m --issues-exit-code=0
+          args: --timeout=10m # Removed issues-exit-code=0
 
   build:
     name: Build
@@ -45,10 +45,10 @@ jobs:
         cache: true
 
     - name: Get dependencies
-      run: go mod download || true
+      run: go mod download
 
     - name: Verify dependencies
-      run: go mod verify || true
+      run: go mod verify
 
     - name: Build
       run: |
@@ -59,19 +59,19 @@ jobs:
         "-s -w -buildid= \
         -X 'github.com/indes/flowerss-bot/internal/config.commit=${COMMIT}' \
         -X 'github.com/indes/flowerss-bot/internal/config.date=${DATE}' \
-        -X 'github.com/indes/flowerss-bot/internal/config.version=${VERSION}'" -o flowerss-bot || true
+        -X 'github.com/indes/flowerss-bot/internal/config.version=${VERSION}'" -o flowerss-bot
 
     - name: Run go vet
-      run: go vet ./... || true
+      run: go vet ./...
 
     - name: Run tests
-      run: go test -race -v ./... || true
+      run: go test -race -v ./...
       
     - name: Verify binary
       run: |
         # Check if binary runs with version flag
         if [ -f flowerss-bot ]; then
-          ./flowerss-bot -v || true
+          ./flowerss-bot -v
         fi
         
     - name: Upload binary artifact

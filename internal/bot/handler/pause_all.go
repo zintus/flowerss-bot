@@ -2,12 +2,13 @@ package handler
 
 import (
 	"context"
-	"fmt"
 
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
 type PauseAll struct {
@@ -23,10 +24,11 @@ func (p *PauseAll) Command() string {
 }
 
 func (p *PauseAll) Description() string {
-	return "停止抓取所有订阅更新"
+	return i18n.Localize(util.DefaultLanguage, "pauseall_command_desc")
 }
 
 func (p *PauseAll) Handle(ctx tb.Context) error {
+	langCode := util.GetLangCode(ctx)
 	subscribeUserID := ctx.Message().Chat.ID
 	var channelChat *tb.Chat
 	v := ctx.Get(session.StoreKeyMentionChat.String())
@@ -40,22 +42,24 @@ func (p *PauseAll) Handle(ctx tb.Context) error {
 
 	source, err := p.core.GetUserSubscribedSources(context.Background(), subscribeUserID)
 	if err != nil {
-		return ctx.Reply("系统错误")
+		return ctx.Reply(i18n.Localize(langCode, "err_system_error"))
 	}
 
 	for _, s := range source {
 		err := p.core.DisableSourceUpdate(context.Background(), s.ID)
 		if err != nil {
-			return ctx.Reply("暂停失败")
+			return ctx.Reply(i18n.Localize(langCode, "pauseall_err_pause_failed"))
 		}
 	}
 
-	reply := "订阅已全部暂停"
+	var replyText string
 	if channelChat != nil {
-		reply = fmt.Sprintf("频道 [%s](https://t.me/%s) 订阅已全部暂停", channelChat.Title, channelChat.Username)
+		replyText = i18n.Localize(langCode, "pauseall_success_channel", channelChat.Title, channelChat.Username)
+	} else {
+		replyText = i18n.Localize(langCode, "pauseall_success_user")
 	}
 	return ctx.Send(
-		reply, &tb.SendOptions{
+		replyText, &tb.SendOptions{
 			DisableWebPagePreview: true,
 			ParseMode:             tb.ModeMarkdown,
 		},

@@ -3,14 +3,19 @@ package handler
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"go.uber.org/zap"
 	tb "gopkg.in/telebot.v3"
 
 	"github.com/zintus/flowerss-bot/internal/bot/message"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
+)
+
+var (
+	ErrGetChannelInfoFailedForPerms = errors.New("failed to get channel info for permissions")
 )
 
 type AddSubscription struct {
@@ -28,33 +33,33 @@ func (a *AddSubscription) Command() string {
 }
 
 func (a *AddSubscription) Description() string {
-	return "订阅RSS源"
+	return i18n.Localize(util.DefaultLanguage, "addsub_command_desc")
 }
 
 func (a *AddSubscription) addSubscriptionForChat(ctx tb.Context) error {
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
-		// 未附带链接，使用
-		hint := fmt.Sprintf("请在命令后带上需要订阅的RSS URL，例如：%s https://justinpot.com/feed/", a.Command())
+		hint := i18n.Localize(langCode, "addsub_hint_no_url_chat", a.Command())
 		return ctx.Send(hint, &tb.SendOptions{ReplyTo: ctx.Message()})
 	}
 
 	source, err := a.core.CreateSource(context.Background(), sourceURL)
 	if err != nil {
-		return ctx.Reply(fmt.Sprintf("%s，订阅失败", err))
+		return ctx.Reply(i18n.Localize(langCode, "addsub_err_create_source_failed_format", err.Error()))
 	}
 
 	log.Infof("%d subscribe [%d]%s %s", ctx.Chat().ID, source.ID, source.Title, source.Link)
 	if err := a.core.AddSubscription(context.Background(), ctx.Chat().ID, source.ID); err != nil {
-		if err == core.ErrSubscriptionExist {
-			return ctx.Reply("已订阅该源，请勿重复订阅")
+		if errors.Is(err, core.ErrSubscriptionExist) {
+			return ctx.Reply(i18n.Localize(langCode, "addsub_err_already_subscribed"))
 		}
 		log.Errorf("add subscription user %d source %d failed %v", ctx.Chat().ID, source.ID, err)
-		return ctx.Reply("订阅失败")
+		return ctx.Reply(i18n.Localize(langCode, "addsub_err_generic_subscribe_failed"))
 	}
 
 	return ctx.Reply(
-		fmt.Sprintf("[[%d]][%s](%s) 订阅成功", source.ID, source.Title, source.Link),
+		i18n.Localize(langCode, "addsub_success_subscribed_format", source.ID, source.Title, source.Link),
 		&tb.SendOptions{
 			DisableWebPagePreview: true,
 			ParseMode:             tb.ModeMarkdown,
@@ -68,7 +73,7 @@ func (a *AddSubscription) hasChannelPrivilege(bot *tb.Bot, channelChat *tb.Chat,
 	adminList, err := bot.AdminsOf(channelChat)
 	if err != nil {
 		zap.S().Error(err)
-		return false, errors.New("获取频道信息失败")
+		return false, ErrGetChannelInfoFailedForPerms
 	}
 
 	senderIsAdmin := false
@@ -86,44 +91,48 @@ func (a *AddSubscription) hasChannelPrivilege(bot *tb.Bot, channelChat *tb.Chat,
 }
 
 func (a *AddSubscription) addSubscriptionForChannel(ctx tb.Context, channelName string) error {
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
-		return ctx.Send("频道订阅请使用' /sub @ChannelID URL ' 命令")
+		return ctx.Send(i18n.Localize(langCode, "addsub_hint_no_url_channel"))
 	}
 
 	bot := ctx.Bot()
 	channelChat, err := bot.ChatByUsername(channelName)
 	if err != nil {
-		return ctx.Reply("获取频道信息失败")
+		return ctx.Reply(i18n.Localize(langCode, "err_get_channel_info_failed"))
 	}
 	if channelChat.Type != tb.ChatChannel {
-		return ctx.Reply("您或Bot不是频道管理员，无法设置订阅")
+		return ctx.Reply(i18n.Localize(langCode, "addsub_err_not_channel_admin"))
 	}
 
-	hasPrivilege, err := a.hasChannelPrivilege(bot, channelChat, ctx.Sender().ID, bot.Me.ID)
-	if err != nil {
-		return ctx.Reply(err.Error())
+	hasPrivilege, errPriv := a.hasChannelPrivilege(bot, channelChat, ctx.Sender().ID, bot.Me.ID)
+	if errPriv != nil {
+		if errors.Is(errPriv, ErrGetChannelInfoFailedForPerms) {
+			return ctx.Reply(i18n.Localize(langCode, "err_get_channel_info_failed"))
+		}
+		return ctx.Reply(i18n.Localize(langCode, "addsub_err_generic_subscribe_failed"))
 	}
 	if !hasPrivilege {
-		return ctx.Reply("您或Bot不是频道管理员，无法设置订阅")
+		return ctx.Reply(i18n.Localize(langCode, "addsub_err_not_channel_admin"))
 	}
 
 	source, err := a.core.CreateSource(context.Background(), sourceURL)
 	if err != nil {
-		return ctx.Reply(fmt.Sprintf("%s，订阅失败", err))
+		return ctx.Reply(i18n.Localize(langCode, "addsub_err_create_source_failed_format", err.Error()))
 	}
 
 	log.Infof("%d subscribe [%d]%s %s", channelChat.ID, source.ID, source.Title, source.Link)
 	if err := a.core.AddSubscription(context.Background(), channelChat.ID, source.ID); err != nil {
-		if err == core.ErrSubscriptionExist {
-			return ctx.Reply("已订阅该源，请勿重复订阅")
+		if errors.Is(err, core.ErrSubscriptionExist) {
+			return ctx.Reply(i18n.Localize(langCode, "addsub_err_already_subscribed"))
 		}
 		log.Errorf("add subscription user %d source %d failed %v", channelChat.ID, source.ID, err)
-		return ctx.Reply("订阅失败")
+		return ctx.Reply(i18n.Localize(langCode, "addsub_err_generic_subscribe_failed"))
 	}
 
 	return ctx.Reply(
-		fmt.Sprintf("[[%d]] [%s](%s) 订阅成功", source.ID, source.Title, source.Link),
+		i18n.Localize(langCode, "addsub_success_subscribed_format", source.ID, source.Title, source.Link),
 		&tb.SendOptions{
 			DisableWebPagePreview: true,
 			ParseMode:             tb.ModeMarkdown,

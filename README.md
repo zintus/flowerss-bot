@@ -38,6 +38,7 @@ Available commands:
 /export Export OPML file
 /unsuball Unsubscribe from all feeds
 /help Help
+/language Change or view language settings.
 ```
 
 For detailed usage instructions, please refer to the project's [documentation](https://flowerss-bot.now.sh/#/usage).

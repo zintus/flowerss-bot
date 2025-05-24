@@ -9,8 +9,12 @@ import (
 
 	"github.com/zintus/flowerss-bot/internal/bot/message"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 )
+
+// Use util.DefaultLanguage instead of local declaration
 
 type SetFeedTag struct {
 	core *core.Core
@@ -20,12 +24,14 @@ func NewSetFeedTag(core *core.Core) *SetFeedTag {
 	return &SetFeedTag{core: core}
 }
 
+// Use util.GetLangCode instead of local implementation
+
 func (s *SetFeedTag) Command() string {
 	return "/setfeedtag"
 }
 
 func (s *SetFeedTag) Description() string {
-	return "Set RSS subscription tags"
+	return i18n.Localize(util.DefaultLanguage, "setfeedtag_command_desc")
 }
 
 func (s *SetFeedTag) getMessageWithoutMention(ctx tb.Context) string {
@@ -37,10 +43,12 @@ func (s *SetFeedTag) getMessageWithoutMention(ctx tb.Context) string {
 }
 
 func (s *SetFeedTag) Handle(ctx tb.Context) error {
+	langCode := util.GetLangCode(ctx)
 	msg := s.getMessageWithoutMention(ctx)
 	args := strings.Split(strings.TrimSpace(msg), " ")
-	if len(args) < 1 {
-		return ctx.Reply("/setfeedtag [sourceID] [tag1] [tag2] Set subscription tags (max 3 tags, separated by spaces)")
+	// Check if args[0] is empty, which means only command was sent or only mention
+	if len(args) < 1 || args[0] == "" {
+		return ctx.Reply(i18n.Localize(langCode, "setfeedtag_usage_hint"))
 	}
 
 	// 截短参数
@@ -56,9 +64,9 @@ func (s *SetFeedTag) Handle(ctx tb.Context) error {
 	}
 
 	if err := s.core.SetSubscriptionTag(context.Background(), subscribeUserID, sourceID, args[1:]); err != nil {
-		return ctx.Reply("Failed to set subscription tags!")
+		return ctx.Reply(i18n.Localize(langCode, "setfeedtag_err_set_failed"))
 	}
-	return ctx.Reply("Subscription tags set successfully!")
+	return ctx.Reply(i18n.Localize(langCode, "setfeedtag_success_set"))
 }
 
 func (s *SetFeedTag) Middlewares() []tb.MiddlewareFunc {

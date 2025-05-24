@@ -16,7 +16,15 @@
 /export 导出 OPML 文件
 /unsuball 取消所有订阅
 /help 帮助
+/language Change or view language settings.
 ```
+
+### Language Settings
+
+The bot supports multiple languages for responses and messages.
+
+-   `/language`: Type this command to see your current language setting and a list of available languages.
+-   `/language [code]`: To change your language, type `/language` followed by a language code (e.g., `/language en` to switch to English). You can find the available codes by typing `/language` first.
 
 ### Channel 订阅使用方法
 

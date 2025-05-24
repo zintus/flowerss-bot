@@ -38,7 +38,7 @@ func init() {
 
 	if *printVersionFlag {
 		// print version
-		fmt.Printf(AppVersionInfo())
+		fmt.Printf(AppVersionInfo("en"))
 		os.Exit(0)
 	}
 
@@ -150,7 +150,8 @@ func init() {
 	}
 }
 
-func (t TplData) Render(mode tb.ParseMode) (string, error) {
+// RenderLegacy is the old render method kept for backward compatibility
+func (t TplData) RenderLegacy(mode tb.ParseMode) (string, error) {
 	var buf []byte
 	wb := bytes.NewBuffer(buf)
 
@@ -184,38 +185,46 @@ func (t TplData) replaceHTMLTags(s string) string {
 
 func validateTPL() {
 	testData := []TplData{
-		TplData{
-			"RSS 源标识 - 无预览无telegraph的消息",
-			"这是标题",
-			"https://www.github.com/",
-			"",
-			"",
-			"",
-			false,
+		{
+			SourceTitle:     "RSS 源标识 - 无预览无telegraph的消息",
+			ContentTitle:    "这是标题",
+			RawLink:         "https://www.github.com/",
+			PreviewText:     "",
+			TelegraphURL:    "",
+			Tags:            "",
+			EnableTelegraph: false,
+			LangCode:        "en",
 		},
-		TplData{
-			"RSS源标识 - 有预览无telegraph的消息",
-			"这是标题",
-			"https://www.github.com/",
-			"这里是很长很长很长的消息预览字数补丁紫薯补丁紫薯补丁紫薯补丁紫薯补丁[1](123)",
-			"",
-			"#标签",
-			false,
+		{
+			SourceTitle:     "RSS源标识 - 有预览无telegraph的消息",
+			ContentTitle:    "这是标题",
+			RawLink:         "https://www.github.com/",
+			PreviewText:     "这里是很长很长很长的消息预览字数补丁紫薯补丁紫薯补丁紫薯补丁紫薯补丁[1](123)",
+			TelegraphURL:    "",
+			Tags:            "#标签",
+			EnableTelegraph: false,
+			LangCode:        "en",
 		},
-		TplData{
-			"RSS源标识 - 有预览有telegraph的消息",
-			"这是标题",
-			"https://www.github.com/",
-			"这里是很长很长很长的消息预览字数补丁紫薯补丁紫薯补丁紫薯补丁紫薯补丁",
-			"https://telegra.ph/markdown-07-07",
-			"#标签1 #标签2",
-			true,
+		{
+			SourceTitle:     "RSS源标识 - 有预览有telegraph的消息",
+			ContentTitle:    "这是标题",
+			RawLink:         "https://www.github.com/",
+			PreviewText:     "这里是很长很长很长的消息预览字数补丁紫薯补丁紫薯补丁紫薯补丁紫薯补丁",
+			TelegraphURL:    "https://telegra.ph/markdown-07-07",
+			Tags:            "#标签1 #标签2",
+			EnableTelegraph: true,
+			LangCode:        "en",
 		},
 	}
 
 	for _, d := range testData {
 		fmt.Println("\n////////////////////////////////////////////")
-		fmt.Println(d.Render(MessageMode))
+		result, err := d.Render(MessageMode)
+		if err != nil {
+			fmt.Printf("Error rendering template: %v\n", err)
+			continue
+		}
+		fmt.Println(result)
 	}
 	fmt.Println("\n////////////////////////////////////////////")
 }

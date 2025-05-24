@@ -116,6 +116,20 @@ func (mr *MockUserMockRecorder) Init(ctx interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Init", reflect.TypeOf((*MockUser)(nil).Init), ctx)
 }
 
+// SetUserLanguage mocks base method.
+func (m *MockUser) SetUserLanguage(ctx context.Context, userID int64, langCode string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetUserLanguage", ctx, userID, langCode)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SetUserLanguage indicates an expected call of SetUserLanguage.
+func (mr *MockUserMockRecorder) SetUserLanguage(ctx, userID, langCode interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetUserLanguage", reflect.TypeOf((*MockUser)(nil).SetUserLanguage), ctx, userID, langCode)
+}
+
 // MockSource is a mock of Source interface.
 type MockSource struct {
 	ctrl     *gomock.Controller

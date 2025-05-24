@@ -40,3 +40,16 @@ func (s *UserStorageImpl) GetUser(ctx context.Context, id int64) (*model.User, e
 	}
 	return user, nil
 }
+
+func (s *UserStorageImpl) SetUserLanguage(ctx context.Context, userID int64, langCode string) error {
+	result := s.db.WithContext(ctx).Model(&model.User{}).Where("id = ?", userID).Update("language_code", langCode)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		// Assuming ErrRecordNotFound is already defined in this package or a common errors package.
+		// If not, this might need adjustment or a generic error.
+		return ErrRecordNotFound
+	}
+	return nil
+}

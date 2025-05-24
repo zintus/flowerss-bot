@@ -37,7 +37,7 @@ func TestTplData_Render(t1 *testing.T) {
 		{"HTML Mode",
 			fields{SourceTitle: "[aaa] *123*", ContentTitle: "google", RawLink: "https://google.com"},
 			args{telebot.ModeHTML},
-			"<b>[aaa] *123*</b>\n<a href=\"https://google.com\">google</a>",
+			"<b>[aaa] *123*</b>\n<a href=\"https://google.com\">google</a>\n\n",
 			false,
 		},
 	}

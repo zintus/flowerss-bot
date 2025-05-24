@@ -9,7 +9,9 @@ import (
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
 	"github.com/zintus/flowerss-bot/internal/bot/message"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 )
 
@@ -30,27 +32,28 @@ func (s *RemoveSubscription) Command() string {
 }
 
 func (s *RemoveSubscription) Description() string {
-	return "Unsubscribe from RSS feed"
+	return i18n.Localize(util.DefaultLanguage, "unsub_command_desc")
 }
 
 func (s *RemoveSubscription) removeForChannel(ctx tb.Context, channelName string) error {
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
-		return ctx.Send("To unsubscribe a channel, use the command: '/unsub @ChannelID URL'")
+		return ctx.Send(i18n.Localize(langCode, "unsub_hint_channel_usage"))
 	}
 
 	channelChat, err := s.bot.ChatByUsername(channelName)
 	if err != nil {
-		return ctx.Reply("Error getting channel information")
+		return ctx.Reply(i18n.Localize(langCode, "err_get_channel_info_failed"))
 	}
 
 	if !chat.IsChatAdmin(s.bot, channelChat, ctx.Sender().ID) {
-		return ctx.Reply("Only channel administrators can perform this operation")
+		return ctx.Reply(i18n.Localize(langCode, "err_admin_only_operation"))
 	}
 
 	source, err := s.core.GetSourceByURL(context.Background(), sourceURL)
 	if err != nil {
-		return ctx.Reply("Error getting subscription information")
+		return ctx.Reply(i18n.Localize(langCode, "unsub_err_get_sub_info_failed"))
 	}
 
 	log.Infof("%d for [%d]%s unsubscribe %s", ctx.Chat().ID, source.ID, source.Title, source.Link)
@@ -59,27 +62,25 @@ func (s *RemoveSubscription) removeForChannel(ctx tb.Context, channelName string
 			"%d for [%d]%s unsubscribe %s failed, %v",
 			ctx.Chat().ID, source.ID, source.Title, source.Link, err,
 		)
-		return ctx.Reply("Unsubscribe failed")
+		return ctx.Reply(i18n.Localize(langCode, "unsub_err_unsubscribe_failed"))
 	}
 	return ctx.Send(
-		fmt.Sprintf(
-			"Channel [%s](https://t.me/%s) successfully unsubscribed from [%s](%s)",
-			channelChat.Title, channelChat.Username, source.Title, source.Link,
-		),
+		i18n.Localize(langCode, "unsub_success_channel_format", channelChat.Title, channelChat.Username, source.Title, source.Link),
 		&tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown},
 	)
 }
 
 func (s *RemoveSubscription) removeForChat(ctx tb.Context) error {
+	langCode := util.GetLangCode(ctx)
 	sourceURL := message.URLFromMessage(ctx.Message())
 	if sourceURL == "" {
 		sources, err := s.core.GetUserSubscribedSources(context.Background(), ctx.Chat().ID)
 		if err != nil {
-			return ctx.Reply("Failed to get subscription list")
+			return ctx.Reply(i18n.Localize(langCode, "unsub_err_get_sub_list_failed"))
 		}
 
 		if len(sources) == 0 {
-			return ctx.Reply("No subscriptions")
+			return ctx.Reply(i18n.Localize(langCode, "unsub_info_no_subscriptions"))
 		}
 
 		var unsubFeedItemButtons [][]tb.InlineButton
@@ -94,22 +95,22 @@ func (s *RemoveSubscription) removeForChat(ctx tb.Context) error {
 				unsubFeedItemButtons, []tb.InlineButton{
 					{
 						Unique: RemoveSubscriptionItemButtonUnique,
-						Text:   fmt.Sprintf("[%d] %s", source.ID, source.Title),
+						Text:   fmt.Sprintf("[%d] %s", source.ID, source.Title), // Button text can remain as is, or be localized if needed
 						Data:   data,
 					},
 				},
 			)
 		}
-		return ctx.Reply("Please select the feed you want to unsubscribe from", &tb.ReplyMarkup{InlineKeyboard: unsubFeedItemButtons})
+		return ctx.Reply(i18n.Localize(langCode, "unsub_info_select_feed_to_unsub"), &tb.ReplyMarkup{InlineKeyboard: unsubFeedItemButtons})
 	}
 
 	if !chat.IsChatAdmin(s.bot, ctx.Chat(), ctx.Sender().ID) {
-		return ctx.Reply("Only administrators can perform this operation")
+		return ctx.Reply(i18n.Localize(langCode, "err_admin_only_operation"))
 	}
 
 	source, err := s.core.GetSourceByURL(context.Background(), sourceURL)
 	if err != nil {
-		return ctx.Reply("Not subscribed to this RSS feed")
+		return ctx.Reply(i18n.Localize(langCode, "unsub_err_not_subscribed_feed"))
 	}
 
 	log.Infof("%d unsubscribe [%d]%s %s", ctx.Chat().ID, source.ID, source.Title, source.Link)
@@ -118,10 +119,10 @@ func (s *RemoveSubscription) removeForChat(ctx tb.Context) error {
 			"%d for [%d]%s unsubscribe %s failed, %v",
 			ctx.Chat().ID, source.ID, source.Title, source.Link, err,
 		)
-		return ctx.Reply("Unsubscribe failed")
+		return ctx.Reply(i18n.Localize(langCode, "unsub_err_unsubscribe_failed"))
 	}
 	return ctx.Send(
-		fmt.Sprintf("[%s](%s) successfully unsubscribed!", source.Title, source.Link),
+		i18n.Localize(langCode, "unsub_success_user_format", source.Title, source.Link),
 		&tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown},
 	)
 }
@@ -159,28 +160,29 @@ func (r *RemoveSubscriptionItemButton) Description() string {
 }
 
 func (r *RemoveSubscriptionItemButton) Handle(ctx tb.Context) error {
+	langCode := util.GetLangCode(ctx)
 	if ctx.Callback() == nil {
-		return ctx.Edit("Internal error!")
+		return ctx.Edit(i18n.Localize(langCode, "err_internal_error"))
 	}
 
 	attachData, err := session.UnmarshalAttachment(ctx.Callback().Data)
 	if err != nil {
-		return ctx.Edit("Unsubscribe error!")
+		return ctx.Edit(i18n.Localize(langCode, "unsub_err_button_action_failed"))
 	}
 
 	userID := attachData.GetUserId()
 	sourceID := uint(attachData.GetSourceId())
 	source, err := r.core.GetSource(context.Background(), sourceID)
 	if err != nil {
-		return ctx.Edit("Unsubscribe error!")
+		return ctx.Edit(i18n.Localize(langCode, "unsub_err_button_action_failed"))
 	}
 
 	if err := r.core.Unsubscribe(context.Background(), userID, sourceID); err != nil {
 		log.Errorf("unsubscribe data %s failed, %v", ctx.Callback().Data, err)
-		return ctx.Edit("Unsubscribe error!")
+		return ctx.Edit(i18n.Localize(langCode, "unsub_err_button_action_failed"))
 	}
 
-	rtnMsg := fmt.Sprintf("[%d] <a href=\"%s\">%s</a> successfully unsubscribed", sourceID, source.Link, source.Title)
+	rtnMsg := i18n.Localize(langCode, "unsub_success_button_format", sourceID, source.Link, source.Title)
 	return ctx.Edit(rtnMsg, &tb.SendOptions{ParseMode: tb.ModeHTML})
 }
 

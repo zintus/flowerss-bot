@@ -1,6 +1,11 @@
 package handler
 
-import tb "gopkg.in/telebot.v3"
+import (
+	tb "gopkg.in/telebot.v3"
+
+	"github.com/zintus/flowerss-bot/internal/bot/util"
+	"github.com/zintus/flowerss-bot/internal/i18n"
+)
 
 type Import struct {
 }
@@ -14,11 +19,12 @@ func (i *Import) Command() string {
 }
 
 func (i *Import) Description() string {
-	return "Import OPML file"
+	return i18n.Localize(util.DefaultLanguage, "import_command_desc")
 }
 
 func (i *Import) Handle(ctx tb.Context) error {
-	reply := "Please send the OPML file directly. If importing for a channel, include the channel ID when sending, e.g. @telegram"
+	langCode := util.GetLangCode(ctx)
+	reply := i18n.Localize(langCode, "import_handle_instruction")
 	return ctx.Reply(reply)
 }
 
