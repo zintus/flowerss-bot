@@ -7,6 +7,7 @@ import (
 
 	"github.com/zintus/flowerss-bot/internal/bot"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 	"github.com/zintus/flowerss-bot/internal/scheduler"
 )
@@ -16,18 +17,26 @@ func main() {
 	if err := appCore.Init(); err != nil {
 		log.Fatal(err)
 	}
+
+	if err := i18n.LoadTranslations("locales"); err != nil {
+		log.Fatalf("Failed to load translations: %v", err)
+	}
+	log.Infof("Translations loaded.")
+
 	go handleSignal()
 	b := bot.NewBot(appCore)
 
 	task := scheduler.NewRssTask(appCore)
 	task.Register(b)
 	task.Start()
-	b.Run()
+	if err := b.Run(); err != nil {
+		log.Fatalf("Failed to run bot: %v", err)
+	}
 }
 
 func handleSignal() {
-	c := make(chan os.Signal)
-	signal.Notify(c, os.Interrupt, os.Kill, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
 
 	<-c
 

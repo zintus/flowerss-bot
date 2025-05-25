@@ -23,6 +23,7 @@ type User interface {
 	Storage
 	CrateUser(ctx context.Context, user *model.User) error
 	GetUser(ctx context.Context, id int64) (*model.User, error)
+	SetUserLanguage(ctx context.Context, userID int64, langCode string) error
 }
 
 // Source 订阅源存储接口

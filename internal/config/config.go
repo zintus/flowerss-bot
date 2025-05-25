@@ -1,12 +1,15 @@
 package config
 
 import (
+	"bytes" // Added
 	"fmt"
 	"text/template"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 	tb "gopkg.in/telebot.v3"
+
+	"github.com/zintus/flowerss-bot/internal/i18n"
 )
 
 type RunType string
@@ -63,22 +66,22 @@ var (
 const (
 	defaultMessageTplMode = tb.ModeHTML
 	defaultMessageTpl     = `<b>{{.SourceTitle}}</b>{{ if .PreviewText }}
----------- Preview ----------
+{{ .L "feed_update_preview_header" }}
 {{.PreviewText}}
 -----------------------------
 {{- end}}{{if .EnableTelegraph}}
-{{.ContentTitle}} <a href="{{.TelegraphURL}}">Telegraph</a> | <a href="{{.RawLink}}">Original</a>
+{{.ContentTitle}} <a href="{{.TelegraphURL}}">{{ .L "feed_update_telegraph_link_text" }}</a> | <a href="{{.RawLink}}">{{ .L "feed_update_original_link_text" }}</a>
 {{- else }}
 <a href="{{.RawLink}}">{{.ContentTitle}}</a>
 {{- end }}
 {{.Tags}}
 `
 	defaultMessageMarkdownTpl = `** {{.SourceTitle}} **{{ if .PreviewText }}
----------- Preview ----------
+{{ .L "feed_update_preview_header" }}
 {{.PreviewText}}
 -----------------------------
 {{- end}}{{if .EnableTelegraph}}
-{{.ContentTitle}} [Telegraph]({{.TelegraphURL}}) | [Original]({{.RawLink}})
+{{.ContentTitle}} [{{ .L "feed_update_telegraph_link_text" }}]({{.TelegraphURL}}) | [{{ .L "feed_update_original_link_text" }}]({{.RawLink}})
 {{- else }}
 [{{.ContentTitle}}]({{.RawLink}})
 {{- end }}
@@ -96,11 +99,46 @@ type TplData struct {
 	TelegraphURL    string
 	Tags            string
 	EnableTelegraph bool
+	LangCode        string // Added for localization
 }
 
-func AppVersionInfo() (s string) {
-	s = fmt.Sprintf("version %v, commit %v, built at %v", version, commit, date)
-	return
+// AppVersionInfo returns a localized string with version, commit and date.
+// It now accepts a langCode for localization.
+func AppVersionInfo(langCode string) string {
+	// Ensure i18n.Localize is available and i18n system is initialized.
+	// Default to "en" if langCode is empty or invalid, Localize should handle this.
+	format := i18n.Localize(langCode, "version_info_format")
+	return fmt.Sprintf(format, version, commit, date)
+}
+
+func (td *TplData) Render(mode tb.ParseMode) (string, error) {
+	var tpl string
+	if mode == tb.ModeMarkdown || mode == tb.ModeMarkdownV2 {
+		tpl = defaultMessageMarkdownTpl
+	} else {
+		tpl = defaultMessageTpl
+	}
+
+	funcMap := template.FuncMap{
+		"L": func(key string, args ...interface{}) string {
+			langToUse := td.LangCode
+			if langToUse == "" {
+				langToUse = "en" // Fallback to "en"
+			}
+			return i18n.Localize(langToUse, key, args...)
+		},
+	}
+
+	var buf bytes.Buffer
+	t, err := template.New("message").Funcs(funcMap).Parse(tpl)
+	if err != nil {
+		return "", err
+	}
+
+	if err := t.Execute(&buf, td); err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 }
 
 // GetString get string config value by key

@@ -9,7 +9,9 @@ import (
 
 	"github.com/zintus/flowerss-bot/internal/bot/chat"
 	"github.com/zintus/flowerss-bot/internal/bot/message"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/core"
+	"github.com/zintus/flowerss-bot/internal/i18n"
 	"github.com/zintus/flowerss-bot/internal/log"
 	"github.com/zintus/flowerss-bot/internal/model"
 )
@@ -26,48 +28,51 @@ func NewListSubscription(core *core.Core) *ListSubscription {
 	return &ListSubscription{core: core}
 }
 
+// Using the shared utility function instead of local implementation
+
 func (l *ListSubscription) Command() string {
 	return "/list"
 }
 
 func (l *ListSubscription) Description() string {
-	return "已订阅的RSS源"
+	return i18n.Localize(util.DefaultLanguage, "listsub_command_desc")
 }
 
 func (l *ListSubscription) listChatSubscription(ctx tb.Context) error {
+	langCode := util.GetLangCode(ctx)
 	// private chat or group
 	if ctx.Chat().Type != tb.ChatPrivate && !chat.IsChatAdmin(ctx.Bot(), ctx.Chat(), ctx.Sender().ID) {
-		// 无权限
-		return ctx.Send("无权限")
+		return ctx.Send(i18n.Localize(langCode, "err_permission_denied"))
 	}
 
 	stdCtx := context.Background()
 	sources, err := l.core.GetUserSubscribedSources(stdCtx, ctx.Chat().ID)
 	if err != nil {
 		log.Errorf("GetUserSubscribedSources failed, %v", err)
-		return ctx.Send("获取订阅错误")
+		return ctx.Send(i18n.Localize(langCode, "listsub_err_get_subs_failed"))
 	}
 
-	return l.replaySubscribedSources(ctx, sources)
+	return l.replaySubscribedSources(ctx, sources, langCode)
 }
 
 func (l *ListSubscription) listChannelSubscription(ctx tb.Context, channelName string) error {
+	langCode := util.GetLangCode(ctx)
 	channelChat, err := ctx.Bot().ChatByUsername(channelName)
 	if err != nil {
-		return ctx.Send("获取频道信息错误")
+		return ctx.Send(i18n.Localize(langCode, "err_get_channel_info_failed"))
 	}
 
 	if !chat.IsChatAdmin(ctx.Bot(), channelChat, ctx.Sender().ID) {
-		return ctx.Send("非频道管理员无法执行此操作")
+		return ctx.Send(i18n.Localize(langCode, "err_not_channel_admin_action"))
 	}
 
 	stdCtx := context.Background()
 	sources, err := l.core.GetUserSubscribedSources(stdCtx, channelChat.ID)
 	if err != nil {
 		log.Errorf("GetUserSubscribedSources failed, %v", err)
-		return ctx.Send("获取订阅错误")
+		return ctx.Send(i18n.Localize(langCode, "listsub_err_get_subs_failed"))
 	}
-	return l.replaySubscribedSources(ctx, sources)
+	return l.replaySubscribedSources(ctx, sources, langCode)
 }
 
 func (l *ListSubscription) Handle(ctx tb.Context) error {
@@ -82,25 +87,30 @@ func (l *ListSubscription) Middlewares() []tb.MiddlewareFunc {
 	return nil
 }
 
-func (l *ListSubscription) replaySubscribedSources(ctx tb.Context, sources []*model.Source) error {
+func (l *ListSubscription) replaySubscribedSources(ctx tb.Context, sources []*model.Source, langCode string) error {
+	// langCode is passed as a parameter now
 	if len(sources) == 0 {
-		return ctx.Send("订阅列表为空")
+		return ctx.Send(i18n.Localize(langCode, "listsub_info_sub_list_empty"))
 	}
 	var msg strings.Builder
-	msg.WriteString(fmt.Sprintf("共订阅%d个源，订阅列表\n", len(sources)))
+	msg.WriteString(i18n.Localize(langCode, "listsub_list_header_format", len(sources)))
 	count := 0
 	for i := range sources {
 		msg.WriteString(fmt.Sprintf("[[%d]] [%s](%s)\n", sources[i].ID, sources[i].Title, sources[i].Link))
 		count++
 		if count == MaxSubsSizePerPage {
-			ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown})
+			if err := ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown}); err != nil {
+				log.Errorf("failed to send subscription list page: %v", err)
+			}
 			count = 0
 			msg.Reset()
 		}
 	}
 
 	if count != 0 {
-		ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown})
+		if err := ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown}); err != nil {
+			log.Errorf("failed to send final subscription list page: %v", err)
+		}
 	}
 	return nil
 }

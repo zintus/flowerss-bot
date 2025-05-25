@@ -1,0 +1,865 @@
+﻿2025-05-21T20:27:33.4318880Z Current runner version: '2.324.0'
+2025-05-21T20:27:33.4335440Z ##[group]Operating System
+2025-05-21T20:27:33.4335900Z macOS
+2025-05-21T20:27:33.4336190Z 14.7.5
+2025-05-21T20:27:33.4336480Z 23H527
+2025-05-21T20:27:33.4336780Z ##[endgroup]
+2025-05-21T20:27:33.4337090Z ##[group]Runner Image
+2025-05-21T20:27:33.4337430Z Image: macos-14-arm64
+2025-05-21T20:27:33.4337770Z Version: 20250505.1431
+2025-05-21T20:27:33.4338580Z Included Software: https://github.com/actions/runner-images/blob/macos-14-arm64/20250505.1431/images/macos/macos-14-arm64-Readme.md
+2025-05-21T20:27:33.4339900Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-14-arm64%2F20250505.1431
+2025-05-21T20:27:33.4340640Z ##[endgroup]
+2025-05-21T20:27:33.4340960Z ##[group]Runner Image Provisioner
+2025-05-21T20:27:33.4341400Z 2.0.437.1+b8a73daf41ec39b19236c1d542c9f2348c5b7c2d
+2025-05-21T20:27:33.4341790Z ##[endgroup]
+2025-05-21T20:27:33.4343380Z ##[group]GITHUB_TOKEN Permissions
+2025-05-21T20:27:33.4344810Z Actions: write
+2025-05-21T20:27:33.4345120Z Attestations: write
+2025-05-21T20:27:33.4345420Z Checks: write
+2025-05-21T20:27:33.4345700Z Contents: write
+2025-05-21T20:27:33.4346000Z Deployments: write
+2025-05-21T20:27:33.4346300Z Discussions: write
+2025-05-21T20:27:33.4346590Z Issues: write
+2025-05-21T20:27:33.4346870Z Metadata: read
+2025-05-21T20:27:33.4347160Z Models: read
+2025-05-21T20:27:33.4347430Z Packages: write
+2025-05-21T20:27:33.4347730Z Pages: write
+2025-05-21T20:27:33.4348010Z PullRequests: write
+2025-05-21T20:27:33.4348330Z RepositoryProjects: write
+2025-05-21T20:27:33.4348680Z SecurityEvents: write
+2025-05-21T20:27:33.4349090Z Statuses: write
+2025-05-21T20:27:33.4349400Z ##[endgroup]
+2025-05-21T20:27:33.4351040Z Secret source: Actions
+2025-05-21T20:27:33.4351520Z Prepare workflow directory
+2025-05-21T20:27:33.4585200Z Prepare all required actions
+2025-05-21T20:27:33.4613880Z Getting action download info
+2025-05-21T20:27:33.8553640Z ##[group]Download immutable action package 'actions/setup-go@v2'
+2025-05-21T20:27:33.8554940Z Version: 2.2.0
+2025-05-21T20:27:33.8556020Z Digest: sha256:decc21c9a7275ee14541d6c57e7999c727f6a61d50f7a0f2fb11dfb5c54506c2
+2025-05-21T20:27:33.8557450Z Source commit SHA: bfdd3570ce990073878bf10f6b2d79082de49492
+2025-05-21T20:27:33.8558340Z ##[endgroup]
+2025-05-21T20:27:34.6273760Z ##[group]Download immutable action package 'actions/checkout@v2'
+2025-05-21T20:27:34.6274290Z Version: 2.7.0
+2025-05-21T20:27:34.6274740Z Digest: sha256:95d28907bc868c0bab52f05f1f84cf8416c9415fba4c92519bc0b83bdce1eae3
+2025-05-21T20:27:34.6275340Z Source commit SHA: ee0669bd1cc54295c223e0bb666b733df41de1c5
+2025-05-21T20:27:34.6275760Z ##[endgroup]
+2025-05-21T20:27:34.7586070Z Download action repository 'codecov/codecov-action@v1' (SHA:29386c70ef20e286228c72b668a06fd0e8399192)
+2025-05-21T20:27:35.6747690Z Complete job name: test (1.19.x, macos-latest)
+2025-05-21T20:27:35.7059740Z ##[group]Run actions/setup-go@v2
+2025-05-21T20:27:35.7060440Z with:
+2025-05-21T20:27:35.7060750Z   go-version: 1.19.x
+2025-05-21T20:27:35.7061070Z   check-latest: false
+2025-05-21T20:27:35.7061420Z   stable: true
+2025-05-21T20:27:35.7061840Z   token: ***
+2025-05-21T20:27:35.7062250Z ##[endgroup]
+2025-05-21T20:27:35.9362100Z Setup go stable version spec 1.19.x
+2025-05-21T20:27:35.9449290Z Attempting to download 1.19.x...
+2025-05-21T20:27:36.6758200Z matching 1.19.x...
+2025-05-21T20:27:36.6785440Z Acquiring 1.19.13 from https://github.com/actions/go-versions/releases/download/1.19.13-6107263891/go-1.19.13-darwin-arm64.tar.gz
+2025-05-21T20:27:37.9641060Z Extracting Go...
+2025-05-21T20:27:37.9821300Z [command]/usr/bin/tar xz -C /Users/runner/work/_temp/e3a70d74-16af-47b0-a87b-32701672691f -f /Users/runner/work/_temp/1fe3bbbd-de68-44fe-83da-d9a493767c5c
+2025-05-21T20:27:40.2789050Z Successfully extracted go to /Users/runner/work/_temp/e3a70d74-16af-47b0-a87b-32701672691f
+2025-05-21T20:27:40.2803590Z Adding to the cache ...
+2025-05-21T20:27:45.1100780Z Successfully cached go to /Users/runner/hostedtoolcache/go/1.19.13/arm64
+2025-05-21T20:27:45.1102410Z Added go to the path
+2025-05-21T20:27:45.1391970Z Successfully setup go version 1.19.x
+2025-05-21T20:27:45.1554050Z go version go1.19.13 darwin/arm64
+2025-05-21T20:27:45.1554390Z 
+2025-05-21T20:27:45.1555380Z ##[group]go env
+2025-05-21T20:27:47.0423080Z GO111MODULE=""
+2025-05-21T20:27:47.0423480Z GOARCH="arm64"
+2025-05-21T20:27:47.0423900Z GOBIN=""
+2025-05-21T20:27:47.0424120Z GOCACHE="/Users/runner/Library/Caches/go-build"
+2025-05-21T20:27:47.0425310Z GOENV="/Users/runner/Library/Application Support/go/env"
+2025-05-21T20:27:47.0455640Z GOEXE=""
+2025-05-21T20:27:47.0456290Z GOEXPERIMENT=""
+2025-05-21T20:27:47.0457270Z GOFLAGS=""
+2025-05-21T20:27:47.0457610Z GOHOSTARCH="arm64"
+2025-05-21T20:27:47.0459090Z GOHOSTOS="darwin"
+2025-05-21T20:27:47.0459980Z GOINSECURE=""
+2025-05-21T20:27:47.0460420Z GOMODCACHE="/Users/runner/go/pkg/mod"
+2025-05-21T20:27:47.0460810Z GONOPROXY=""
+2025-05-21T20:27:47.0461120Z GONOSUMDB=""
+2025-05-21T20:27:47.0461470Z GOOS="darwin"
+2025-05-21T20:27:47.0461760Z GOPATH="/Users/runner/go"
+2025-05-21T20:27:47.0462080Z GOPRIVATE=""
+2025-05-21T20:27:47.0462540Z GOPROXY="https://proxy.golang.org,direct"
+2025-05-21T20:27:47.0462940Z GOROOT="/Users/runner/hostedtoolcache/go/1.19.13/arm64"
+2025-05-21T20:27:47.0463340Z GOSUMDB="sum.golang.org"
+2025-05-21T20:27:47.0463550Z GOTMPDIR=""
+2025-05-21T20:27:47.0464000Z GOTOOLDIR="/Users/runner/hostedtoolcache/go/1.19.13/arm64/pkg/tool/darwin_arm64"
+2025-05-21T20:27:47.0465750Z GOVCS=""
+2025-05-21T20:27:47.0466010Z GOVERSION="go1.19.13"
+2025-05-21T20:27:47.0466170Z GCCGO="gccgo"
+2025-05-21T20:27:47.0466300Z AR="ar"
+2025-05-21T20:27:47.0466500Z CC="clang"
+2025-05-21T20:27:47.0466630Z CXX="clang++"
+2025-05-21T20:27:47.0466820Z CGO_ENABLED="1"
+2025-05-21T20:27:47.0467110Z GOMOD="/dev/null"
+2025-05-21T20:27:47.0467320Z GOWORK=""
+2025-05-21T20:27:47.0468060Z CGO_CFLAGS="-g -O2"
+2025-05-21T20:27:47.0468350Z CGO_CPPFLAGS=""
+2025-05-21T20:27:47.0468620Z CGO_CXXFLAGS="-g -O2"
+2025-05-21T20:27:47.0468820Z CGO_FFLAGS="-g -O2"
+2025-05-21T20:27:47.0469110Z CGO_LDFLAGS="-g -O2"
+2025-05-21T20:27:47.0469350Z PKG_CONFIG="pkg-config"
+2025-05-21T20:27:47.0470290Z GOGCCFLAGS="-fPIC -arch arm64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=/var/folders/w5/_8wgjw3j5cg6mgrth3s2kg9m0000gn/T/go-build4137156830=/tmp/go-build -gno-record-gcc-switches -fno-common"
+2025-05-21T20:27:47.0471000Z 
+2025-05-21T20:27:47.0471510Z ##[endgroup]
+2025-05-21T20:27:47.0634660Z ##[group]Run actions/checkout@v2
+2025-05-21T20:27:47.0634940Z with:
+2025-05-21T20:27:47.0635080Z   repository: zintus/flowerss-bot
+2025-05-21T20:27:47.0635450Z   token: ***
+2025-05-21T20:27:47.0635630Z   ssh-strict: true
+2025-05-21T20:27:47.0635840Z   persist-credentials: true
+2025-05-21T20:27:47.0636070Z   clean: true
+2025-05-21T20:27:47.0636320Z   fetch-depth: 1
+2025-05-21T20:27:47.0636530Z   lfs: false
+2025-05-21T20:27:47.0636710Z   submodules: false
+2025-05-21T20:27:47.0636850Z   set-safe-directory: true
+2025-05-21T20:27:47.0636990Z env:
+2025-05-21T20:27:47.0637260Z   GOROOT: /Users/runner/hostedtoolcache/go/1.19.13/arm64
+2025-05-21T20:27:47.0637490Z ##[endgroup]
+2025-05-21T20:27:47.1606750Z Syncing repository: zintus/flowerss-bot
+2025-05-21T20:27:47.1607260Z ##[group]Getting Git version info
+2025-05-21T20:27:47.1607560Z Working directory is '/Users/runner/work/flowerss-bot/flowerss-bot'
+2025-05-21T20:27:47.1630170Z [command]/opt/homebrew/bin/git version
+2025-05-21T20:27:47.2309520Z git version 2.49.0
+2025-05-21T20:27:47.2325720Z ##[endgroup]
+2025-05-21T20:27:47.2339740Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/401529d1-fff2-4694-8c1a-027c41123b4b/.gitconfig'
+2025-05-21T20:27:47.2346350Z Temporarily overriding HOME='/Users/runner/work/_temp/401529d1-fff2-4694-8c1a-027c41123b4b' before making global git config changes
+2025-05-21T20:27:47.2347040Z Adding repository directory to the temporary git global config as a safe directory
+2025-05-21T20:27:47.2349960Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/flowerss-bot/flowerss-bot
+2025-05-21T20:27:47.2438030Z Deleting the contents of '/Users/runner/work/flowerss-bot/flowerss-bot'
+2025-05-21T20:27:47.2441180Z ##[group]Initializing the repository
+2025-05-21T20:27:47.2443350Z [command]/opt/homebrew/bin/git init /Users/runner/work/flowerss-bot/flowerss-bot
+2025-05-21T20:27:47.2613950Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-05-21T20:27:47.2615840Z hint: is subject to change. To configure the initial branch name to use in all
+2025-05-21T20:27:47.2616410Z hint: of your new repositories, which will suppress this warning, call:
+2025-05-21T20:27:47.2616760Z hint:
+2025-05-21T20:27:47.2617060Z hint: 	git config --global init.defaultBranch <name>
+2025-05-21T20:27:47.2618230Z hint:
+2025-05-21T20:27:47.2618700Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-05-21T20:27:47.2619480Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-05-21T20:27:47.2619980Z hint:
+2025-05-21T20:27:47.2620320Z hint: 	git branch -m <name>
+2025-05-21T20:27:47.2620960Z Initialized empty Git repository in /Users/runner/work/flowerss-bot/flowerss-bot/.git/
+2025-05-21T20:27:47.2625920Z [command]/opt/homebrew/bin/git remote add origin https://github.com/zintus/flowerss-bot
+2025-05-21T20:27:47.2681490Z ##[endgroup]
+2025-05-21T20:27:47.2681940Z ##[group]Disabling automatic garbage collection
+2025-05-21T20:27:47.2684280Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2025-05-21T20:27:47.2725540Z ##[endgroup]
+2025-05-21T20:27:47.2726030Z ##[group]Setting up auth
+2025-05-21T20:27:47.2729930Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-05-21T20:27:47.2785070Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-05-21T20:27:47.4360380Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-05-21T20:27:47.4462390Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-05-21T20:27:47.5503170Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-05-21T20:27:47.5543650Z ##[endgroup]
+2025-05-21T20:27:47.5557660Z ##[group]Fetching the repository
+2025-05-21T20:27:47.5565620Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +1b5cad2a78c1daf73e51d97823d7eacfbc07175b:refs/remotes/pull/1/merge
+2025-05-21T20:27:48.2899700Z remote: Enumerating objects: 129, done.        
+2025-05-21T20:27:48.2902190Z remote: Counting objects:   0% (1/129)        
+2025-05-21T20:27:48.2904430Z remote: Counting objects:   1% (2/129)        
+2025-05-21T20:27:48.2906350Z remote: Counting objects:   2% (3/129)        
+2025-05-21T20:27:48.2907440Z remote: Counting objects:   3% (4/129)        
+2025-05-21T20:27:48.2908120Z remote: Counting objects:   4% (6/129)        
+2025-05-21T20:27:48.2908390Z remote: Counting objects:   5% (7/129)        
+2025-05-21T20:27:48.2908640Z remote: Counting objects:   6% (8/129)        
+2025-05-21T20:27:48.2908900Z remote: Counting objects:   7% (10/129)        
+2025-05-21T20:27:48.2909150Z remote: Counting objects:   8% (11/129)        
+2025-05-21T20:27:48.2909390Z remote: Counting objects:   9% (12/129)        
+2025-05-21T20:27:48.2909620Z remote: Counting objects:  10% (13/129)        
+2025-05-21T20:27:48.2909860Z remote: Counting objects:  11% (15/129)        
+2025-05-21T20:27:48.2910100Z remote: Counting objects:  12% (16/129)        
+2025-05-21T20:27:48.2910360Z remote: Counting objects:  13% (17/129)        
+2025-05-21T20:27:48.2910610Z remote: Counting objects:  14% (19/129)        
+2025-05-21T20:27:48.2910860Z remote: Counting objects:  15% (20/129)        
+2025-05-21T20:27:48.2911370Z remote: Counting objects:  16% (21/129)        
+2025-05-21T20:27:48.2911610Z remote: Counting objects:  17% (22/129)        
+2025-05-21T20:27:48.2911850Z remote: Counting objects:  18% (24/129)        
+2025-05-21T20:27:48.2912080Z remote: Counting objects:  19% (25/129)        
+2025-05-21T20:27:48.2912310Z remote: Counting objects:  20% (26/129)        
+2025-05-21T20:27:48.2912560Z remote: Counting objects:  21% (28/129)        
+2025-05-21T20:27:48.2912790Z remote: Counting objects:  22% (29/129)        
+2025-05-21T20:27:48.2913040Z remote: Counting objects:  23% (30/129)        
+2025-05-21T20:27:48.2913270Z remote: Counting objects:  24% (31/129)        
+2025-05-21T20:27:48.2913520Z remote: Counting objects:  25% (33/129)        
+2025-05-21T20:27:48.2913750Z remote: Counting objects:  26% (34/129)        
+2025-05-21T20:27:48.2913990Z remote: Counting objects:  27% (35/129)        
+2025-05-21T20:27:48.2914260Z remote: Counting objects:  28% (37/129)        
+2025-05-21T20:27:48.2914540Z remote: Counting objects:  29% (38/129)        
+2025-05-21T20:27:48.2914780Z remote: Counting objects:  30% (39/129)        
+2025-05-21T20:27:48.2915010Z remote: Counting objects:  31% (40/129)        
+2025-05-21T20:27:48.2915250Z remote: Counting objects:  32% (42/129)        
+2025-05-21T20:27:48.2915500Z remote: Counting objects:  33% (43/129)        
+2025-05-21T20:27:48.2915750Z remote: Counting objects:  34% (44/129)        
+2025-05-21T20:27:48.2915980Z remote: Counting objects:  35% (46/129)        
+2025-05-21T20:27:48.2916220Z remote: Counting objects:  36% (47/129)        
+2025-05-21T20:27:48.2916450Z remote: Counting objects:  37% (48/129)        
+2025-05-21T20:27:48.2916700Z remote: Counting objects:  38% (50/129)        
+2025-05-21T20:27:48.2916930Z remote: Counting objects:  39% (51/129)        
+2025-05-21T20:27:48.2917190Z remote: Counting objects:  40% (52/129)        
+2025-05-21T20:27:48.2917430Z remote: Counting objects:  41% (53/129)        
+2025-05-21T20:27:48.2917660Z remote: Counting objects:  42% (55/129)        
+2025-05-21T20:27:48.2917890Z remote: Counting objects:  43% (56/129)        
+2025-05-21T20:27:48.2918130Z remote: Counting objects:  44% (57/129)        
+2025-05-21T20:27:48.2918500Z remote: Counting objects:  45% (59/129)        
+2025-05-21T20:27:48.2918730Z remote: Counting objects:  46% (60/129)        
+2025-05-21T20:27:48.2919140Z remote: Counting objects:  47% (61/129)        
+2025-05-21T20:27:48.2919400Z remote: Counting objects:  48% (62/129)        
+2025-05-21T20:27:48.2919630Z remote: Counting objects:  49% (64/129)        
+2025-05-21T20:27:48.2919890Z remote: Counting objects:  50% (65/129)        
+2025-05-21T20:27:48.2920190Z remote: Counting objects:  51% (66/129)        
+2025-05-21T20:27:48.2920410Z remote: Counting objects:  52% (68/129)        
+2025-05-21T20:27:48.2920680Z remote: Counting objects:  53% (69/129)        
+2025-05-21T20:27:48.2920910Z remote: Counting objects:  54% (70/129)        
+2025-05-21T20:27:48.2921220Z remote: Counting objects:  55% (71/129)        
+2025-05-21T20:27:48.2921460Z remote: Counting objects:  56% (73/129)        
+2025-05-21T20:27:48.2932140Z remote: Counting objects:  57% (74/129)        
+2025-05-21T20:27:48.2932420Z remote: Counting objects:  58% (75/129)        
+2025-05-21T20:27:48.2932660Z remote: Counting objects:  59% (77/129)        
+2025-05-21T20:27:48.2932910Z remote: Counting objects:  60% (78/129)        
+2025-05-21T20:27:48.2933170Z remote: Counting objects:  61% (79/129)        
+2025-05-21T20:27:48.2933410Z remote: Counting objects:  62% (80/129)        
+2025-05-21T20:27:48.2933650Z remote: Counting objects:  63% (82/129)        
+2025-05-21T20:27:48.2933920Z remote: Counting objects:  64% (83/129)        
+2025-05-21T20:27:48.2934230Z remote: Counting objects:  65% (84/129)        
+2025-05-21T20:27:48.2934470Z remote: Counting objects:  66% (86/129)        
+2025-05-21T20:27:48.2934740Z remote: Counting objects:  67% (87/129)        
+2025-05-21T20:27:48.2934970Z remote: Counting objects:  68% (88/129)        
+2025-05-21T20:27:48.2935470Z remote: Counting objects:  69% (90/129)        
+2025-05-21T20:27:48.2935710Z remote: Counting objects:  70% (91/129)        
+2025-05-21T20:27:48.2935960Z remote: Counting objects:  71% (92/129)        
+2025-05-21T20:27:48.2936190Z remote: Counting objects:  72% (93/129)        
+2025-05-21T20:27:48.2936430Z remote: Counting objects:  73% (95/129)        
+2025-05-21T20:27:48.2936690Z remote: Counting objects:  74% (96/129)        
+2025-05-21T20:27:48.2936930Z remote: Counting objects:  75% (97/129)        
+2025-05-21T20:27:48.2937160Z remote: Counting objects:  76% (99/129)        
+2025-05-21T20:27:48.2937480Z remote: Counting objects:  77% (100/129)        
+2025-05-21T20:27:48.3038390Z remote: Counting objects:  78% (101/129)        
+2025-05-21T20:27:48.3139360Z remote: Counting objects:  79% (102/129)        
+2025-05-21T20:27:48.3240310Z remote: Counting objects:  80% (104/129)        
+2025-05-21T20:27:48.3341140Z remote: Counting objects:  81% (105/129)        
+2025-05-21T20:27:48.3442140Z remote: Counting objects:  82% (106/129)        
+2025-05-21T20:27:48.3543230Z remote: Counting objects:  83% (108/129)        
+2025-05-21T20:27:48.3644230Z remote: Counting objects:  84% (109/129)        
+2025-05-21T20:27:48.3745180Z remote: Counting objects:  85% (110/129)        
+2025-05-21T20:27:48.3846460Z remote: Counting objects:  86% (111/129)        
+2025-05-21T20:27:48.3947490Z remote: Counting objects:  87% (113/129)        
+2025-05-21T20:27:48.4048550Z remote: Counting objects:  88% (114/129)        
+2025-05-21T20:27:48.4149630Z remote: Counting objects:  89% (115/129)        
+2025-05-21T20:27:48.4250910Z remote: Counting objects:  90% (117/129)        
+2025-05-21T20:27:48.4352060Z remote: Counting objects:  91% (118/129)        
+2025-05-21T20:27:48.4453130Z remote: Counting objects:  92% (119/129)        
+2025-05-21T20:27:48.4547730Z remote: Counting objects:  93% (120/129)        
+2025-05-21T20:27:48.4648930Z remote: Counting objects:  94% (122/129)        
+2025-05-21T20:27:48.4733910Z remote: Counting objects:  95% (123/129)        
+2025-05-21T20:27:48.4829450Z remote: Counting objects:  96% (124/129)        
+2025-05-21T20:27:48.4930680Z remote: Counting objects:  97% (126/129)        
+2025-05-21T20:27:48.4997300Z remote: Counting objects:  98% (127/129)        
+2025-05-21T20:27:48.5052620Z remote: Counting objects:  99% (128/129)        
+2025-05-21T20:27:48.5101240Z remote: Counting objects: 100% (129/129)        
+2025-05-21T20:27:48.5202350Z remote: Counting objects: 100% (129/129), done.        
+2025-05-21T20:27:48.5253280Z remote: Compressing objects:   0% (1/115)        
+2025-05-21T20:27:48.5344640Z remote: Compressing objects:   1% (2/115)        
+2025-05-21T20:27:48.5387890Z remote: Compressing objects:   2% (3/115)        
+2025-05-21T20:27:48.5429620Z remote: Compressing objects:   3% (4/115)        
+2025-05-21T20:27:48.5475420Z remote: Compressing objects:   4% (5/115)        
+2025-05-21T20:27:48.5494700Z remote: Compressing objects:   5% (6/115)        
+2025-05-21T20:27:48.5523910Z remote: Compressing objects:   6% (7/115)        
+2025-05-21T20:27:48.5568480Z remote: Compressing objects:   7% (9/115)        
+2025-05-21T20:27:48.5569710Z remote: Compressing objects:   8% (10/115)        
+2025-05-21T20:27:48.5570420Z remote: Compressing objects:   9% (11/115)        
+2025-05-21T20:27:48.5570790Z remote: Compressing objects:  10% (12/115)        
+2025-05-21T20:27:48.5571180Z remote: Compressing objects:  11% (13/115)        
+2025-05-21T20:27:48.5571570Z remote: Compressing objects:  12% (14/115)        
+2025-05-21T20:27:48.5571930Z remote: Compressing objects:  13% (15/115)        
+2025-05-21T20:27:48.5572300Z remote: Compressing objects:  14% (17/115)        
+2025-05-21T20:27:48.5572650Z remote: Compressing objects:  15% (18/115)        
+2025-05-21T20:27:48.5573030Z remote: Compressing objects:  16% (19/115)        
+2025-05-21T20:27:48.5573400Z remote: Compressing objects:  17% (20/115)        
+2025-05-21T20:27:48.5573780Z remote: Compressing objects:  18% (21/115)        
+2025-05-21T20:27:48.5574160Z remote: Compressing objects:  19% (22/115)        
+2025-05-21T20:27:48.5574930Z remote: Compressing objects:  20% (23/115)        
+2025-05-21T20:27:48.5575340Z remote: Compressing objects:  21% (25/115)        
+2025-05-21T20:27:48.5575710Z remote: Compressing objects:  22% (26/115)        
+2025-05-21T20:27:48.5576180Z remote: Compressing objects:  23% (27/115)        
+2025-05-21T20:27:48.5576590Z remote: Compressing objects:  24% (28/115)        
+2025-05-21T20:27:48.5576990Z remote: Compressing objects:  25% (29/115)        
+2025-05-21T20:27:48.5577360Z remote: Compressing objects:  26% (30/115)        
+2025-05-21T20:27:48.5577750Z remote: Compressing objects:  27% (32/115)        
+2025-05-21T20:27:48.5578120Z remote: Compressing objects:  28% (33/115)        
+2025-05-21T20:27:48.5578490Z remote: Compressing objects:  29% (34/115)        
+2025-05-21T20:27:48.5578870Z remote: Compressing objects:  30% (35/115)        
+2025-05-21T20:27:48.5579250Z remote: Compressing objects:  31% (36/115)        
+2025-05-21T20:27:48.5579620Z remote: Compressing objects:  32% (37/115)        
+2025-05-21T20:27:48.5580010Z remote: Compressing objects:  33% (38/115)        
+2025-05-21T20:27:48.5580390Z remote: Compressing objects:  34% (40/115)        
+2025-05-21T20:27:48.5580760Z remote: Compressing objects:  35% (41/115)        
+2025-05-21T20:27:48.5581130Z remote: Compressing objects:  36% (42/115)        
+2025-05-21T20:27:48.5581500Z remote: Compressing objects:  37% (43/115)        
+2025-05-21T20:27:48.5581870Z remote: Compressing objects:  38% (44/115)        
+2025-05-21T20:27:48.5582250Z remote: Compressing objects:  39% (45/115)        
+2025-05-21T20:27:48.5582630Z remote: Compressing objects:  40% (46/115)        
+2025-05-21T20:27:48.5583000Z remote: Compressing objects:  41% (48/115)        
+2025-05-21T20:27:48.5583380Z remote: Compressing objects:  42% (49/115)        
+2025-05-21T20:27:48.5583760Z remote: Compressing objects:  43% (50/115)        
+2025-05-21T20:27:48.5584140Z remote: Compressing objects:  44% (51/115)        
+2025-05-21T20:27:48.5584580Z remote: Compressing objects:  45% (52/115)        
+2025-05-21T20:27:48.5584950Z remote: Compressing objects:  46% (53/115)        
+2025-05-21T20:27:48.5585400Z remote: Compressing objects:  47% (55/115)        
+2025-05-21T20:27:48.5585770Z remote: Compressing objects:  48% (56/115)        
+2025-05-21T20:27:48.5586400Z remote: Compressing objects:  49% (57/115)        
+2025-05-21T20:27:48.5586840Z remote: Compressing objects:  50% (58/115)        
+2025-05-21T20:27:48.5587220Z remote: Compressing objects:  51% (59/115)        
+2025-05-21T20:27:48.5587610Z remote: Compressing objects:  52% (60/115)        
+2025-05-21T20:27:48.5587990Z remote: Compressing objects:  53% (61/115)        
+2025-05-21T20:27:48.5588380Z remote: Compressing objects:  54% (63/115)        
+2025-05-21T20:27:48.5588770Z remote: Compressing objects:  55% (64/115)        
+2025-05-21T20:27:48.5589150Z remote: Compressing objects:  56% (65/115)        
+2025-05-21T20:27:48.5589570Z remote: Compressing objects:  57% (66/115)        
+2025-05-21T20:27:48.5589950Z remote: Compressing objects:  58% (67/115)        
+2025-05-21T20:27:48.5590350Z remote: Compressing objects:  59% (68/115)        
+2025-05-21T20:27:48.5590730Z remote: Compressing objects:  60% (69/115)        
+2025-05-21T20:27:48.5591110Z remote: Compressing objects:  61% (71/115)        
+2025-05-21T20:27:48.5591510Z remote: Compressing objects:  62% (72/115)        
+2025-05-21T20:27:48.5591890Z remote: Compressing objects:  63% (73/115)        
+2025-05-21T20:27:48.5592270Z remote: Compressing objects:  64% (74/115)        
+2025-05-21T20:27:48.5592670Z remote: Compressing objects:  65% (75/115)        
+2025-05-21T20:27:48.5593050Z remote: Compressing objects:  66% (76/115)        
+2025-05-21T20:27:48.5593430Z remote: Compressing objects:  67% (78/115)        
+2025-05-21T20:27:48.5593910Z remote: Compressing objects:  68% (79/115)        
+2025-05-21T20:27:48.5594290Z remote: Compressing objects:  69% (80/115)        
+2025-05-21T20:27:48.5594670Z remote: Compressing objects:  70% (81/115)        
+2025-05-21T20:27:48.5595260Z remote: Compressing objects:  71% (82/115)        
+2025-05-21T20:27:48.5595610Z remote: Compressing objects:  72% (83/115)        
+2025-05-21T20:27:48.5595970Z remote: Compressing objects:  73% (84/115)        
+2025-05-21T20:27:48.5596330Z remote: Compressing objects:  74% (86/115)        
+2025-05-21T20:27:48.5596700Z remote: Compressing objects:  75% (87/115)        
+2025-05-21T20:27:48.5597060Z remote: Compressing objects:  76% (88/115)        
+2025-05-21T20:27:48.5597420Z remote: Compressing objects:  77% (89/115)        
+2025-05-21T20:27:48.5597750Z remote: Compressing objects:  78% (90/115)        
+2025-05-21T20:27:48.5597990Z remote: Compressing objects:  79% (91/115)        
+2025-05-21T20:27:48.5598220Z remote: Compressing objects:  80% (92/115)        
+2025-05-21T20:27:48.5598470Z remote: Compressing objects:  81% (94/115)        
+2025-05-21T20:27:48.5598770Z remote: Compressing objects:  82% (95/115)        
+2025-05-21T20:27:48.5599000Z remote: Compressing objects:  83% (96/115)        
+2025-05-21T20:27:48.5599250Z remote: Compressing objects:  84% (97/115)        
+2025-05-21T20:27:48.5599480Z remote: Compressing objects:  85% (98/115)        
+2025-05-21T20:27:48.5599730Z remote: Compressing objects:  86% (99/115)        
+2025-05-21T20:27:48.5599970Z remote: Compressing objects:  87% (101/115)        
+2025-05-21T20:27:48.5600220Z remote: Compressing objects:  88% (102/115)        
+2025-05-21T20:27:48.5600450Z remote: Compressing objects:  89% (103/115)        
+2025-05-21T20:27:48.5600690Z remote: Compressing objects:  90% (104/115)        
+2025-05-21T20:27:48.5600930Z remote: Compressing objects:  91% (105/115)        
+2025-05-21T20:27:48.5601160Z remote: Compressing objects:  92% (106/115)        
+2025-05-21T20:27:48.5601380Z remote: Compressing objects:  93% (107/115)        
+2025-05-21T20:27:48.5601610Z remote: Compressing objects:  94% (109/115)        
+2025-05-21T20:27:48.5601840Z remote: Compressing objects:  95% (110/115)        
+2025-05-21T20:27:48.5602080Z remote: Compressing objects:  96% (111/115)        
+2025-05-21T20:27:48.5602310Z remote: Compressing objects:  97% (112/115)        
+2025-05-21T20:27:48.5602540Z remote: Compressing objects:  98% (113/115)        
+2025-05-21T20:27:48.5602770Z remote: Compressing objects:  99% (114/115)        
+2025-05-21T20:27:48.5603190Z remote: Compressing objects: 100% (115/115)        
+2025-05-21T20:27:48.5603460Z remote: Compressing objects: 100% (115/115), done.        
+2025-05-21T20:27:48.5603700Z Receiving objects:   0% (1/129)
+2025-05-21T20:27:48.5603870Z Receiving objects:   1% (2/129)
+2025-05-21T20:27:48.5604030Z Receiving objects:   2% (3/129)
+2025-05-21T20:27:48.5604200Z Receiving objects:   3% (4/129)
+2025-05-21T20:27:48.5604360Z Receiving objects:   4% (6/129)
+2025-05-21T20:27:48.5604530Z Receiving objects:   5% (7/129)
+2025-05-21T20:27:48.5604690Z Receiving objects:   6% (8/129)
+2025-05-21T20:27:48.5604850Z Receiving objects:   7% (10/129)
+2025-05-21T20:27:48.5605020Z Receiving objects:   8% (11/129)
+2025-05-21T20:27:48.5605190Z Receiving objects:   9% (12/129)
+2025-05-21T20:27:48.5605370Z Receiving objects:  10% (13/129)
+2025-05-21T20:27:48.5605530Z Receiving objects:  11% (15/129)
+2025-05-21T20:27:48.5605700Z Receiving objects:  12% (16/129)
+2025-05-21T20:27:48.5605870Z Receiving objects:  13% (17/129)
+2025-05-21T20:27:48.5606030Z Receiving objects:  14% (19/129)
+2025-05-21T20:27:48.5606200Z Receiving objects:  15% (20/129)
+2025-05-21T20:27:48.5606370Z Receiving objects:  16% (21/129)
+2025-05-21T20:27:48.5606540Z Receiving objects:  17% (22/129)
+2025-05-21T20:27:48.5606700Z Receiving objects:  18% (24/129)
+2025-05-21T20:27:48.5606870Z Receiving objects:  19% (25/129)
+2025-05-21T20:27:48.5607030Z Receiving objects:  20% (26/129)
+2025-05-21T20:27:48.5607200Z Receiving objects:  21% (28/129)
+2025-05-21T20:27:48.5607360Z Receiving objects:  22% (29/129)
+2025-05-21T20:27:48.5607530Z Receiving objects:  23% (30/129)
+2025-05-21T20:27:48.5607690Z Receiving objects:  24% (31/129)
+2025-05-21T20:27:48.5607970Z Receiving objects:  25% (33/129)
+2025-05-21T20:27:48.5608150Z Receiving objects:  26% (34/129)
+2025-05-21T20:27:48.5608320Z Receiving objects:  27% (35/129)
+2025-05-21T20:27:48.5608480Z Receiving objects:  28% (37/129)
+2025-05-21T20:27:48.5608640Z Receiving objects:  29% (38/129)
+2025-05-21T20:27:48.5608810Z Receiving objects:  30% (39/129)
+2025-05-21T20:27:48.5608970Z Receiving objects:  31% (40/129)
+2025-05-21T20:27:48.5609140Z Receiving objects:  32% (42/129)
+2025-05-21T20:27:48.5609310Z Receiving objects:  33% (43/129)
+2025-05-21T20:27:48.5609470Z Receiving objects:  34% (44/129)
+2025-05-21T20:27:48.5609630Z Receiving objects:  35% (46/129)
+2025-05-21T20:27:48.5609800Z Receiving objects:  36% (47/129)
+2025-05-21T20:27:48.5609970Z Receiving objects:  37% (48/129)
+2025-05-21T20:27:48.5610130Z Receiving objects:  38% (50/129)
+2025-05-21T20:27:48.5610300Z Receiving objects:  39% (51/129)
+2025-05-21T20:27:48.5610470Z Receiving objects:  40% (52/129)
+2025-05-21T20:27:48.5610630Z Receiving objects:  41% (53/129)
+2025-05-21T20:27:48.5610800Z Receiving objects:  42% (55/129)
+2025-05-21T20:27:48.5610970Z Receiving objects:  43% (56/129)
+2025-05-21T20:27:48.5611140Z Receiving objects:  44% (57/129)
+2025-05-21T20:27:48.5611300Z Receiving objects:  45% (59/129)
+2025-05-21T20:27:48.5611460Z Receiving objects:  46% (60/129)
+2025-05-21T20:27:48.5611630Z Receiving objects:  47% (61/129)
+2025-05-21T20:27:48.5611790Z Receiving objects:  48% (62/129)
+2025-05-21T20:27:48.5611950Z Receiving objects:  49% (64/129)
+2025-05-21T20:27:48.5612120Z Receiving objects:  50% (65/129)
+2025-05-21T20:27:48.5612290Z Receiving objects:  51% (66/129)
+2025-05-21T20:27:48.5612460Z Receiving objects:  52% (68/129)
+2025-05-21T20:27:48.5612620Z Receiving objects:  53% (69/129)
+2025-05-21T20:27:48.5612790Z Receiving objects:  54% (70/129)
+2025-05-21T20:27:48.5612950Z Receiving objects:  55% (71/129)
+2025-05-21T20:27:48.5613120Z Receiving objects:  56% (73/129)
+2025-05-21T20:27:48.5613290Z Receiving objects:  57% (74/129)
+2025-05-21T20:27:48.5613450Z Receiving objects:  58% (75/129)
+2025-05-21T20:27:48.5613620Z Receiving objects:  59% (77/129)
+2025-05-21T20:27:48.5613780Z Receiving objects:  60% (78/129)
+2025-05-21T20:27:48.5613950Z Receiving objects:  61% (79/129)
+2025-05-21T20:27:48.5614110Z Receiving objects:  62% (80/129)
+2025-05-21T20:27:48.5614280Z Receiving objects:  63% (82/129)
+2025-05-21T20:27:48.5614550Z Receiving objects:  64% (83/129)
+2025-05-21T20:27:48.5614740Z Receiving objects:  65% (84/129)
+2025-05-21T20:27:48.5614900Z Receiving objects:  66% (86/129)
+2025-05-21T20:27:48.5615070Z Receiving objects:  67% (87/129)
+2025-05-21T20:27:48.5615230Z Receiving objects:  68% (88/129)
+2025-05-21T20:27:48.5615400Z Receiving objects:  69% (90/129)
+2025-05-21T20:27:48.5615560Z Receiving objects:  70% (91/129)
+2025-05-21T20:27:48.5615720Z Receiving objects:  71% (92/129)
+2025-05-21T20:27:48.5615910Z Receiving objects:  72% (93/129)
+2025-05-21T20:27:48.5616100Z Receiving objects:  73% (95/129)
+2025-05-21T20:27:48.5616260Z Receiving objects:  74% (96/129)
+2025-05-21T20:27:48.5616430Z Receiving objects:  75% (97/129)
+2025-05-21T20:27:48.5616600Z Receiving objects:  76% (99/129)
+2025-05-21T20:27:48.5616770Z Receiving objects:  77% (100/129)
+2025-05-21T20:27:48.5616940Z Receiving objects:  78% (101/129)
+2025-05-21T20:27:48.5617110Z Receiving objects:  79% (102/129)
+2025-05-21T20:27:48.5617280Z Receiving objects:  80% (104/129)
+2025-05-21T20:27:48.5617450Z Receiving objects:  81% (105/129)
+2025-05-21T20:27:48.5617720Z Receiving objects:  82% (106/129)
+2025-05-21T20:27:48.5617890Z Receiving objects:  83% (108/129)
+2025-05-21T20:27:48.5618060Z Receiving objects:  84% (109/129)
+2025-05-21T20:27:48.5618230Z Receiving objects:  85% (110/129)
+2025-05-21T20:27:48.5618400Z Receiving objects:  86% (111/129)
+2025-05-21T20:27:48.5618560Z Receiving objects:  87% (113/129)
+2025-05-21T20:27:48.5618730Z Receiving objects:  88% (114/129)
+2025-05-21T20:27:48.5618900Z Receiving objects:  89% (115/129)
+2025-05-21T20:27:48.5619070Z Receiving objects:  90% (117/129)
+2025-05-21T20:27:48.5619380Z Receiving objects:  91% (118/129)
+2025-05-21T20:27:48.5619550Z Receiving objects:  92% (119/129)
+2025-05-21T20:27:48.5619830Z remote: Total 129 (delta 12), reused 77 (delta 2), pack-reused 0 (from 0)        
+2025-05-21T20:27:48.5620110Z Receiving objects:  93% (120/129)
+2025-05-21T20:27:48.5620280Z Receiving objects:  94% (122/129)
+2025-05-21T20:27:48.5620450Z Receiving objects:  95% (123/129)
+2025-05-21T20:27:48.5620620Z Receiving objects:  96% (124/129)
+2025-05-21T20:27:48.5620800Z Receiving objects:  97% (126/129)
+2025-05-21T20:27:48.5620970Z Receiving objects:  98% (127/129)
+2025-05-21T20:27:48.5621150Z Receiving objects:  99% (128/129)
+2025-05-21T20:27:48.5621320Z Receiving objects: 100% (129/129)
+2025-05-21T20:27:48.5621560Z Receiving objects: 100% (129/129), 143.45 KiB | 1.43 MiB/s, done.
+2025-05-21T20:27:48.5621800Z Resolving deltas:   0% (0/12)
+2025-05-21T20:27:48.5621960Z Resolving deltas:   8% (1/12)
+2025-05-21T20:27:48.5622130Z Resolving deltas:  16% (2/12)
+2025-05-21T20:27:48.5622290Z Resolving deltas:  25% (3/12)
+2025-05-21T20:27:48.5622460Z Resolving deltas:  41% (5/12)
+2025-05-21T20:27:48.5622620Z Resolving deltas:  50% (6/12)
+2025-05-21T20:27:48.5622780Z Resolving deltas:  58% (7/12)
+2025-05-21T20:27:48.5622940Z Resolving deltas:  66% (8/12)
+2025-05-21T20:27:48.5623090Z Resolving deltas:  75% (9/12)
+2025-05-21T20:27:48.5623270Z Resolving deltas:  83% (10/12)
+2025-05-21T20:27:48.5623440Z Resolving deltas:  91% (11/12)
+2025-05-21T20:27:48.5623600Z Resolving deltas: 100% (12/12)
+2025-05-21T20:27:48.5623770Z Resolving deltas: 100% (12/12), done.
+2025-05-21T20:27:48.5624020Z From https://github.com/zintus/flowerss-bot
+2025-05-21T20:27:48.5624350Z  * [new ref]         1b5cad2a78c1daf73e51d97823d7eacfbc07175b -> pull/1/merge
+2025-05-21T20:27:48.5625150Z ##[endgroup]
+2025-05-21T20:27:48.5625400Z ##[group]Determining the checkout info
+2025-05-21T20:27:48.5625660Z ##[endgroup]
+2025-05-21T20:27:48.5625870Z ##[group]Checking out the ref
+2025-05-21T20:27:48.5626180Z [command]/opt/homebrew/bin/git checkout --progress --force refs/remotes/pull/1/merge
+2025-05-21T20:27:48.5626700Z HEAD is now at 1b5cad2 Merge 405873936bd1289b160d4f29a2913ff9906d80c2 into 52b4ae3c9a5e7267eb45f93eac51c343502f56b5
+2025-05-21T20:27:48.5627140Z ##[endgroup]
+2025-05-21T20:27:48.5627320Z [command]/opt/homebrew/bin/git log -1 --format='%H'
+2025-05-21T20:27:48.5627750Z '1b5cad2a78c1daf73e51d97823d7eacfbc07175b'
+2025-05-21T20:27:48.5725110Z ##[group]Run go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+2025-05-21T20:27:48.5725560Z [36;1mgo test -v -race -coverprofile=coverage.txt -covermode=atomic ./...[0m
+2025-05-21T20:27:48.5813890Z shell: /bin/bash -e {0}
+2025-05-21T20:27:48.5814070Z env:
+2025-05-21T20:27:48.5814260Z   GOROOT: /Users/runner/hostedtoolcache/go/1.19.13/arm64
+2025-05-21T20:27:48.5814470Z ##[endgroup]
+2025-05-21T20:27:48.6299690Z go: downloading gopkg.in/telebot.v3 v3.1.0
+2025-05-21T20:27:48.6488870Z go: downloading github.com/grokify/html-strip-tags-go v0.0.0-20200923094847-079d207a09f1
+2025-05-21T20:27:48.6573090Z go: downloading github.com/spf13/cast v1.5.0
+2025-05-21T20:27:48.9439960Z go: downloading google.golang.org/protobuf v1.28.1
+2025-05-21T20:27:48.9485850Z go: downloading go.uber.org/zap v1.23.0
+2025-05-21T20:27:49.3515570Z go: downloading github.com/stretchr/testify v1.8.1
+2025-05-21T20:27:49.3615220Z go: downloading github.com/go-sql-driver/mysql v1.6.0
+2025-05-21T20:27:49.3638570Z go: downloading github.com/spf13/viper v1.13.0
+2025-05-21T20:27:49.4492590Z go: downloading github.com/mmcdole/gofeed v1.2.1
+2025-05-21T20:27:49.4540560Z go: downloading gorm.io/driver/mysql v1.3.6
+2025-05-21T20:27:49.4599040Z go: downloading gorm.io/driver/sqlite v1.3.6
+2025-05-21T20:27:49.5775460Z go: downloading gorm.io/gorm v1.23.10
+2025-05-21T20:27:49.5783590Z go: downloading github.com/golang/mock v1.6.0
+2025-05-21T20:27:49.7383860Z go: downloading github.com/indes/telegraph-go v1.0.1
+2025-05-21T20:27:49.7390960Z go: downloading go.uber.org/atomic v1.9.0
+2025-05-21T20:27:49.8055750Z go: downloading go.uber.org/multierr v1.6.0
+2025-05-21T20:27:49.8373190Z go: downloading github.com/davecgh/go-spew v1.1.1
+2025-05-21T20:27:49.8415450Z go: downloading github.com/pmezard/go-difflib v1.0.0
+2025-05-21T20:27:49.8969130Z go: downloading gopkg.in/yaml.v3 v3.0.1
+2025-05-21T20:27:49.9748610Z go: downloading github.com/fsnotify/fsnotify v1.5.4
+2025-05-21T20:27:49.9889070Z go: downloading github.com/mitchellh/mapstructure v1.5.0
+2025-05-21T20:27:50.0090430Z go: downloading github.com/spf13/afero v1.8.2
+2025-05-21T20:27:50.0680760Z go: downloading github.com/spf13/jwalterweatherman v1.1.0
+2025-05-21T20:27:50.0794140Z go: downloading github.com/spf13/pflag v1.0.5
+2025-05-21T20:27:50.1120740Z go: downloading github.com/mattn/go-sqlite3 v1.14.15
+2025-05-21T20:27:50.1670250Z go: downloading github.com/json-iterator/go v1.1.12
+2025-05-21T20:27:50.2147550Z go: downloading github.com/mmcdole/goxpp v1.1.0
+2025-05-21T20:27:50.3045600Z go: downloading github.com/PuerkitoBio/goquery v1.8.0
+2025-05-21T20:27:50.3047020Z go: downloading golang.org/x/net v0.4.0
+2025-05-21T20:27:50.5370950Z go: downloading golang.org/x/sys v0.3.0
+2025-05-21T20:27:50.6863370Z go: downloading golang.org/x/text v0.5.0
+2025-05-21T20:27:50.7792580Z go: downloading github.com/subosito/gotenv v1.4.1
+2025-05-21T20:27:50.8703030Z go: downloading github.com/hashicorp/hcl v1.0.0
+2025-05-21T20:27:50.9820600Z go: downloading gopkg.in/ini.v1 v1.67.0
+2025-05-21T20:27:51.0777560Z go: downloading github.com/magiconair/properties v1.8.6
+2025-05-21T20:27:51.1719460Z go: downloading github.com/pelletier/go-toml/v2 v2.0.5
+2025-05-21T20:27:51.2314800Z go: downloading github.com/jinzhu/inflection v1.0.0
+2025-05-21T20:27:51.2333170Z go: downloading github.com/jinzhu/now v1.1.5
+2025-05-21T20:27:51.2398670Z go: downloading github.com/pelletier/go-toml v1.9.5
+2025-05-21T20:27:51.3192860Z go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+2025-05-21T20:27:51.3216240Z go: downloading github.com/modern-go/reflect2 v1.0.2
+2025-05-21T20:27:51.3522290Z go: downloading github.com/andybalholm/cascadia v1.3.1
+2025-05-21T20:28:16.0735440Z # github.com/zintus/flowerss-bot/internal/bot/handler
+2025-05-21T20:28:16.0776800Z ##[error]internal/bot/handler/subscription_switch_button.go:21:2: DefaultLanguage redeclared in this block
+2025-05-21T20:28:16.0784760Z ##[error]	internal/bot/handler/set_update_interval.go:19:7: other declaration of DefaultLanguage
+2025-05-21T20:28:16.0811390Z ##[error]internal/bot/handler/subscription_switch_button.go:24:2: SetSubscriptionTagButtonUnique redeclared in this block
+2025-05-21T20:28:16.0840880Z ##[error]	internal/bot/handler/set_subscription_tag_button.go:14:2: other declaration of SetSubscriptionTagButtonUnique
+2025-05-21T20:28:16.0846000Z ##[error]internal/bot/handler/subscription_switch_button.go:25:2: NotificationSwitchButtonUnique redeclared in this block
+2025-05-21T20:28:16.0848120Z ##[error]	internal/bot/handler/notification_switch_button.go:20:2: other declaration of NotificationSwitchButtonUnique
+2025-05-21T20:28:16.0849400Z ##[error]internal/bot/handler/subscription_switch_button.go:30:7: feedSettingTmpl redeclared in this block
+2025-05-21T20:28:16.0850500Z ##[error]	internal/bot/handler/set.go:93:2: other declaration of feedSettingTmpl
+2025-05-21T20:28:16.0851520Z ##[error]internal/bot/handler/subscription_switch_button.go:43:6: genFeedSetBtn redeclared in this block
+2025-05-21T20:28:16.0852820Z ##[error]	internal/bot/handler/set.go:179:6: other declaration of genFeedSetBtn
+2025-05-21T20:28:16.0853890Z ##[error]internal/bot/handler/subscription_switch_button.go:110:6: getLangCode redeclared in this block
+2025-05-21T20:28:16.0854930Z ##[error]	internal/bot/handler/set_update_interval.go:29:6: other declaration of getLangCode
+2025-05-21T20:28:16.0856060Z ##[error]internal/bot/handler/telegraph_switch_button.go:20:2: TelegraphSwitchButtonUnique redeclared in this block
+2025-05-21T20:28:16.0857170Z ##[error]	internal/bot/handler/subscription_switch_button.go:26:2: other declaration of TelegraphSwitchButtonUnique
+2025-05-21T20:28:16.1219960Z ##[error]internal/bot/handler/telegraph_switch_button.go:21:2: DefaultLanguage redeclared in this block
+2025-05-21T20:28:16.1222010Z ##[error]	internal/bot/handler/set_update_interval.go:19:7: other declaration of DefaultLanguage
+2025-05-21T20:28:16.1223300Z ##[error]internal/bot/handler/telegraph_switch_button.go:23:2: SetSubscriptionTagButtonUnique redeclared in this block
+2025-05-21T20:28:16.1224960Z ##[error]	internal/bot/handler/set_subscription_tag_button.go:14:2: other declaration of SetSubscriptionTagButtonUnique
+2025-05-21T20:28:16.1226530Z ##[error]internal/bot/handler/telegraph_switch_button.go:24:2: NotificationSwitchButtonUnique redeclared in this block
+2025-05-21T20:28:16.1227960Z ##[error]	internal/bot/handler/notification_switch_button.go:20:2: other declaration of NotificationSwitchButtonUnique
+2025-05-21T20:28:16.1229330Z ##[error]internal/bot/handler/telegraph_switch_button.go:24:2: too many errors
+2025-05-21T20:28:16.1230740Z FAIL	github.com/zintus/flowerss-bot/internal/bot/handler [build failed]
+2025-05-21T20:28:16.1408100Z # github.com/zintus/flowerss-bot/internal/bot/middleware [github.com/zintus/flowerss-bot/internal/bot/middleware.test]
+2025-05-21T20:28:16.1408760Z FAIL	github.com/zintus/flowerss-bot/internal/bot/middleware [build failed]
+2025-05-21T20:28:16.1441010Z ##[error]internal/bot/middleware/load_user_language_test.go:41:39: undefined: core.FeedParser
+2025-05-21T20:28:16.1442170Z === RUN   TestAttachment
+2025-05-21T20:28:16.1443790Z ##[error]internal/bot/middleware/load_user_language_test.go:42:39: undefined: core.HttpClient
+2025-05-21T20:28:16.1444570Z === RUN   TestAttachment/encode_and_decode
+2025-05-21T20:28:16.1446230Z ##[error]internal/bot/middleware/load_user_language_test.go:51:95: undefined: core.FeedItem
+2025-05-21T20:28:16.1447100Z --- PASS: TestAttachment (0.00s)
+2025-05-21T20:28:16.1451060Z ##[error]internal/bot/middleware/load_user_language_test.go:288:46: undefined: telebot.UpdateType
+2025-05-21T20:28:16.1452170Z     --- PASS: TestAttachment/encode_and_decode (0.00s)
+2025-05-21T20:28:16.1454770Z ##[error]internal/bot/middleware/load_user_language_test.go:298:44: undefined: telebot.Session
+2025-05-21T20:28:16.1455540Z === RUN   TestBotContextStoreKey_String
+2025-05-21T20:28:16.1457230Z ##[error]internal/bot/middleware/load_user_language_test.go:351:47: undefined: telebot.ChatBoostAdded
+2025-05-21T20:28:16.1458360Z === RUN   TestBotContextStoreKey_String/mention
+2025-05-21T20:28:16.1459290Z ##[error]internal/bot/middleware/load_user_language_test.go:352:45: undefined: telebot.MessageReaction
+2025-05-21T20:28:16.1460390Z --- PASS: TestBotContextStoreKey_String (0.00s)
+2025-05-21T20:28:16.1461570Z ##[error]internal/bot/middleware/load_user_language_test.go:353:46: undefined: telebot.MessageReactions
+2025-05-21T20:28:16.1462640Z     --- PASS: TestBotContextStoreKey_String/mention (0.00s)
+2025-05-21T20:28:16.1463750Z ##[error]internal/bot/middleware/load_user_language_test.go:355:55: undefined: telebot.BusinessConnection
+2025-05-21T20:28:16.1464620Z PASS
+2025-05-21T20:28:16.1465200Z ##[error]internal/bot/middleware/load_user_language_test.go:358:60: undefined: telebot.BusinessMessagesDeleted
+2025-05-21T20:28:16.1466270Z ##[error]internal/bot/middleware/load_user_language_test.go:358:60: too many errors
+2025-05-21T20:28:16.1467070Z # github.com/zintus/flowerss-bot/internal/core [github.com/zintus/flowerss-bot/internal/core.test]
+2025-05-21T20:28:16.1468180Z ##[error]internal/core/core_test.go:34:15: cannot use s.User (variable of type *mock.MockUser) as type storage.User in argument to NewCore:
+2025-05-21T20:28:16.1469080Z 	*mock.MockUser does not implement storage.User (missing SetUserLanguage method)
+2025-05-21T20:28:16.1469400Z coverage: 55.9% of statements
+2025-05-21T20:28:16.1469790Z ok  	github.com/zintus/flowerss-bot/internal/bot/session	0.032s	coverage: 55.9% of statements
+2025-05-21T20:28:16.1470160Z === RUN   TestTplData_Render
+2025-05-21T20:28:16.1470350Z === RUN   TestTplData_Render/HTML_Mode
+2025-05-21T20:28:16.1470580Z --- PASS: TestTplData_Render (0.00s)
+2025-05-21T20:28:16.1471240Z     --- PASS: TestTplData_Render/HTML_Mode (0.00s)
+2025-05-21T20:28:16.1471520Z === RUN   TestTplData_replaceHTMLTags
+2025-05-21T20:28:16.1471740Z === RUN   TestTplData_replaceHTMLTags/case1
+2025-05-21T20:28:16.1471990Z === RUN   TestTplData_replaceHTMLTags/case2
+2025-05-21T20:28:16.1472290Z --- PASS: TestTplData_replaceHTMLTags (0.00s)
+2025-05-21T20:28:16.1472670Z     --- PASS: TestTplData_replaceHTMLTags/case1 (0.00s)
+2025-05-21T20:28:16.1473020Z     --- PASS: TestTplData_replaceHTMLTags/case2 (0.00s)
+2025-05-21T20:28:16.1473290Z PASS
+2025-05-21T20:28:16.1473470Z coverage: 19.6% of statements
+2025-05-21T20:28:16.1473850Z ok  	github.com/zintus/flowerss-bot/internal/config	0.036s	coverage: 19.6% of statements
+2025-05-21T20:28:16.1474310Z FAIL	github.com/zintus/flowerss-bot/internal/core [build failed]
+2025-05-21T20:28:16.1474680Z === RUN   TestLoadTranslations
+2025-05-21T20:28:16.1474900Z === RUN   TestLoadTranslations/ValidJSONFiles
+2025-05-21T20:28:16.1475160Z === RUN   TestLoadTranslations/NonExistentDirectory
+2025-05-21T20:28:16.1475510Z === RUN   TestLoadTranslations/InvalidJSONFile
+2025-05-21T20:28:16.1476110Z 2025/05/21 20:28:02 Error unmarshalling translation file /var/folders/w5/_8wgjw3j5cg6mgrth3s2kg9m0000gn/T/test_locales_2952809243/invalid.json: unexpected end of JSON input
+2025-05-21T20:28:16.1476660Z === RUN   TestLoadTranslations/EmptyJSONFile
+2025-05-21T20:28:16.1476970Z --- PASS: TestLoadTranslations (0.00s)
+2025-05-21T20:28:16.1477390Z     --- PASS: TestLoadTranslations/ValidJSONFiles (0.00s)
+2025-05-21T20:28:16.1477850Z     --- PASS: TestLoadTranslations/NonExistentDirectory (0.00s)
+2025-05-21T20:28:16.1478280Z     --- PASS: TestLoadTranslations/InvalidJSONFile (0.00s)
+2025-05-21T20:28:16.1478850Z     --- PASS: TestLoadTranslations/EmptyJSONFile (0.00s)
+2025-05-21T20:28:16.1479140Z === RUN   TestLocalize
+2025-05-21T20:28:16.1479660Z     i18n_test.go:170: Expected 'Hello' (fallback for yy), got '[translation missing for lang: yy, key: hello]'
+2025-05-21T20:28:16.1480470Z     i18n_test.go:176: Expected missing key placeholder, got '[translation missing for lang: yy, key: non_existent_key_in_yy]'
+2025-05-21T20:28:16.1480930Z --- FAIL: TestLocalize (0.00s)
+2025-05-21T20:28:16.1481150Z === RUN   TestAvailableLanguages
+2025-05-21T20:28:16.1481390Z --- PASS: TestAvailableLanguages (0.00s)
+2025-05-21T20:28:16.1481610Z FAIL
+2025-05-21T20:28:16.1481950Z coverage: 85.4% of statements
+2025-05-21T20:28:16.1482260Z FAIL	github.com/zintus/flowerss-bot/internal/i18n	0.024s
+2025-05-21T20:28:16.1482520Z === RUN   Test_genHashID
+2025-05-21T20:28:16.1482730Z === RUN   Test_genHashID/case1
+2025-05-21T20:28:16.1482960Z === RUN   Test_genHashID/case2
+2025-05-21T20:28:16.1483330Z --- PASS: Test_genHashID (0.00s)
+2025-05-21T20:28:16.1483580Z     --- PASS: Test_genHashID/case1 (0.00s)
+2025-05-21T20:28:16.1483920Z     --- PASS: Test_genHashID/case2 (0.00s)
+2025-05-21T20:28:16.1484210Z PASS
+2025-05-21T20:28:16.1484420Z coverage: 100.0% of statements
+2025-05-21T20:28:16.1484840Z ok  	github.com/zintus/flowerss-bot/internal/model	0.022s	coverage: 100.0% of statements
+2025-05-21T20:28:17.0302770Z # github.com/zintus/flowerss-bot/internal/storage.test
+2025-05-21T20:28:17.0304160Z ld: warning: '/private/var/folders/w5/_8wgjw3j5cg6mgrth3s2kg9m0000gn/T/go-link-1538073471/go.o' has malformed LC_DYSYMTAB, expected 125 undefined symbols to start at index 16080, found 245 undefined symbols starting at index 71
+2025-05-21T20:28:17.1129800Z === RUN   TestContentStorageImpl
+2025-05-21T20:28:17.1130150Z 
+2025-05-21T20:28:17.1131160Z 2025/05/21 20:28:17 [32m/Users/runner/go/pkg/mod/gorm.io/driver/sqlite@v1.3.6/migrator.go:33
+2025-05-21T20:28:17.1131910Z [0m[33m[0.044ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="contents"
+2025-05-21T20:28:17.1132240Z 
+2025-05-21T20:28:17.1132620Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/content.go:20
+2025-05-21T20:28:17.1133670Z [0m[33m[0.179ms] [34;1m[rows:0][0m CREATE TABLE `contents` (`source_id` integer,`hash_id` text,`raw_id` text,`raw_link` text,`title` text,`telegraph_url` text,`created_at` datetime,`updated_at` datetime,PRIMARY KEY (`hash_id`))
+2025-05-21T20:28:17.1134720Z === RUN   TestContentStorageImpl/add_content
+2025-05-21T20:28:17.1134930Z 
+2025-05-21T20:28:17.1135280Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/content.go:32
+2025-05-21T20:28:17.1136400Z [0m[33m[0.302ms] [34;1m[rows:1][0m INSERT INTO `contents` (`source_id`,`raw_id`,`raw_link`,`title`,`telegraph_url`,`created_at`,`updated_at`,`hash_id`) VALUES (1,"","","","","2025-05-21 20:28:17.052","2025-05-21 20:28:17.052","id") RETURNING `hash_id`
+2025-05-21T20:28:17.1136970Z 
+2025-05-21T20:28:17.1137340Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/content.go:32
+2025-05-21T20:28:17.1138360Z [0m[33m[0.139ms] [34;1m[rows:1][0m INSERT INTO `contents` (`source_id`,`raw_id`,`raw_link`,`title`,`telegraph_url`,`created_at`,`updated_at`,`hash_id`) VALUES (1,"","","","","2025-05-21 20:28:17.053","2025-05-21 20:28:17.053","id2") RETURNING `hash_id`
+2025-05-21T20:28:17.1139050Z === RUN   TestContentStorageImpl/hash_id_exist
+2025-05-21T20:28:17.1139230Z 
+2025-05-21T20:28:17.1139560Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/content.go:41
+2025-05-21T20:28:17.1140130Z [0m[33m[0.082ms] [34;1m[rows:1][0m SELECT count(*) FROM `contents` WHERE hash_id = "id"
+2025-05-21T20:28:17.1140480Z === RUN   TestContentStorageImpl/del_content
+2025-05-21T20:28:17.1140640Z 
+2025-05-21T20:28:17.1140990Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/content.go:24
+2025-05-21T20:28:17.1141510Z [0m[33m[0.087ms] [34;1m[rows:2][0m DELETE FROM `contents` WHERE source_id = 1
+2025-05-21T20:28:17.1141860Z === RUN   TestContentStorageImpl/hash_id_exist2
+2025-05-21T20:28:17.1142050Z 
+2025-05-21T20:28:17.1142370Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/content.go:41
+2025-05-21T20:28:17.1142970Z [0m[33m[0.043ms] [34;1m[rows:1][0m SELECT count(*) FROM `contents` WHERE hash_id = "id"
+2025-05-21T20:28:17.1143330Z --- PASS: TestContentStorageImpl (0.00s)
+2025-05-21T20:28:17.1143710Z     --- PASS: TestContentStorageImpl/add_content (0.00s)
+2025-05-21T20:28:17.1144120Z     --- PASS: TestContentStorageImpl/hash_id_exist (0.00s)
+2025-05-21T20:28:17.1144780Z     --- PASS: TestContentStorageImpl/del_content (0.00s)
+2025-05-21T20:28:17.1145200Z     --- PASS: TestContentStorageImpl/hash_id_exist2 (0.00s)
+2025-05-21T20:28:17.1145500Z === RUN   TestSourceStorageImpl
+2025-05-21T20:28:17.1145640Z 
+2025-05-21T20:28:17.1145970Z 2025/05/21 20:28:17 [32m/Users/runner/go/pkg/mod/gorm.io/driver/sqlite@v1.3.6/migrator.go:33
+2025-05-21T20:28:17.1146570Z [0m[33m[0.040ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="sources"
+2025-05-21T20:28:17.1146960Z 
+2025-05-21T20:28:17.1147330Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:22
+2025-05-21T20:28:17.1148200Z [0m[33m[0.069ms] [34;1m[rows:0][0m CREATE TABLE `sources` (`id` integer,`link` text,`title` text,`error_count` integer,`created_at` datetime,`updated_at` datetime,PRIMARY KEY (`id`))
+2025-05-21T20:28:17.1148810Z === RUN   TestSourceStorageImpl/add_source
+2025-05-21T20:28:17.1148960Z 
+2025-05-21T20:28:17.1149290Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:26
+2025-05-21T20:28:17.1150210Z [0m[33m[0.196ms] [34;1m[rows:1][0m INSERT INTO `sources` (`link`,`title`,`error_count`,`created_at`,`updated_at`) VALUES ("http://google.com","",0,"2025-05-21 20:28:17.057","2025-05-21 20:28:17.057") RETURNING `id`
+2025-05-21T20:28:17.1150740Z 
+2025-05-21T20:28:17.1151090Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:35
+2025-05-21T20:28:17.1151820Z [0m[33m[0.092ms] [34;1m[rows:1][0m SELECT * FROM `sources` WHERE `sources`.`id` = 1 ORDER BY `sources`.`id` LIMIT 1
+2025-05-21T20:28:17.1152420Z 
+2025-05-21T20:28:17.1152760Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:60
+2025-05-21T20:28:17.1153450Z [0m[33m[0.070ms] [34;1m[rows:1][0m SELECT * FROM `sources` WHERE `sources`.`link` = "http://google.com" ORDER BY `sources`.`id` LIMIT 1
+2025-05-21T20:28:17.1153810Z 
+2025-05-21T20:28:17.1154160Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:71
+2025-05-21T20:28:17.1154690Z [0m[33m[0.064ms] [34;1m[rows:1][0m DELETE FROM `sources` WHERE id = 1
+2025-05-21T20:28:17.1154900Z 
+2025-05-21T20:28:17.1155310Z 2025/05/21 20:28:17 [31;1m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:35 [35;1mrecord not found
+2025-05-21T20:28:17.1156050Z [0m[33m[0.042ms] [34;1m[rows:0][0m SELECT * FROM `sources` WHERE `sources`.`id` = 1 ORDER BY `sources`.`id` LIMIT 1
+2025-05-21T20:28:17.1156460Z === RUN   TestSourceStorageImpl/update_source
+2025-05-21T20:28:17.1156630Z 
+2025-05-21T20:28:17.1156940Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:80
+2025-05-21T20:28:17.1157840Z [0m[33m[0.136ms] [34;1m[rows:0][0m UPDATE `sources` SET `link`="http://google.com",`title`="title",`error_count`=0,`created_at`="0000-00-00 00:00:00",`updated_at`="2025-05-21 20:28:17.057" WHERE id = 1 AND `id` = 1
+2025-05-21T20:28:17.1158340Z 
+2025-05-21T20:28:17.1158680Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:80
+2025-05-21T20:28:17.1159280Z [0m[33m[0.051ms] [34;1m[rows:0][0m SELECT * FROM `sources` WHERE id = 1 AND `id` = 1 LIMIT 1
+2025-05-21T20:28:17.1159560Z 
+2025-05-21T20:28:17.1159870Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:80
+2025-05-21T20:28:17.1160890Z [0m[33m[0.135ms] [34;1m[rows:1][0m INSERT INTO `sources` (`link`,`title`,`error_count`,`created_at`,`updated_at`,`id`) VALUES ("http://google.com","title",0,"2025-05-21 20:28:17.058","2025-05-21 20:28:17.057",1) RETURNING `id`
+2025-05-21T20:28:17.1161420Z 
+2025-05-21T20:28:17.1161730Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:80
+2025-05-21T20:28:17.1162930Z [0m[33m[0.109ms] [34;1m[rows:1][0m UPDATE `sources` SET `link`="http://google.com",`title`="title2",`error_count`=0,`created_at`="2025-05-21 20:28:17.058",`updated_at`="2025-05-21 20:28:17.058" WHERE id = 1 AND `id` = 1
+2025-05-21T20:28:17.1163450Z 
+2025-05-21T20:28:17.1163800Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/source.go:35
+2025-05-21T20:28:17.1164400Z [0m[33m[0.070ms] [34;1m[rows:1][0m SELECT * FROM `sources` WHERE `sources`.`id` = 1 ORDER BY `sources`.`id` LIMIT 1
+2025-05-21T20:28:17.1164810Z --- PASS: TestSourceStorageImpl (0.00s)
+2025-05-21T20:28:17.1165160Z     --- PASS: TestSourceStorageImpl/add_source (0.00s)
+2025-05-21T20:28:17.1165570Z     --- PASS: TestSourceStorageImpl/update_source (0.00s)
+2025-05-21T20:28:17.1165840Z === RUN   TestSubscriptionStorageImpl
+2025-05-21T20:28:17.1166000Z 
+2025-05-21T20:28:17.1166310Z 2025/05/21 20:28:17 [32m/Users/runner/go/pkg/mod/gorm.io/driver/sqlite@v1.3.6/migrator.go:33
+2025-05-21T20:28:17.1166900Z [0m[33m[0.020ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="subscribes"
+2025-05-21T20:28:17.1167210Z 
+2025-05-21T20:28:17.1167550Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:22
+2025-05-21T20:28:17.1168730Z [0m[33m[0.049ms] [34;1m[rows:0][0m CREATE TABLE `subscribes` (`id` integer,`user_id` integer,`source_id` integer,`enable_notification` integer,`enable_telegraph` integer,`tag` text,`interval` integer,`wait_time` integer,`created_at` datetime,`updated_at` datetime,PRIMARY KEY (`id`))
+2025-05-21T20:28:17.1169680Z === RUN   TestSubscriptionStorageImpl/add_subscription
+2025-05-21T20:28:17.1169880Z 
+2025-05-21T20:28:17.1170220Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:26
+2025-05-21T20:28:17.1171470Z [0m[33m[0.171ms] [34;1m[rows:1][0m INSERT INTO `subscribes` (`user_id`,`source_id`,`enable_notification`,`enable_telegraph`,`tag`,`interval`,`wait_time`,`created_at`,`updated_at`) VALUES (100,1,1,0,"",0,0,"2025-05-21 20:28:17.06","2025-05-21 20:28:17.06") RETURNING `id`
+2025-05-21T20:28:17.1172060Z 
+2025-05-21T20:28:17.1172370Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:26
+2025-05-21T20:28:17.1173400Z [0m[33m[0.125ms] [34;1m[rows:1][0m INSERT INTO `subscribes` (`user_id`,`source_id`,`enable_notification`,`enable_telegraph`,`tag`,`interval`,`wait_time`,`created_at`,`updated_at`) VALUES (101,1,1,0,"",0,0,"2025-05-21 20:28:17.06","2025-05-21 20:28:17.06") RETURNING `id`
+2025-05-21T20:28:17.1174000Z 
+2025-05-21T20:28:17.1174400Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:26
+2025-05-21T20:28:17.1175420Z [0m[33m[0.124ms] [34;1m[rows:1][0m INSERT INTO `subscribes` (`user_id`,`source_id`,`enable_notification`,`enable_telegraph`,`tag`,`interval`,`wait_time`,`created_at`,`updated_at`) VALUES (100,2,1,0,"",0,0,"2025-05-21 20:28:17.061","2025-05-21 20:28:17.061") RETURNING `id`
+2025-05-21T20:28:17.1176050Z 
+2025-05-21T20:28:17.1176390Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:26
+2025-05-21T20:28:17.1177390Z [0m[33m[0.108ms] [34;1m[rows:1][0m INSERT INTO `subscribes` (`user_id`,`source_id`,`enable_notification`,`enable_telegraph`,`tag`,`interval`,`wait_time`,`created_at`,`updated_at`) VALUES (101,2,1,0,"",0,0,"2025-05-21 20:28:17.061","2025-05-21 20:28:17.061") RETURNING `id`
+2025-05-21T20:28:17.1177980Z 
+2025-05-21T20:28:17.1178300Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:26
+2025-05-21T20:28:17.1179320Z [0m[33m[0.132ms] [34;1m[rows:1][0m INSERT INTO `subscribes` (`user_id`,`source_id`,`enable_notification`,`enable_telegraph`,`tag`,`interval`,`wait_time`,`created_at`,`updated_at`) VALUES (101,3,1,0,"",0,0,"2025-05-21 20:28:17.061","2025-05-21 20:28:17.061") RETURNING `id`
+2025-05-21T20:28:17.1179910Z 
+2025-05-21T20:28:17.1180450Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:128
+2025-05-21T20:28:17.1180980Z [0m[33m[0.032ms] [34;1m[rows:1][0m SELECT count(*) FROM `subscribes`
+2025-05-21T20:28:17.1181190Z 
+2025-05-21T20:28:17.1181520Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:35
+2025-05-21T20:28:17.1182090Z [0m[33m[0.041ms] [34;1m[rows:1][0m SELECT count(*) FROM `subscribes` WHERE user_id = 101 and source_id = 1
+2025-05-21T20:28:17.1182410Z 
+2025-05-21T20:28:17.1182730Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:46
+2025-05-21T20:28:17.1183380Z [0m[33m[0.115ms] [34;1m[rows:1][0m SELECT * FROM `subscribes` WHERE user_id = 101 and source_id = 1 ORDER BY `subscribes`.`id` LIMIT 1
+2025-05-21T20:28:17.1183710Z 
+2025-05-21T20:28:17.1184160Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:65
+2025-05-21T20:28:17.1184860Z [0m[33m[0.170ms] [34;1m[rows:3][0m SELECT * FROM `subscribes` WHERE `subscribes`.`user_id` = 101 ORDER BY created_at desc LIMIT 3
+2025-05-21T20:28:17.1185180Z 
+2025-05-21T20:28:17.1185490Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:65
+2025-05-21T20:28:17.1186210Z [0m[33m[0.093ms] [34;1m[rows:1][0m SELECT * FROM `subscribes` WHERE `subscribes`.`user_id` = 101 ORDER BY created_at desc LIMIT 2 OFFSET 2
+2025-05-21T20:28:17.1186570Z 
+2025-05-21T20:28:17.1186910Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:92
+2025-05-21T20:28:17.1187540Z [0m[33m[0.124ms] [34;1m[rows:2][0m SELECT * FROM `subscribes` WHERE `subscribes`.`source_id` = 1 ORDER BY created_at desc LIMIT 3
+2025-05-21T20:28:17.1188030Z 
+2025-05-21T20:28:17.1188390Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:65
+2025-05-21T20:28:17.1189110Z [0m[33m[0.048ms] [34;1m[rows:0][0m SELECT * FROM `subscribes` WHERE `subscribes`.`user_id` = 1 ORDER BY created_at desc LIMIT 2 OFFSET 2
+2025-05-21T20:28:17.1189460Z 
+2025-05-21T20:28:17.1189780Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:138
+2025-05-21T20:28:17.1190340Z [0m[33m[0.073ms] [34;1m[rows:1][0m DELETE FROM `subscribes` WHERE user_id = 101 and source_id = 1
+2025-05-21T20:28:17.1190580Z 
+2025-05-21T20:28:17.1190890Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:35
+2025-05-21T20:28:17.1191440Z [0m[33m[0.037ms] [34;1m[rows:1][0m SELECT count(*) FROM `subscribes` WHERE user_id = 101 and source_id = 1
+2025-05-21T20:28:17.1191740Z 
+2025-05-21T20:28:17.1192160Z 2025/05/21 20:28:17 [31;1m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:46 [35;1mrecord not found
+2025-05-21T20:28:17.1192880Z [0m[33m[0.045ms] [34;1m[rows:0][0m SELECT * FROM `subscribes` WHERE user_id = 101 and source_id = 1 ORDER BY `subscribes`.`id` LIMIT 1
+2025-05-21T20:28:17.1193190Z 
+2025-05-21T20:28:17.1193510Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:128
+2025-05-21T20:28:17.1194030Z [0m[33m[0.027ms] [34;1m[rows:1][0m SELECT count(*) FROM `subscribes`
+2025-05-21T20:28:17.1194230Z 
+2025-05-21T20:28:17.1194550Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:147
+2025-05-21T20:28:17.1195140Z [0m[33m[0.030ms] [34;1m[rows:1][0m SELECT count(*) FROM `subscribes` WHERE source_id = 2
+2025-05-21T20:28:17.1195490Z === RUN   TestSubscriptionStorageImpl/update_subscription
+2025-05-21T20:28:17.1195680Z 
+2025-05-21T20:28:17.1195980Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:159
+2025-05-21T20:28:17.1196860Z [0m[33m[0.106ms] [34;1m[rows:0][0m UPDATE `subscribes` SET `id`=10001,`user_id`=1002,`source_id`=1000,`enable_notification`=1,`updated_at`="2025-05-21 20:28:17.062" WHERE user_id = 1002 and source_id = 1000
+2025-05-21T20:28:17.1197530Z 
+2025-05-21T20:28:17.1197860Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:26
+2025-05-21T20:28:17.1198920Z [0m[33m[0.121ms] [34;1m[rows:1][0m INSERT INTO `subscribes` (`user_id`,`source_id`,`enable_notification`,`enable_telegraph`,`tag`,`interval`,`wait_time`,`created_at`,`updated_at`,`id`) VALUES (1002,1000,1,0,"",0,0,"2025-05-21 20:28:17.063","2025-05-21 20:28:17.063",10001) RETURNING `id`
+2025-05-21T20:28:17.1199620Z 
+2025-05-21T20:28:17.1199970Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:159
+2025-05-21T20:28:17.1201020Z [0m[33m[0.112ms] [34;1m[rows:1][0m UPDATE `subscribes` SET `id`=10001,`user_id`=1002,`source_id`=1000,`enable_notification`=1,`tag`="tag",`created_at`="2025-05-21 20:28:17.063",`updated_at`="2025-05-21 20:28:17.063" WHERE (user_id = 1002 and source_id = 1000) AND `id` = 10001
+2025-05-21T20:28:17.1201620Z 
+2025-05-21T20:28:17.1201940Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:46
+2025-05-21T20:28:17.1202610Z [0m[33m[0.105ms] [34;1m[rows:1][0m SELECT * FROM `subscribes` WHERE user_id = 1002 and source_id = 1000 ORDER BY `subscribes`.`id` LIMIT 1
+2025-05-21T20:28:17.1203050Z === RUN   TestSubscriptionStorageImpl/upsert_subscription
+2025-05-21T20:28:17.1203230Z 
+2025-05-21T20:28:17.1203550Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:174
+2025-05-21T20:28:17.1204650Z [0m[33m[0.130ms] [34;1m[rows:1][0m UPDATE `subscribes` SET `id`=10001,`user_id`=1002,`source_id`=1000,`enable_notification`=1,`enable_telegraph`=0,`tag`="",`interval`=0,`wait_time`=0,`created_at`="0000-00-00 00:00:00",`updated_at`="2025-05-21 20:28:17.063" WHERE (user_id = 1002 and source_id = 1000) AND `id` = 10001
+2025-05-21T20:28:17.1205460Z 
+2025-05-21T20:28:17.1205950Z 2025/05/21 20:28:17 [31;1m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:26 [35;1mUNIQUE constraint failed: subscribes.id
+2025-05-21T20:28:17.1207110Z [0m[33m[0.126ms] [34;1m[rows:0][0m INSERT INTO `subscribes` (`user_id`,`source_id`,`enable_notification`,`enable_telegraph`,`tag`,`interval`,`wait_time`,`created_at`,`updated_at`,`id`) VALUES (1002,1000,1,0,"",0,0,"2025-05-21 20:28:17.063","2025-05-21 20:28:17.063",10001) RETURNING `id`
+2025-05-21T20:28:17.1207720Z 
+2025-05-21T20:28:17.1208030Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:174
+2025-05-21T20:28:17.1209150Z [0m[33m[0.117ms] [34;1m[rows:1][0m UPDATE `subscribes` SET `id`=10001,`user_id`=1002,`source_id`=1000,`enable_notification`=1,`enable_telegraph`=0,`tag`="tag",`interval`=0,`wait_time`=0,`created_at`="2025-05-21 20:28:17.063",`updated_at`="2025-05-21 20:28:17.063" WHERE (user_id = 1002 and source_id = 1000) AND `id` = 10001
+2025-05-21T20:28:17.1209880Z 
+2025-05-21T20:28:17.1210190Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/subscription.go:46
+2025-05-21T20:28:17.1210840Z [0m[33m[0.103ms] [34;1m[rows:1][0m SELECT * FROM `subscribes` WHERE user_id = 1002 and source_id = 1000 ORDER BY `subscribes`.`id` LIMIT 1
+2025-05-21T20:28:17.1211260Z --- PASS: TestSubscriptionStorageImpl (0.01s)
+2025-05-21T20:28:17.1211650Z     --- PASS: TestSubscriptionStorageImpl/add_subscription (0.00s)
+2025-05-21T20:28:17.1212100Z     --- PASS: TestSubscriptionStorageImpl/update_subscription (0.00s)
+2025-05-21T20:28:17.1212540Z     --- PASS: TestSubscriptionStorageImpl/upsert_subscription (0.00s)
+2025-05-21T20:28:17.1212820Z === RUN   TestUserStorageImpl
+2025-05-21T20:28:17.1212940Z 
+2025-05-21T20:28:17.1213200Z 2025/05/21 20:28:17 [32m/Users/runner/go/pkg/mod/gorm.io/driver/sqlite@v1.3.6/migrator.go:33
+2025-05-21T20:28:17.1213750Z [0m[33m[0.017ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="users"
+2025-05-21T20:28:17.1214020Z 
+2025-05-21T20:28:17.1214450Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/user.go:21
+2025-05-21T20:28:17.1215200Z [0m[33m[0.040ms] [34;1m[rows:0][0m CREATE TABLE `users` (`id` integer,`language_code` text DEFAULT "en",`created_at` datetime,`updated_at` datetime,PRIMARY KEY (`id`))
+2025-05-21T20:28:17.1215700Z === RUN   TestUserStorageImpl/save_user
+2025-05-21T20:28:17.1215840Z 
+2025-05-21T20:28:17.1216130Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/user.go:25
+2025-05-21T20:28:17.1216990Z [0m[33m[0.122ms] [34;1m[rows:1][0m INSERT INTO `users` (`language_code`,`created_at`,`updated_at`,`id`) VALUES ("en","2025-05-21 20:28:17.065","2025-05-21 20:28:17.065",123) RETURNING `id`
+2025-05-21T20:28:17.1217480Z === RUN   TestUserStorageImpl/get_user
+2025-05-21T20:28:17.1217610Z 
+2025-05-21T20:28:17.1217890Z 2025/05/21 20:28:17 [32m/Users/runner/work/flowerss-bot/flowerss-bot/internal/storage/user.go:34
+2025-05-21T20:28:17.1218430Z [0m[33m[0.067ms] [34;1m[rows:1][0m SELECT * FROM `users` WHERE `users`.`id` = 123 ORDER BY `users`.`id` LIMIT 1
+2025-05-21T20:28:17.1218750Z --- PASS: TestUserStorageImpl (0.00s)
+2025-05-21T20:28:17.1219030Z     --- PASS: TestUserStorageImpl/save_user (0.00s)
+2025-05-21T20:28:17.1219330Z     --- PASS: TestUserStorageImpl/get_user (0.00s)
+2025-05-21T20:28:17.1219510Z PASS
+2025-05-21T20:28:17.1219630Z coverage: 70.9% of statements
+2025-05-21T20:28:17.1219990Z ok  	github.com/zintus/flowerss-bot/internal/storage	0.081s	coverage: 70.9% of statements
+2025-05-21T20:28:17.1220300Z === RUN   TestHttpClient_Get
+2025-05-21T20:28:17.1220470Z === RUN   TestHttpClient_Get/get
+2025-05-21T20:28:17.1220830Z === CONT  TestHttpClient_Get
+2025-05-21T20:28:17.1221050Z     http_test.go:16: Method: GET
+2025-05-21T20:28:17.1221260Z     http_test.go:17: Path: /
+2025-05-21T20:28:17.1221450Z === RUN   TestHttpClient_Get/custom_client_user-agent
+2025-05-21T20:28:17.1221670Z === CONT  TestHttpClient_Get
+2025-05-21T20:28:17.1222010Z     http_test.go:16: Method: GET
+2025-05-21T20:28:17.1222250Z     http_test.go:17: Path: /useragent
+2025-05-21T20:28:17.1222470Z === CONT  TestHttpClient_Get/custom_client_user-agent
+2025-05-21T20:28:17.1223100Z     http_test.go:58: Got: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+2025-05-21T20:28:17.1223510Z === RUN   TestHttpClient_Get/custom_get_user-agent
+2025-05-21T20:28:17.1223710Z === CONT  TestHttpClient_Get
+2025-05-21T20:28:17.1223930Z     http_test.go:16: Method: GET
+2025-05-21T20:28:17.1224180Z     http_test.go:17: Path: /useragent
+2025-05-21T20:28:17.1224410Z === CONT  TestHttpClient_Get/custom_get_user-agent
+2025-05-21T20:28:17.1225030Z     http_test.go:72: Got: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+2025-05-21T20:28:17.1225410Z === RUN   TestHttpClient_Get/timeout
+2025-05-21T20:28:17.1225590Z === CONT  TestHttpClient_Get
+2025-05-21T20:28:17.1225810Z     http_test.go:16: Method: GET
+2025-05-21T20:28:17.1226030Z     http_test.go:17: Path: /timeout
+2025-05-21T20:28:17.1226270Z     http_test.go:16: Method: GET
+2025-05-21T20:28:17.1226490Z     http_test.go:17: Path: /timeout
+2025-05-21T20:28:17.1226670Z --- PASS: TestHttpClient_Get (1.01s)
+2025-05-21T20:28:17.1226940Z     --- PASS: TestHttpClient_Get/get (0.00s)
+2025-05-21T20:28:17.1227280Z     --- PASS: TestHttpClient_Get/custom_client_user-agent (0.00s)
+2025-05-21T20:28:17.1227640Z     --- PASS: TestHttpClient_Get/custom_get_user-agent (0.00s)
+2025-05-21T20:28:17.1227950Z     --- PASS: TestHttpClient_Get/timeout (1.00s)
+2025-05-21T20:28:17.1228120Z PASS
+2025-05-21T20:28:17.1228250Z coverage: 79.3% of statements
+2025-05-21T20:28:17.1228530Z ok  	github.com/zintus/flowerss-bot/pkg/client	1.035s	coverage: 79.3% of statements
+2025-05-21T20:28:17.1742150Z ##[error]Process completed with exit code 1.
+2025-05-21T20:28:17.1803080Z Post job cleanup.
+2025-05-21T20:28:17.3964490Z [command]/opt/homebrew/bin/git version
+2025-05-21T20:28:17.4148160Z git version 2.49.0
+2025-05-21T20:28:17.4189670Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/727038ec-5b1e-4f8c-92f7-30c8d33c7369/.gitconfig'
+2025-05-21T20:28:17.4200920Z Temporarily overriding HOME='/Users/runner/work/_temp/727038ec-5b1e-4f8c-92f7-30c8d33c7369' before making global git config changes
+2025-05-21T20:28:17.4237250Z Adding repository directory to the temporary git global config as a safe directory
+2025-05-21T20:28:17.4238000Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/flowerss-bot/flowerss-bot
+2025-05-21T20:28:17.4289660Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-05-21T20:28:17.4332300Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-05-21T20:28:17.4963770Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-05-21T20:28:17.5001290Z http.https://github.com/.extraheader
+2025-05-21T20:28:17.5009010Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-05-21T20:28:17.5051040Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-05-21T20:28:17.5900800Z Cleaning up orphan processes

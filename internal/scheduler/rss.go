@@ -108,10 +108,14 @@ func (t *RssUpdateTask) getSourceNewContents(source *model.Source) ([]*model.Con
 	rssFeed, err := t.feedParser.ParseFromURL(context.Background(), source.Link)
 	if err != nil {
 		log.Errorf("unable to fetch feed, source %#v, err %v", source, err)
-		t.core.SourceErrorCountIncr(context.Background(), source.ID)
+		if incrErr := t.core.SourceErrorCountIncr(context.Background(), source.ID); incrErr != nil {
+			log.Errorf("failed to increment source error count: %v", incrErr)
+		}
 		return nil, err
 	}
-	t.core.ClearSourceErrorCount(context.Background(), source.ID)
+	if clearErr := t.core.ClearSourceErrorCount(context.Background(), source.ID); clearErr != nil {
+		log.Errorf("failed to clear source error count: %v", clearErr)
+	}
 
 	newContents, err := t.saveNewContents(source, rssFeed.Items)
 	if err != nil {
