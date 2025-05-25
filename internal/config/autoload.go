@@ -38,7 +38,7 @@ func init() {
 
 	if *printVersionFlag {
 		// print version
-		fmt.Printf(AppVersionInfo("en"))
+		fmt.Print(AppVersionInfo("en"))
 		os.Exit(0)
 	}
 

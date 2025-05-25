@@ -338,12 +338,9 @@ func TestLanguageHandler_Handle(t *testing.T) {
 				return ctx.Reply(successMsg)
 			}
 
-			err := handleFunc(mockCtx)
-			if err != nil {
-				// The handler itself might return nil even if it sends an error message to the user.
-				// We check lastSentMessage/lastRepliedMessage for actual output.
-				// t.Logf("Handler returned an error: %v (this might be okay if an error message was sent)", err)
-			}
+			_ = handleFunc(mockCtx)
+			// The handler itself might return nil even if it sends an error message to the user.
+			// We check lastSentMessage/lastRepliedMessage for actual output.
 
 			var outputMessage string
 			if mockCtx.lastSentMessage != "" {

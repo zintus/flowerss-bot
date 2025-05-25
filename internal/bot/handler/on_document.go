@@ -112,7 +112,6 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 			log.Infof("%d subscribe [%d]%s %s", ctx.Chat().ID, source.ID, source.Title, source.Link)
 			successImportList[successIndex] = outline
 			successIndex++
-			return
 		}()
 	}
 	wg.Wait()

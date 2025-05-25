@@ -18,7 +18,9 @@
       "Bash(go:*)",
       "Bash(find:*)",
       "Bash(rg:*)",
-      "Bash(/usr/bin/git add -A)"
+      "Bash(/usr/bin/git add -A)",
+      "Bash(docker run:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }
