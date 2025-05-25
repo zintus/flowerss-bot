@@ -99,14 +99,18 @@ func (l *ListSubscription) replaySubscribedSources(ctx tb.Context, sources []*mo
 		msg.WriteString(fmt.Sprintf("[[%d]] [%s](%s)\n", sources[i].ID, sources[i].Title, sources[i].Link))
 		count++
 		if count == MaxSubsSizePerPage {
-			ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown})
+			if err := ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown}); err != nil {
+				log.Errorf("failed to send subscription list page: %v", err)
+			}
 			count = 0
 			msg.Reset()
 		}
 	}
 
 	if count != 0 {
-		ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown})
+		if err := ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown}); err != nil {
+			log.Errorf("failed to send final subscription list page: %v", err)
+		}
 	}
 	return nil
 }

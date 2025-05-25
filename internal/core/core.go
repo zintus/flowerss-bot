@@ -85,6 +85,10 @@ func NewCoreFormConfig() *Core {
 	}
 
 	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatalf("get sql db failed, err: %+v", err)
+		return nil
+	}
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(50)
 
@@ -278,7 +282,11 @@ func (c *Core) CreateSource(ctx context.Context, sourceURL string) (*model.Sourc
 		log.Errorf("add source failed, %v", err)
 		return nil, err
 	}
-	defer c.ClearSourceErrorCount(ctx, s.ID)
+	defer func() {
+		if clearErr := c.ClearSourceErrorCount(ctx, s.ID); clearErr != nil {
+			log.Errorf("failed to clear source error count: %v", clearErr)
+		}
+	}()
 
 	if _, err := c.AddSourceContents(ctx, s, rssFeed.Items); err != nil {
 		log.Errorf("add source content failed, %v", err)

@@ -29,12 +29,14 @@ func main() {
 	task := scheduler.NewRssTask(appCore)
 	task.Register(b)
 	task.Start()
-	b.Run()
+	if err := b.Run(); err != nil {
+		log.Fatalf("Failed to run bot: %v", err)
+	}
 }
 
 func handleSignal() {
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, os.Kill, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
+	signal.Notify(c, os.Interrupt, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
 
 	<-c
 

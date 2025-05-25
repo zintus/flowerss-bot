@@ -187,7 +187,14 @@ func (b *Bot) BroadcastNews(source *model.Source, subs []*model.Subscribe, conte
 						"title", source.Title,
 						"link", source.Link,
 					)
-					b.core.Unsubscribe(context.Background(), sub.UserID, sub.SourceID)
+					if unsubErr := b.core.Unsubscribe(context.Background(), sub.UserID, sub.SourceID); unsubErr != nil {
+						zap.S().Errorw(
+							"failed to unsubscribe user",
+							"error", unsubErr.Error(),
+							"user id", sub.UserID,
+							"source id", sub.SourceID,
+						)
+					}
 				}
 
 				/*
