@@ -23,6 +23,21 @@ type Bot struct {
 	tb   *tb.Bot // telebot.Bot instance
 }
 
+// logCommand wraps a command handler and logs each dispatch.
+func logCommand(cmd string, handler func(tb.Context) error) func(tb.Context) error {
+	return func(c tb.Context) error {
+		var userID, chatID int64
+		if s := c.Sender(); s != nil {
+			userID = s.ID
+		}
+		if ch := c.Chat(); ch != nil {
+			chatID = ch.ID
+		}
+		log.Infof("Command dispatched: %s | user=%d | chat=%d", cmd, userID, chatID)
+		return handler(c)
+	}
+}
+
 func NewBot(core *core.Core) *Bot {
 	log.Infof("init telegram bot, token %s, endpoint %s", config.BotToken, config.TelegramEndpoint)
 	settings := tb.Settings{
@@ -74,7 +89,7 @@ func (b *Bot) registerCommands(appCore *core.Core) error {
 	}
 
 	for _, h := range commandHandlers {
-		b.tb.Handle(h.Command(), h.Handle, h.Middlewares()...)
+		b.tb.Handle(h.Command(), logCommand(h.Command(), h.Handle), h.Middlewares()...)
 	}
 
 	ButtonHandlers := []handler.ButtonHandler{
