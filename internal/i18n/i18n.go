@@ -15,6 +15,7 @@ var (
 
 // LoadTranslations loads translation files from the given directory.
 func LoadTranslations(localeDir string) error {
+	log.Printf("[i18n] Loading translations from directory: %s", localeDir)
 	if translations == nil {
 		translations = make(map[string]map[string]string)
 	}
@@ -23,8 +24,10 @@ func LoadTranslations(localeDir string) error {
 	if err != nil {
 		return fmt.Errorf("error finding translation files: %w", err)
 	}
+	log.Printf("[i18n] Found translation files: %v", files)
 
 	for _, file := range files {
+		log.Printf("[i18n] Processing translation file: %s", file)
 		langCode := filepath.Base(file)
 		langCode = langCode[:len(langCode)-len(filepath.Ext(langCode))] // Remove .json extension
 

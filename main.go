@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 
 	"github.com/zintus/flowerss-bot/internal/bot"
@@ -18,7 +19,34 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := i18n.LoadTranslations("locales"); err != nil {
+	// --- debug info for translation loading ---
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Errorf("Unable to get current working directory: %v", err)
+	} else {
+		log.Infof("Current working directory: %s", cwd)
+	}
+
+	// first try the path used inside the image
+	localeDir := "/opt/flowerss/locales"
+	// when running outside a container fall back to project-relative “locales”
+	if _, err := os.Stat(localeDir); os.IsNotExist(err) {
+		localeDir = "locales"
+	}
+	absLocaleDir, err := filepath.Abs(localeDir)
+	if err != nil {
+		log.Errorf("Unable to resolve absolute path for %q: %v", localeDir, err)
+		absLocaleDir = localeDir // fall-back
+	}
+	if _, err := os.Stat(absLocaleDir); os.IsNotExist(err) {
+		log.Infof("Locale directory DOES NOT exist: %s", absLocaleDir)
+	} else if err != nil {
+		log.Errorf("Error checking locale directory: %v", err)
+	} else {
+		log.Infof("Locale directory exists: %s", absLocaleDir)
+	}
+
+	if err := i18n.LoadTranslations(absLocaleDir); err != nil {
 		log.Fatalf("Failed to load translations: %v", err)
 	}
 	log.Infof("Translations loaded.")
