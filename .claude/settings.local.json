@@ -1,27 +1,35 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(gh pr view:*)",
-      "Bash(go test:*)",
-      "Bash(go build:*)",
-      "Bash(go mod:*)",
-      "Bash(gofmt:*)",
-      "Bash(go vet:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(golangci-lint run:*)",
-      "Bash(make:*)",
-      "Bash(grep:*)",
-      "Bash(sed:*)",
-      "WebFetch(domain:github.com)",
-      "Bash(go:*)",
-      "Bash(find:*)",
-      "Bash(rg:*)",
-      "Bash(/usr/bin/git add -A)",
-      "Bash(docker run:*)",
-      "Bash(ls:*)"
-    ],
-    "deny": []
-  }
+    "permissions": {
+        "allow": [
+            "Bash(gh pr view:*)",
+            "Bash(go test:*)",
+            "Bash(go build:*)",
+            "Bash(go mod:*)",
+            "Bash(gofmt:*)",
+            "Bash(go vet:*)",
+            "Bash(git add:*)",
+            "Bash(git commit:*)",
+            "Bash(git push:*)",
+            "Bash(golangci-lint run:*)",
+            "Bash(make:*)",
+            "Bash(grep:*)",
+            "Bash(sed:*)",
+            "WebFetch(domain:github.com)",
+            "Bash(go:*)",
+            "Bash(find:*)",
+            "Bash(rg:*)",
+            "Bash(/usr/bin/git add -A)",
+            "Bash(docker run:*)",
+            "Bash(ls:*)",
+            "mcp__aider_mcp__launch_code_editing_agent",
+            "Bash(git add:*)",
+            "Bash(/usr/bin/git add .claude/settings.local.json)",
+            "Bash(/usr/bin/git status)",
+            "Bash(ls:*)",
+            "Bash(go test:*)",
+            "Bash(go run:*)",
+            "Bash(go build:*)"
+        ],
+        "deny": []
+    }
 }
