@@ -8,6 +8,7 @@ RUN apk add git make gcc libc-dev && \
 FROM --platform=linux/amd64 alpine
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /flowerss/flowerss-bot /bin/
+COPY --from=builder /flowerss/locales /root/.flowerss/locales
 VOLUME /root/.flowerss
 WORKDIR /root/.flowerss
 ENTRYPOINT ["/bin/flowerss-bot"]
