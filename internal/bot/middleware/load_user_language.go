@@ -36,7 +36,7 @@ func LoadUserLanguage(appCore *core.Core) tb.MiddlewareFunc {
 						ID: userID,
 						// LanguageCode will be set to 'en' by default in DB (due to model tag)
 					}
-					// appCore.CreateUser calls storage.CrateUser
+					// appCore.CreateUser ultimately calls storage.CreateUser
 					if createErr := appCore.CreateUser(context.Background(), newUser); createErr != nil {
 						log.Errorf("Failed to create user %d: %v", userID, createErr)
 						// Even if creation fails, set a default lang and continue
@@ -51,17 +51,17 @@ func LoadUserLanguage(appCore *core.Core) tb.MiddlewareFunc {
 					c.Set(util.UserLanguageKey, util.DefaultLanguage) // Safest to set 'en' as it's the default
 					return next(c)
 				}
-				
+
 				log.Errorf("Failed to get user %d: %v. Using default language.", userID, err)
 				c.Set(util.UserLanguageKey, util.DefaultLanguage)
 				return next(c)
 			}
 
 			if user.LanguageCode == "" {
-				 log.Warnf("User %d has empty LanguageCode, defaulting to 'en'. Consider updating user record.", userID)
-				 c.Set(util.UserLanguageKey, util.DefaultLanguage)
+				log.Warnf("User %d has empty LanguageCode, defaulting to 'en'. Consider updating user record.", userID)
+				c.Set(util.UserLanguageKey, util.DefaultLanguage)
 			} else {
-				 c.Set(util.UserLanguageKey, user.LanguageCode)
+				c.Set(util.UserLanguageKey, user.LanguageCode)
 			}
 			return next(c)
 		}

@@ -21,7 +21,7 @@ func (s *UserStorageImpl) Init(ctx context.Context) error {
 	return s.db.Migrator().AutoMigrate(&model.User{})
 }
 
-func (s *UserStorageImpl) CrateUser(ctx context.Context, user *model.User) error {
+func (s *UserStorageImpl) CreateUser(ctx context.Context, user *model.User) error {
 	result := s.db.WithContext(ctx).Create(user)
 	if result.Error != nil {
 		return result.Error

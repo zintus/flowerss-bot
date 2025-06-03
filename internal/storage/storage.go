@@ -21,7 +21,7 @@ type Storage interface {
 // User 用户存储接口
 type User interface {
 	Storage
-	CrateUser(ctx context.Context, user *model.User) error
+	CreateUser(ctx context.Context, user *model.User) error
 	GetUser(ctx context.Context, id int64) (*model.User, error)
 	SetUserLanguage(ctx context.Context, userID int64, langCode string) error
 }

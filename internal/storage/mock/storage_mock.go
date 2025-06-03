@@ -73,18 +73,18 @@ func (m *MockUser) EXPECT() *MockUserMockRecorder {
 	return m.recorder
 }
 
-// CrateUser mocks base method.
-func (m *MockUser) CrateUser(ctx context.Context, user *model.User) error {
+// CreateUser mocks base method.
+func (m *MockUser) CreateUser(ctx context.Context, user *model.User) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CrateUser", ctx, user)
+	ret := m.ctrl.Call(m, "CreateUser", ctx, user)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// CrateUser indicates an expected call of CrateUser.
-func (mr *MockUserMockRecorder) CrateUser(ctx, user interface{}) *gomock.Call {
+// CreateUser indicates an expected call of CreateUser.
+func (mr *MockUserMockRecorder) CreateUser(ctx, user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CrateUser", reflect.TypeOf((*MockUser)(nil).CrateUser), ctx, user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockUser)(nil).CreateUser), ctx, user)
 }
 
 // GetUser mocks base method.

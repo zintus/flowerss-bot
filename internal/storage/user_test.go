@@ -31,7 +31,7 @@ func TestUserStorageImpl(t *testing.T) {
 
 	t.Run(
 		"save user", func(t *testing.T) {
-			err := s.CrateUser(ctx, user)
+			err := s.CreateUser(ctx, user)
 			assert.Nil(t, err)
 		},
 	)
