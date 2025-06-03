@@ -496,13 +496,11 @@ func (c *Core) GetUser(ctx context.Context, id int64) (*model.User, error) {
 	return user, nil
 }
 
-// Assuming CrateUser in userStorage was a typo and should be CreateUser.
-// If userStorage.CrateUser must be kept, change the call accordingly.
 func (c *Core) CreateUser(ctx context.Context, user *model.User) error {
 	// It's possible that GetUser is called first, and if not found, then CreateUser is called.
 	// Ensure the user object passed in has the ID set.
 	// The LanguageCode will default to 'en' due to the model's GORM tag.
-	return c.userStorage.CrateUser(ctx, user) // Use CrateUser to match existing storage method name
+	return c.userStorage.CreateUser(ctx, user)
 }
 
 func (c *Core) SetUserLanguage(ctx context.Context, userID int64, langCode string) error {
