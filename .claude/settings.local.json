@@ -33,5 +33,6 @@
       "Bash(docker run:*)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": false
 }
