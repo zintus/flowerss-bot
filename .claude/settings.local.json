@@ -30,7 +30,11 @@
       "Bash(go run:*)",
       "Bash(go build:*)",
       "Bash(docker build:*)",
-      "Bash(docker run:*)"
+      "Bash(docker run:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh run view:*)",
+      "Bash(/usr/bin/git add .)"
     ],
     "deny": []
   },
