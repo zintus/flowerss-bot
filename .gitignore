@@ -254,3 +254,4 @@ flowerss-bot
 *.db
 .dockerfile
 .aider*
+CLAUDE.md

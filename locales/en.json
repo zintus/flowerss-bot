@@ -47,6 +47,7 @@
   "unsuball_confirm_message": "Do you want to unsubscribe from all feeds?",
   "btn_confirm": "Confirm",
   "btn_cancel": "Cancel",
+  "btn_unsubscribe": "Unsubscribe",
   "unsuball_err_unsubscribe_failed": "Unsubscribe failed",
   "unsuball_success_unsubscribed": "Successfully unsubscribed",
   "unsuball_info_operation_cancelled": "Operation cancelled",
