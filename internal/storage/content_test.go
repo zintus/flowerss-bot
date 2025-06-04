@@ -13,7 +13,9 @@ func TestContentStorageImpl(t *testing.T) {
 	db := GetTestDB(t)
 	s := NewContentStorageImpl(db)
 	ctx := context.Background()
-	s.Init(ctx)
+	if err := s.Init(ctx); err != nil {
+		t.Fatalf("init storage failed: %v", err)
+	}
 
 	content := &model.Content{
 		SourceID: 1,

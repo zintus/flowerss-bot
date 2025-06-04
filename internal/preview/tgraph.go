@@ -4,7 +4,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/log"
 
-	"github.com/indes/telegraph-go"
+	telegraph "github.com/indes/telegraph-go"
 )
 
 var (

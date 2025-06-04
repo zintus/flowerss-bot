@@ -24,7 +24,9 @@ func TestUserStorageImpl(t *testing.T) {
 	db := GetTestDB(t)
 	s := NewUserStorageImpl(db)
 	ctx := context.Background()
-	s.Init(ctx)
+	if err := s.Init(ctx); err != nil {
+		t.Fatalf("init storage failed: %v", err)
+	}
 	user := &model.User{
 		ID: 123,
 	}

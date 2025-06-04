@@ -3,7 +3,6 @@ package tgraph
 import (
 	"html"
 	"math/rand"
-	"time"
 
 	"go.uber.org/zap"
 
@@ -12,7 +11,6 @@ import (
 
 func PublishHtml(sourceTitle string, title string, rawLink string, htmlContent string) (string, error) {
 	htmlContent = html.UnescapeString(htmlContent)
-	rand.Seed(time.Now().Unix()) // initialize global pseudo random generator
 	client := clientPool[rand.Intn(len(clientPool))]
 	if page, err := client.CreatePageWithHTML(
 		title+" - "+sourceTitle, sourceTitle, rawLink, htmlContent, true,

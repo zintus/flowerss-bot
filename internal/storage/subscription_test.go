@@ -13,7 +13,9 @@ func TestSubscriptionStorageImpl(t *testing.T) {
 	db := GetTestDB(t)
 	s := NewSubscriptionStorageImpl(db)
 	ctx := context.Background()
-	s.Init(ctx)
+	if err := s.Init(ctx); err != nil {
+		t.Fatalf("init storage failed: %v", err)
+	}
 
 	subscriptions := []*model.Subscribe{
 		&model.Subscribe{

@@ -39,7 +39,7 @@ func (s *SetFeedTag) getMessageWithoutMention(ctx tb.Context) string {
 	if mention == "" {
 		return ctx.Message().Payload
 	}
-	return strings.Replace(ctx.Message().Payload, mention, "", -1)
+	return strings.ReplaceAll(ctx.Message().Payload, mention, "")
 }
 
 func (s *SetFeedTag) Handle(ctx tb.Context) error {

@@ -25,7 +25,7 @@ import (
 
 // --- Mock core.Core ---
 type mockCoreLanguage struct {
-	getUserFunc        func(ctx context.Context, id int64) (*model.User, error)
+	getUserFunc         func(ctx context.Context, id int64) (*model.User, error)
 	setUserLanguageFunc func(ctx context.Context, userID int64, langCode string) error
 	// Add other core.Core methods if needed, panic for now
 }
@@ -43,33 +43,77 @@ func (m *mockCoreLanguage) SetUserLanguage(ctx context.Context, userID int64, la
 	}
 	panic("SetUserLanguage called but not implemented in mock")
 }
-// Dummy implementations for other core.Core methods
-func (m *mockCoreLanguage) CreateUser(ctx context.Context, user *model.User) error   { panic("not implemented") }
-func (m *mockCoreLanguage) FeedParser() *feed.FeedParser                                     { panic("not implemented") }
-func (m *mockCoreLanguage) HttpClient() *client.HttpClient                                     { panic("not implemented") }
-func (m *mockCoreLanguage) Init() error                                                        { panic("not implemented") }
-func (m *mockCoreLanguage) GetUserSubscribedSources(ctx context.Context, userID int64) ([]*model.Source, error) { panic("not implemented") }
-func (m *mockCoreLanguage) AddSubscription(ctx context.Context, userID int64, sourceID uint) error { panic("not implemented") }
-func (m *mockCoreLanguage) Unsubscribe(ctx context.Context, userID int64, sourceID uint) error   { panic("not implemented") }
-func (m *mockCoreLanguage) GetSourceByURL(ctx context.Context, sourceURL string) (*model.Source, error) { panic("not implemented") }
-func (m *mockCoreLanguage) GetSource(ctx context.Context, id uint) (*model.Source, error)      { panic("not implemented") }
-func (m *mockCoreLanguage) GetSources(ctx context.Context) ([]*model.Source, error)            { panic("not implemented") }
-func (m *mockCoreLanguage) CreateSource(ctx context.Context, sourceURL string) (*model.Source, error) { panic("not implemented") }
-func (m *mockCoreLanguage) AddSourceContents(ctx context.Context, source *model.Source, items []*gofeed.Item) ([]*model.Content, error) { panic("not implemented") }
-func (m *mockCoreLanguage) UnsubscribeAllSource(ctx context.Context, userID int64) error      { panic("not implemented") }
-func (m *mockCoreLanguage) GetSubscription(ctx context.Context, userID int64, sourceID uint) (*model.Subscribe, error) { panic("not implemented") }
-func (m *mockCoreLanguage) SetSubscriptionTag(ctx context.Context, userID int64, sourceID uint, tags []string) error { panic("not implemented") }
-func (m *mockCoreLanguage) SetSubscriptionInterval(ctx context.Context, userID int64, sourceID uint, interval int) error { panic("not implemented") }
-func (m *mockCoreLanguage) EnableSourceUpdate(ctx context.Context, sourceID uint) error        { panic("not implemented") }
-func (m *mockCoreLanguage) DisableSourceUpdate(ctx context.Context, sourceID uint) error       { panic("not implemented") }
-func (m *mockCoreLanguage) ClearSourceErrorCount(ctx context.Context, sourceID uint) error     { panic("not implemented") }
-func (m *mockCoreLanguage) SourceErrorCountIncr(ctx context.Context, sourceID uint) error      { panic("not implemented") }
-func (m *mockCoreLanguage) ToggleSubscriptionNotice(ctx context.Context, userID int64, sourceID uint) error { panic("not implemented") }
-func (m *mockCoreLanguage) ToggleSourceUpdateStatus(ctx context.Context, sourceID uint) error  { panic("not implemented") }
-func (m *mockCoreLanguage) ToggleSubscriptionTelegraph(ctx context.Context, userID int64, sourceID uint) error { panic("not implemented") }
-func (m *mockCoreLanguage) GetSourceAllSubscriptions(ctx context.Context, sourceID uint) ([]*model.Subscribe, error) { panic("not implemented") }
-func (m *mockCoreLanguage) ContentHashIDExist(ctx context.Context, hashID string) (bool, error) { panic("not implemented") }
 
+// Dummy implementations for other core.Core methods
+func (m *mockCoreLanguage) CreateUser(ctx context.Context, user *model.User) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) FeedParser() *feed.FeedParser   { panic("not implemented") }
+func (m *mockCoreLanguage) HttpClient() *client.HttpClient { panic("not implemented") }
+func (m *mockCoreLanguage) Init() error                    { panic("not implemented") }
+func (m *mockCoreLanguage) GetUserSubscribedSources(ctx context.Context, userID int64) ([]*model.Source, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) AddSubscription(ctx context.Context, userID int64, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) Unsubscribe(ctx context.Context, userID int64, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) GetSourceByURL(ctx context.Context, sourceURL string) (*model.Source, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) GetSource(ctx context.Context, id uint) (*model.Source, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) GetSources(ctx context.Context) ([]*model.Source, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) CreateSource(ctx context.Context, sourceURL string) (*model.Source, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) AddSourceContents(ctx context.Context, source *model.Source, items []*gofeed.Item) ([]*model.Content, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) UnsubscribeAllSource(ctx context.Context, userID int64) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) GetSubscription(ctx context.Context, userID int64, sourceID uint) (*model.Subscribe, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) SetSubscriptionTag(ctx context.Context, userID int64, sourceID uint, tags []string) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) SetSubscriptionInterval(ctx context.Context, userID int64, sourceID uint, interval int) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) EnableSourceUpdate(ctx context.Context, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) DisableSourceUpdate(ctx context.Context, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) ClearSourceErrorCount(ctx context.Context, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) SourceErrorCountIncr(ctx context.Context, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) ToggleSubscriptionNotice(ctx context.Context, userID int64, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) ToggleSourceUpdateStatus(ctx context.Context, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) ToggleSubscriptionTelegraph(ctx context.Context, userID int64, sourceID uint) error {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) GetSourceAllSubscriptions(ctx context.Context, sourceID uint) ([]*model.Subscribe, error) {
+	panic("not implemented")
+}
+func (m *mockCoreLanguage) ContentHashIDExist(ctx context.Context, hashID string) (bool, error) {
+	panic("not implemented")
+}
 
 // --- Mock telebot.Context ---
 type mockTelebotContextLanguage struct {
@@ -93,10 +137,10 @@ func newMockTelebotContextLanguage(senderID int64, chatID int64, currentLang str
 	return mctx
 }
 
-func (m *mockTelebotContextLanguage) Sender() *tb.User          { return m.mockSender }
-func (m *mockTelebotContextLanguage) Chat() *tb.Chat            { return m.mockChat }
-func (m *mockTelebotContextLanguage) Args() []string            { return m.mockArgs }
-func (m *mockTelebotContextLanguage) Get(key string) interface{} { return m.store[key] }
+func (m *mockTelebotContextLanguage) Sender() *tb.User                { return m.mockSender }
+func (m *mockTelebotContextLanguage) Chat() *tb.Chat                  { return m.mockChat }
+func (m *mockTelebotContextLanguage) Args() []string                  { return m.mockArgs }
+func (m *mockTelebotContextLanguage) Get(key string) interface{}      { return m.store[key] }
 func (m *mockTelebotContextLanguage) Set(key string, val interface{}) { m.store[key] = val }
 
 func (m *mockTelebotContextLanguage) Send(what interface{}, opts ...interface{}) error {
@@ -115,9 +159,9 @@ func (m *mockTelebotContextLanguage) Reply(what interface{}, opts ...interface{}
 	}
 	return nil
 }
+
 // Dummy implementations for other telebot.Context methods needed
 func (m *mockTelebotContextLanguage) Bot() *tb.Bot { return nil } // Could be a mock bot if needed
-
 
 // --- Test Helper for i18n setup ---
 var testLocaleDir string
@@ -127,21 +171,21 @@ func setupTestTranslations(t *testing.T) {
 	i18n.ResetTranslationsForTest()
 
 	enTranslations := map[string]string{
-		"language_command_desc":              "Change or view language settings.",
-		"language_list_header":               "Available languages:",
-		"language_set_success_format":        "Language updated to %s.",
+		"language_command_desc":                 "Change or view language settings.",
+		"language_list_header":                  "Available languages:",
+		"language_set_success_format":           "Language updated to %s.",
 		"language_set_fail_invalid_code_format": "Invalid language code: %s. Please choose from the available languages.",
-		"language_current_language_format":   "Your current language is: %s.",
-		"err_system_error":                   "System error",
+		"language_current_language_format":      "Your current language is: %s.",
+		"err_system_error":                      "System error",
 		// Add "lang_en_name": "English" if testing the full display format
 	}
 	xxTranslations := map[string]string{
-		"language_command_desc":              "Changez ou affichez les paramètres de langue.",
-		"language_list_header":               "Langues disponibles:",
-		"language_set_success_format":        "Langue mise à jour vers %s.",
+		"language_command_desc":                 "Changez ou affichez les paramètres de langue.",
+		"language_list_header":                  "Langues disponibles:",
+		"language_set_success_format":           "Langue mise à jour vers %s.",
 		"language_set_fail_invalid_code_format": "Code de langue invalide : %s. Veuillez choisir parmi les langues disponibles.",
-		"language_current_language_format":   "Votre langue actuelle est : %s.",
-		"err_system_error":                   "Erreur système",
+		"language_current_language_format":      "Votre langue actuelle est : %s.",
+		"err_system_error":                      "Erreur système",
 		// Add "lang_xx_name": "Xhosa" (example)
 	}
 
@@ -168,7 +212,9 @@ func setupTestTranslations(t *testing.T) {
 
 func cleanupTestTranslations(t *testing.T) {
 	if testLocaleDir != "" {
-		os.RemoveAll(testLocaleDir)
+		if err := os.RemoveAll(testLocaleDir); err != nil {
+			t.Fatalf("failed to remove test translations: %v", err)
+		}
 	}
 }
 
@@ -187,7 +233,7 @@ func TestLanguageHandler_Handle(t *testing.T) {
 		setupMockCore         func(*mockCoreLanguage)
 		expectedMessagePart   string // A part of the message to check for
 		expectSetUserLanguage bool
-		setUserLanguageCalled bool // To verify SetUserLanguage was called
+		setUserLanguageCalled bool   // To verify SetUserLanguage was called
 		expectedNewLang       string // Expected lang for SetUserLanguage
 	}{
 		{
@@ -218,7 +264,7 @@ func TestLanguageHandler_Handle(t *testing.T) {
 			currentLang: "en", // Context lang
 			setupMockCore: func(mc *mockCoreLanguage) {
 				mc.getUserFunc = func(ctx context.Context, id int64) (*model.User, error) {
-					return nil, storage.ErrRecordNotFound 
+					return nil, storage.ErrRecordNotFound
 				}
 			},
 			expectedMessagePart: "Your current language is: en", // Should use context lang
@@ -270,28 +316,27 @@ func TestLanguageHandler_Handle(t *testing.T) {
 			if tt.setupMockCore != nil {
 				tt.setupMockCore(mc)
 			}
-			
+
 			// Special handling for setUserLanguageFunc to track calls
 			if tt.expectSetUserLanguage {
-			    originalSetUserLangFunc := mc.setUserLanguageFunc // Save the original if set by setupMockCore
-			    mc.setUserLanguageFunc = func(ctx context.Context, userID int64, langCode string) error {
-			        tt.setUserLanguageCalled = true
-			        if userID != defaultUserID {
-			            t.Errorf("SetUserLanguage called with wrong userID: got %d, want %d", userID, defaultUserID)
-			        }
-			        if langCode != tt.expectedNewLang {
-			            t.Errorf("SetUserLanguage called with wrong langCode: got %s, want %s", langCode, tt.expectedNewLang)
-			        }
-			        if originalSetUserLangFunc != nil { // Call original mock behavior if any (e.g. to return specific error)
-			            return originalSetUserLangFunc(ctx, userID, langCode)
-			        }
-			        return nil
-			    }
+				originalSetUserLangFunc := mc.setUserLanguageFunc // Save the original if set by setupMockCore
+				mc.setUserLanguageFunc = func(ctx context.Context, userID int64, langCode string) error {
+					tt.setUserLanguageCalled = true
+					if userID != defaultUserID {
+						t.Errorf("SetUserLanguage called with wrong userID: got %d, want %d", userID, defaultUserID)
+					}
+					if langCode != tt.expectedNewLang {
+						t.Errorf("SetUserLanguage called with wrong langCode: got %s, want %s", langCode, tt.expectedNewLang)
+					}
+					if originalSetUserLangFunc != nil { // Call original mock behavior if any (e.g. to return specific error)
+						return originalSetUserLangFunc(ctx, userID, langCode)
+					}
+					return nil
+				}
 			}
 
-
 			mockCtx := newMockTelebotContextLanguage(defaultUserID, defaultChatID, tt.currentLang, tt.args)
-			
+
 			// Create a test handler that mimics the Language handler but uses our mock
 			handleFunc := func(ctx tb.Context) error {
 				langCode := util.GetLangCode(ctx)
@@ -350,7 +395,7 @@ func TestLanguageHandler_Handle(t *testing.T) {
 			} else {
 				t.Fatalf("No message was sent or replied by the handler")
 			}
-			
+
 			if !strings.Contains(outputMessage, tt.expectedMessagePart) {
 				t.Errorf("Expected message to contain '%s', got '%s'", tt.expectedMessagePart, outputMessage)
 			}
@@ -366,15 +411,19 @@ func TestLanguageHandler_Handle(t *testing.T) {
 }
 
 // Dummy implementations for mockTelebotContextLanguage for tb.Context interface completeness
-func (m *mockTelebotContextLanguage) Message() *tb.Message                            { return nil }
-func (m *mockTelebotContextLanguage) Callback() *tb.Callback                          { return nil }
+func (m *mockTelebotContextLanguage) Message() *tb.Message   { return nil }
+func (m *mockTelebotContextLanguage) Callback() *tb.Callback { return nil }
+
 // ... (add all other tb.Context methods with dummy implementations as in load_user_language_test.go)
 // For brevity, these are omitted here but would be needed for a fully compliant mock.
 // The actual test relies on Sender, Chat, Args, Get, Send, Reply.
-func (m *mockTelebotContextLanguage) SendAlbum(a tb.Album, opts ...interface{}) error             { return nil }
-func (m *mockTelebotContextLanguage) SendAnimation(a *tb.Animation, opts ...interface{}) error   { return nil }
+func (m *mockTelebotContextLanguage) SendAlbum(a tb.Album, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) SendAnimation(a *tb.Animation, opts ...interface{}) error {
+	return nil
+}
+
 // ... many more dummy methods ...
-func (m *mockTelebotContextLanguage) IsStory() bool                                              { return false }
+func (m *mockTelebotContextLanguage) IsStory() bool { return false }
 
 // Helper to reset i18n translations (if LoadTranslations modifies global state directly)
 // Add this to i18n/i18n.go if not already present for testing
@@ -385,141 +434,178 @@ func ResetTranslationsForTest() {
 */
 
 // Add missing dummy methods for mockTelebotContextLanguage to satisfy tb.Context
-func (m *mockTelebotContextLanguage) Query() *tb.Query                                { return nil }
-func (m *mockTelebotContextLanguage) InlineResult() *tb.InlineResult                  { return nil }
-func (m *mockTelebotContextLanguage) ShippingQuery() *tb.ShippingQuery                { return nil }
-func (m *mockTelebotContextLanguage) PreCheckoutQuery() *tb.PreCheckoutQuery          { return nil }
-func (m *mockTelebotContextLanguage) Poll() *tb.Poll                                  { return nil }
-func (m *mockTelebotContextLanguage) PollAnswer() *tb.PollAnswer                      { return nil }
-func (m *mockTelebotContextLanguage) ChatMember() *tb.ChatMemberUpdate                { return nil }
-func (m *mockTelebotContextLanguage) ChatJoinRequest() *tb.ChatJoinRequest            { return nil }
-func (m *mockTelebotContextLanguage) Migration() (int64, int64)                       { return 0, 0 }
-func (m *mockTelebotContextLanguage) Topic() string                                   { return "" }
-func (m *mockTelebotContextLanguage) SendAudio(a *tb.Audio, opts ...interface{}) error           { return nil }
-func (m *mockTelebotContextLanguage) SendChatAction(action tb.ChatAction, opts ...interface{}) error { return nil }
-func (m *mockTelebotContextLanguage) SendContact(contact *tb.Contact, opts ...interface{}) error { return nil }
-func (m *mockTelebotContextLanguage) SendDice(emoji string, opts ...interface{}) error           { return nil }
-func (m *mockTelebotContextLanguage) SendDocument(d *tb.Document, opts ...interface{}) error     { return nil }
-func (m *mockTelebotContextLanguage) SendLocation(l *tb.Location, opts ...interface{}) error     { return nil }
-func (m *mockTelebotContextLanguage) SendMedia(media tb.Media, opts ...interface{}) error        { return nil }
-func (m *mockTelebotContextLanguage) SendPhoto(p *tb.Photo, opts ...interface{}) error           { return nil }
-func (m *mockTelebotContextLanguage) SendPoll(p *tb.Poll, opts ...interface{}) error             { return nil }
-func (m *mockTelebotContextLanguage) SendSticker(s *tb.Sticker, opts ...interface{}) error       { return nil }
-func (m *mockTelebotContextLanguage) SendVenue(v *tb.Venue, opts ...interface{}) error           { return nil }
-func (m *mockTelebotContextLanguage) SendVideo(v *tb.Video, opts ...interface{}) error           { return nil }
-func (m *mockTelebotContextLanguage) SendVideoNote(v *tb.VideoNote, opts ...interface{}) error   { return nil }
-func (m *mockTelebotContextLanguage) SendVoice(v *tb.Voice, opts ...interface{}) error           { return nil }
-func (m *mockTelebotContextLanguage) Edit(what interface{}, opts ...interface{}) error           { return nil }
-func (m *mockTelebotContextLanguage) EditCaption(caption string, opts ...interface{}) error      { return nil }
-func (m *mockTelebotContextLanguage) EditMedia(media tb.Media, opts ...interface{}) error        { return nil }
-func (m *mockTelebotContextLanguage) EditReplyMarkup(markup *tb.ReplyMarkup) error               { return nil }
-func (m *mockTelebotContextLanguage) EditOrSend(what interface{}, opts ...interface{}) error     { return nil }
-func (m *mockTelebotContextLanguage) Forward(msg tb.Editable, opts ...interface{}) error         { return nil }
-func (m *mockTelebotContextLanguage) ForwardTo(to tb.Recipient, opts ...interface{}) error       { return nil }
-func (m *mockTelebotContextLanguage) Delete() error                                              { return nil }
-func (m *mockTelebotContextLanguage) DeleteAfter(d time.Duration) *time.Timer                     { return nil }
-func (m *mockTelebotContextLanguage) Respond(resp ...*tb.CallbackResponse) error                 { return nil }
-func (m *mockTelebotContextLanguage) Answer(resp *tb.QueryResponse) error                        { return nil }
-func (m *mockTelebotContextLanguage) NativeType() string                                         { return "" }
-func (m *mockTelebotContextLanguage) User() *tb.User                                             { return m.mockSender }
-func (m *mockTelebotContextLanguage) Recipient() tb.Recipient                                    { if m.mockSender != nil { return m.mockSender } ; return nil }
-func (m *mockTelebotContextLanguage) Text() string                                               { return "" }
-func (m *mockTelebotContextLanguage) Entities() tb.Entities                                      { return nil }
-func (m *mockTelebotContextLanguage) Data() string                                               { return "" }
+func (m *mockTelebotContextLanguage) Query() *tb.Query                                 { return nil }
+func (m *mockTelebotContextLanguage) InlineResult() *tb.InlineResult                   { return nil }
+func (m *mockTelebotContextLanguage) ShippingQuery() *tb.ShippingQuery                 { return nil }
+func (m *mockTelebotContextLanguage) PreCheckoutQuery() *tb.PreCheckoutQuery           { return nil }
+func (m *mockTelebotContextLanguage) Poll() *tb.Poll                                   { return nil }
+func (m *mockTelebotContextLanguage) PollAnswer() *tb.PollAnswer                       { return nil }
+func (m *mockTelebotContextLanguage) ChatMember() *tb.ChatMemberUpdate                 { return nil }
+func (m *mockTelebotContextLanguage) ChatJoinRequest() *tb.ChatJoinRequest             { return nil }
+func (m *mockTelebotContextLanguage) Migration() (int64, int64)                        { return 0, 0 }
+func (m *mockTelebotContextLanguage) Topic() string                                    { return "" }
+func (m *mockTelebotContextLanguage) SendAudio(a *tb.Audio, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) SendChatAction(action tb.ChatAction, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SendContact(contact *tb.Contact, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SendDice(emoji string, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) SendDocument(d *tb.Document, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SendLocation(l *tb.Location, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SendMedia(media tb.Media, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) SendPhoto(p *tb.Photo, opts ...interface{}) error    { return nil }
+func (m *mockTelebotContextLanguage) SendPoll(p *tb.Poll, opts ...interface{}) error      { return nil }
+func (m *mockTelebotContextLanguage) SendSticker(s *tb.Sticker, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SendVenue(v *tb.Venue, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) SendVideo(v *tb.Video, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) SendVideoNote(v *tb.VideoNote, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SendVoice(v *tb.Voice, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) Edit(what interface{}, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) EditCaption(caption string, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) EditMedia(media tb.Media, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) EditReplyMarkup(markup *tb.ReplyMarkup) error        { return nil }
+func (m *mockTelebotContextLanguage) EditOrSend(what interface{}, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) Forward(msg tb.Editable, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) ForwardTo(to tb.Recipient, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) Delete() error                              { return nil }
+func (m *mockTelebotContextLanguage) DeleteAfter(d time.Duration) *time.Timer    { return nil }
+func (m *mockTelebotContextLanguage) Respond(resp ...*tb.CallbackResponse) error { return nil }
+func (m *mockTelebotContextLanguage) Answer(resp *tb.QueryResponse) error        { return nil }
+func (m *mockTelebotContextLanguage) NativeType() string                         { return "" }
+func (m *mockTelebotContextLanguage) User() *tb.User                             { return m.mockSender }
+func (m *mockTelebotContextLanguage) Recipient() tb.Recipient {
+	if m.mockSender != nil {
+		return m.mockSender
+	}
+	return nil
+}
+func (m *mockTelebotContextLanguage) Text() string          { return "" }
+func (m *mockTelebotContextLanguage) Entities() tb.Entities { return nil }
+func (m *mockTelebotContextLanguage) Data() string          { return "" }
+
 // Args() already implemented
-func (m *mockTelebotContextLanguage) TopicByID(id int) string                                    { return "" }
-func (m *mockTelebotContextLanguage) Update() tb.Update                                          { return tb.Update{} }
-func (m *mockTelebotContextLanguage) Session() interface{}                                       { return nil }
-func (m *mockTelebotContextLanguage) Accept(opts ...string) error                                { return nil }
-func (m *mockTelebotContextLanguage) Promote(pr tb.Rights, opts ...interface{}) error            { return nil }
-func (m *mockTelebotContextLanguage) Restrict(p tb.Rights, opts ...interface{}) error            { return nil }
-func (m *mockTelebotContextLanguage) Ban(p tb.Rights, opts ...interface{}) error                 { return nil }
-func (m *mockTelebotContextLanguage) Unban(opts ...interface{}) error                            { return nil }
-func (m *mockTelebotContextLanguage) Approve(opts ...interface{}) error                          { return nil }
-func (m *mockTelebotContextLanguage) Decline(opts ...interface{}) error                          { return nil }
-func (m *mockTelebotContextLanguage) Pin(opts ...interface{}) error                              { return nil }
-func (m *mockTelebotContextLanguage) Unpin(opts ...interface{}) error                            { return nil }
-func (m *mockTelebotContextLanguage) TopicThreadID() string                                      { return "" }
-func (m *mockTelebotContextLanguage) MessageThreadID() string                                    { return "" }
-func (m *mockTelebotContextLanguage) IsTopic() bool                                              { return false }
-func (m *mockTelebotContextLanguage) IsReply() bool                                              { return false }
-func (m *mockTelebotContextLanguage) ThreadID() (string, bool)                                   { return "", false }
-func (m *mockTelebotContextLanguage) QueryContext() context.Context                              { return nil }
-func (m *mockTelebotContextLanguage) SetQueryContext(ctx context.Context)                        {}
-func (m *mockTelebotContextLanguage) Local(lang ...string) string                                { return "" }
-func (m *mockTelebotContextLanguage) SendOptions(opts ...interface{}) *tb.SendOptions            { return nil }
-func (m *mockTelebotContextLanguage) Reflect() reflect.Value                                     { return reflect.Value{} }
-func (m *mockTelebotContextLanguage) Parse(arg interface{}) error                                { return nil }
-func (m *mockTelebotContextLanguage) SendMenu(menu *tb.ReplyMarkup, opts ...interface{}) error   { return nil }
-func (m *mockTelebotContextLanguage) SendAlbumMenu(a tb.Album, menu *tb.ReplyMarkup, opts ...interface{}) error { return nil }
-func (m *mockTelebotContextLanguage) SetChatID(chatID string)                                    {}
-func (m *mockTelebotContextLanguage) ChatID() string                                             { if m.mockChat != nil { return fmt.Sprintf("%d", m.mockChat.ID) } ; return ""}
-func (m *mockTelebotContextLanguage) EditOrReply(what interface{}, opts ...interface{}) error    { return nil }
-func (m *mockTelebotContextLanguage) QueryRespond(resp *tb.QueryResponse) error                  { return nil }
-func (m *mockTelebotContextLanguage) CallbackRespond(resp *tb.CallbackResponse) error            { return nil }
-func (m *mockTelebotContextLanguage) URL() string                                                { return "" }
-func (m *mockTelebotContextLanguage) EffectID() string                                           { return "" }
-func (m *mockTelebotContextLanguage) EffectSender() *tb.User                                     { return nil }
-func (m *mockTelebotContextLanguage) EffectChat() *tb.Chat                                       { return nil }
-func (m *mockTelebotContextLanguage) TopicCreated() bool                                         { return false }
-func (m *mockTelebotContextLanguage) TopicEdited() bool                                          { return false }
-func (m *mockTelebotContextLanguage) TopicClosed() bool                                          { return false }
-func (m *mockTelebotContextLanguage) TopicReopened() bool                                        { return false }
-func (m *mockTelebotContextLanguage) TopicHidden() bool                                          { return false }
-func (m *mockTelebotContextLanguage) TopicUnhidden() bool                                        { return false }
-func (m *mockTelebotContextLanguage) TopicDeleted() bool                                         { return false }
-func (m *mockTelebotContextLanguage) EffectMessage() *tb.Message                                 { return nil }
-func (m *mockTelebotContextLanguage) IsInline() bool                                             { return false }
-func (m *mockTelebotContextLanguage) Private() bool                                              { return false }
-func (m *mockTelebotContextLanguage) Group() bool                                                { return false }
-func (m *mockTelebotContextLanguage) SuperGroup() bool                                           { return false }
-func (m *mockTelebotContextLanguage) Channel() bool                                              { return false }
-func (m *mockTelebotContextLanguage) AlbumID() string                                            { return "" }
-func (m *mockTelebotContextLanguage) ReplyTo() *tb.Message                                       { return nil }
-func (m *mockTelebotContextLanguage) Last() *tb.Message                                          { return nil }
-func (m *mockTelebotContextLanguage) TopicName() string                                          { return "" }
-func (m *mockTelebotContextLanguage) TopicIconColor() int                                        { return 0 }
-func (m *mockTelebotContextLanguage) TopicIconEmojiID() string                                   { return "" }
-func (m *mockTelebotContextLanguage) MessageEffectID() string                                    { return "" }
-func (m *mockTelebotContextLanguage) WebAppData() *tb.WebAppData                                 { return nil }
+func (m *mockTelebotContextLanguage) TopicByID(id int) string                         { return "" }
+func (m *mockTelebotContextLanguage) Update() tb.Update                               { return tb.Update{} }
+func (m *mockTelebotContextLanguage) Session() interface{}                            { return nil }
+func (m *mockTelebotContextLanguage) Accept(opts ...string) error                     { return nil }
+func (m *mockTelebotContextLanguage) Promote(pr tb.Rights, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) Restrict(p tb.Rights, opts ...interface{}) error { return nil }
+func (m *mockTelebotContextLanguage) Ban(p tb.Rights, opts ...interface{}) error      { return nil }
+func (m *mockTelebotContextLanguage) Unban(opts ...interface{}) error                 { return nil }
+func (m *mockTelebotContextLanguage) Approve(opts ...interface{}) error               { return nil }
+func (m *mockTelebotContextLanguage) Decline(opts ...interface{}) error               { return nil }
+func (m *mockTelebotContextLanguage) Pin(opts ...interface{}) error                   { return nil }
+func (m *mockTelebotContextLanguage) Unpin(opts ...interface{}) error                 { return nil }
+func (m *mockTelebotContextLanguage) TopicThreadID() string                           { return "" }
+func (m *mockTelebotContextLanguage) MessageThreadID() string                         { return "" }
+func (m *mockTelebotContextLanguage) IsTopic() bool                                   { return false }
+func (m *mockTelebotContextLanguage) IsReply() bool                                   { return false }
+func (m *mockTelebotContextLanguage) ThreadID() (string, bool)                        { return "", false }
+func (m *mockTelebotContextLanguage) QueryContext() context.Context                   { return nil }
+func (m *mockTelebotContextLanguage) SetQueryContext(ctx context.Context)             {}
+func (m *mockTelebotContextLanguage) Local(lang ...string) string                     { return "" }
+func (m *mockTelebotContextLanguage) SendOptions(opts ...interface{}) *tb.SendOptions { return nil }
+func (m *mockTelebotContextLanguage) Reflect() reflect.Value                          { return reflect.Value{} }
+func (m *mockTelebotContextLanguage) Parse(arg interface{}) error                     { return nil }
+func (m *mockTelebotContextLanguage) SendMenu(menu *tb.ReplyMarkup, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SendAlbumMenu(a tb.Album, menu *tb.ReplyMarkup, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) SetChatID(chatID string) {}
+func (m *mockTelebotContextLanguage) ChatID() string {
+	if m.mockChat != nil {
+		return fmt.Sprintf("%d", m.mockChat.ID)
+	}
+	return ""
+}
+func (m *mockTelebotContextLanguage) EditOrReply(what interface{}, opts ...interface{}) error {
+	return nil
+}
+func (m *mockTelebotContextLanguage) QueryRespond(resp *tb.QueryResponse) error       { return nil }
+func (m *mockTelebotContextLanguage) CallbackRespond(resp *tb.CallbackResponse) error { return nil }
+func (m *mockTelebotContextLanguage) URL() string                                     { return "" }
+func (m *mockTelebotContextLanguage) EffectID() string                                { return "" }
+func (m *mockTelebotContextLanguage) EffectSender() *tb.User                          { return nil }
+func (m *mockTelebotContextLanguage) EffectChat() *tb.Chat                            { return nil }
+func (m *mockTelebotContextLanguage) TopicCreated() bool                              { return false }
+func (m *mockTelebotContextLanguage) TopicEdited() bool                               { return false }
+func (m *mockTelebotContextLanguage) TopicClosed() bool                               { return false }
+func (m *mockTelebotContextLanguage) TopicReopened() bool                             { return false }
+func (m *mockTelebotContextLanguage) TopicHidden() bool                               { return false }
+func (m *mockTelebotContextLanguage) TopicUnhidden() bool                             { return false }
+func (m *mockTelebotContextLanguage) TopicDeleted() bool                              { return false }
+func (m *mockTelebotContextLanguage) EffectMessage() *tb.Message                      { return nil }
+func (m *mockTelebotContextLanguage) IsInline() bool                                  { return false }
+func (m *mockTelebotContextLanguage) Private() bool                                   { return false }
+func (m *mockTelebotContextLanguage) Group() bool                                     { return false }
+func (m *mockTelebotContextLanguage) SuperGroup() bool                                { return false }
+func (m *mockTelebotContextLanguage) Channel() bool                                   { return false }
+func (m *mockTelebotContextLanguage) AlbumID() string                                 { return "" }
+func (m *mockTelebotContextLanguage) ReplyTo() *tb.Message                            { return nil }
+func (m *mockTelebotContextLanguage) Last() *tb.Message                               { return nil }
+func (m *mockTelebotContextLanguage) TopicName() string                               { return "" }
+func (m *mockTelebotContextLanguage) TopicIconColor() int                             { return 0 }
+func (m *mockTelebotContextLanguage) TopicIconEmojiID() string                        { return "" }
+func (m *mockTelebotContextLanguage) MessageEffectID() string                         { return "" }
+func (m *mockTelebotContextLanguage) WebAppData() *tb.WebAppData                      { return nil }
+
 // Methods not available in telebot v3.1.0
-func (m *mockTelebotContextLanguage) IsForwarded() bool                                          { return false }
-func (m *mockTelebotContextLanguage) IsReplyToReply() bool                                       { return false }
-func (m *mockTelebotContextLanguage) SenderChat() *tb.Chat                                       { return nil }
-func (m *mockTelebotContextLanguage) IsAutomaticForward() bool                                   { return false }
-func (m *mockTelebotContextLanguage) IsTopicMessage() bool                                       { return false }
-func (m *mockTelebotContextLanguage) IsForumTopicCreated() bool                                  { return false }
-func (m *mockTelebotContextLanguage) IsForumTopicClosed() bool                                   { return false }
-func (m *mockTelebotContextLanguage) IsForumTopicReopened() bool                                 { return false }
-func (m *mockTelebotContextLanguage) IsForumTopicEdited() bool                                   { return false }
-func (m *mockTelebotContextLanguage) IsForumTopicHidden() bool                                   { return false }
-func (m *mockTelebotContextLanguage) IsForumTopicUnhidden() bool                                 { return false }
-func (m *mockTelebotContextLanguage) IsGeneralForumTopicHidden() bool                            { return false }
-func (m *mockTelebotContextLanguage) IsGeneralForumTopicUnhidden() bool                          { return false }
-func (m *mockTelebotContextLanguage) IsProximityAlert() bool                                     { return false }
-func (m *mockTelebotContextLanguage) IsAutoDeleteTimerChanged() bool                             { return false }
-func (m *mockTelebotContextLanguage) IsGiveawayCreated() bool                                    { return false }
-func (m *mockTelebotContextLanguage) IsGiveaway() bool                                           { return false }
-func (m *mockTelebotContextLanguage) IsGiveawayCompleted() bool                                  { return false }
-func (m *mockTelebotContextLanguage) IsGiveawayWinners() bool                                    { return false }
-func (m *mockTelebotContextLanguage) IsVideoChatScheduled() bool                                 { return false }
-func (m *mockTelebotContextLanguage) IsVideoChatStarted() bool                                   { return false }
-func (m *mockTelebotContextLanguage) IsVideoChatEnded() bool                                     { return false }
-func (m *mockTelebotContextLanguage) IsVideoChatParticipantsInvited() bool                       { return false }
-func (m *mockTelebotContextLanguage) IsWebAppData() bool                                         { return false }
-func (m *mockTelebotContextLanguage) IsBoostAdded() bool                                         { return false }
-func (m *mockTelebotContextLanguage) IsBoostRemoved() bool                                       { return false }
-func (m *mockTelebotContextLanguage) IsBoostUpdated() bool                                       { return false }
-func (m *mockTelebotContextLanguage) IsUsersShared() bool                                        { return false }
-func (m *mockTelebotContextLanguage) IsChatShared() bool                                         { return false }
-func (m *mockTelebotContextLanguage) IsMessageReaction() bool                                    { return false }
-func (m *mockTelebotContextLanguage) IsMessageReactions() bool                                   { return false }
-func (m *mockTelebotContextLanguage) IsBusinessConnection() bool                                 { return false }
-func (m *mockTelebotContextLanguage) IsBusinessMessage() bool                                    { return false }
-func (m *mockTelebotContextLanguage) IsEditedBusinessMessage() bool                              { return false }
-func (m *mockTelebotContextLanguage) IsDeletedBusinessMessages() bool                            { return false }
-func (m *mockTelebotContextLanguage) IsPaidMedia() bool                                          { return false }
-func (m *mockTelebotContextLanguage) IsReplyToStory() bool                                       { return false }
+func (m *mockTelebotContextLanguage) IsForwarded() bool                    { return false }
+func (m *mockTelebotContextLanguage) IsReplyToReply() bool                 { return false }
+func (m *mockTelebotContextLanguage) SenderChat() *tb.Chat                 { return nil }
+func (m *mockTelebotContextLanguage) IsAutomaticForward() bool             { return false }
+func (m *mockTelebotContextLanguage) IsTopicMessage() bool                 { return false }
+func (m *mockTelebotContextLanguage) IsForumTopicCreated() bool            { return false }
+func (m *mockTelebotContextLanguage) IsForumTopicClosed() bool             { return false }
+func (m *mockTelebotContextLanguage) IsForumTopicReopened() bool           { return false }
+func (m *mockTelebotContextLanguage) IsForumTopicEdited() bool             { return false }
+func (m *mockTelebotContextLanguage) IsForumTopicHidden() bool             { return false }
+func (m *mockTelebotContextLanguage) IsForumTopicUnhidden() bool           { return false }
+func (m *mockTelebotContextLanguage) IsGeneralForumTopicHidden() bool      { return false }
+func (m *mockTelebotContextLanguage) IsGeneralForumTopicUnhidden() bool    { return false }
+func (m *mockTelebotContextLanguage) IsProximityAlert() bool               { return false }
+func (m *mockTelebotContextLanguage) IsAutoDeleteTimerChanged() bool       { return false }
+func (m *mockTelebotContextLanguage) IsGiveawayCreated() bool              { return false }
+func (m *mockTelebotContextLanguage) IsGiveaway() bool                     { return false }
+func (m *mockTelebotContextLanguage) IsGiveawayCompleted() bool            { return false }
+func (m *mockTelebotContextLanguage) IsGiveawayWinners() bool              { return false }
+func (m *mockTelebotContextLanguage) IsVideoChatScheduled() bool           { return false }
+func (m *mockTelebotContextLanguage) IsVideoChatStarted() bool             { return false }
+func (m *mockTelebotContextLanguage) IsVideoChatEnded() bool               { return false }
+func (m *mockTelebotContextLanguage) IsVideoChatParticipantsInvited() bool { return false }
+func (m *mockTelebotContextLanguage) IsWebAppData() bool                   { return false }
+func (m *mockTelebotContextLanguage) IsBoostAdded() bool                   { return false }
+func (m *mockTelebotContextLanguage) IsBoostRemoved() bool                 { return false }
+func (m *mockTelebotContextLanguage) IsBoostUpdated() bool                 { return false }
+func (m *mockTelebotContextLanguage) IsUsersShared() bool                  { return false }
+func (m *mockTelebotContextLanguage) IsChatShared() bool                   { return false }
+func (m *mockTelebotContextLanguage) IsMessageReaction() bool              { return false }
+func (m *mockTelebotContextLanguage) IsMessageReactions() bool             { return false }
+func (m *mockTelebotContextLanguage) IsBusinessConnection() bool           { return false }
+func (m *mockTelebotContextLanguage) IsBusinessMessage() bool              { return false }
+func (m *mockTelebotContextLanguage) IsEditedBusinessMessage() bool        { return false }
+func (m *mockTelebotContextLanguage) IsDeletedBusinessMessages() bool      { return false }
+func (m *mockTelebotContextLanguage) IsPaidMedia() bool                    { return false }
+func (m *mockTelebotContextLanguage) IsReplyToStory() bool                 { return false }
+
 // IsStory() already implemented above
 // (No, it wasn't, adding it now)
 // func (m *mockTelebotContextLanguage) IsStory() bool                                              { return false }

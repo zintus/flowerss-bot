@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 golang:1.18.6-alpine AS builder
+FROM --platform=linux/amd64 golang:1.24.3-alpine AS builder
 #ENV CGO_ENABLED=0
 COPY . /flowerss
 RUN apk add git make gcc libc-dev && \
