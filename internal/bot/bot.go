@@ -11,6 +11,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/bot/handler"
 	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/preview"
+	"github.com/zintus/flowerss-bot/internal/bot/session"
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n" // Added
@@ -191,7 +192,18 @@ func (b *Bot) BroadcastNews(source *model.Source, subs []*model.Subscribe, conte
 				)
 				return
 			}
-			if _, err := b.tb.Send(u, msg, o); err != nil {
+			attachData := &session.Attachment{
+				UserId:   sub.UserID,
+				SourceId: uint32(sub.SourceID),
+			}
+			data := session.Marshal(attachData)
+			unsubBtn := tb.InlineButton{
+				Unique: handler.RemoveSubscriptionItemButtonUnique,
+				Text:   i18n.Localize(langCode, "btn_unsubscribe"),
+				Data:   data,
+			}
+			markup := &tb.ReplyMarkup{InlineKeyboard: [][]tb.InlineButton{{unsubBtn}}}
+			if _, err := b.tb.Send(u, msg, o, markup); err != nil {
 
 				if strings.Contains(err.Error(), "Forbidden") {
 					zap.S().Errorw(
