@@ -47,6 +47,7 @@
   "unsuball_confirm_message": "您要取消所有订阅吗？",
   "btn_confirm": "确认",
   "btn_cancel": "取消",
+  "btn_unsubscribe": "取消订阅",
   "unsuball_err_unsubscribe_failed": "取消订阅失败",
   "unsuball_success_unsubscribed": "成功取消订阅",
   "unsuball_info_operation_cancelled": "操作已取消",
