@@ -13,7 +13,9 @@ func TestSourceStorageImpl(t *testing.T) {
 	db := GetTestDB(t)
 	s := NewSourceStorageImpl(db)
 	ctx := context.Background()
-	s.Init(ctx)
+	if err := s.Init(ctx); err != nil {
+		t.Fatalf("init storage failed: %v", err)
+	}
 
 	source := &model.Source{
 		Link: "http://google.com",

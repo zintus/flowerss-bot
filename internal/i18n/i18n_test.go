@@ -22,7 +22,7 @@ func setupTestLocalesWithFiles(t *testing.T, files map[string][]byte) string {
 		err := os.WriteFile(filePath, content, 0644)
 		if err != nil {
 			// Clean up before failing
-			os.RemoveAll(tmpDir)
+			_ = os.RemoveAll(tmpDir)
 			t.Fatalf("Failed to write to %s: %v", filePath, err)
 		}
 	}
@@ -47,7 +47,7 @@ func TestLoadTranslations(t *testing.T) {
 			"en.json": enBytes,
 			"xx.json": xxBytes,
 		})
-		defer os.RemoveAll(tmpDir)
+		defer func() { _ = os.RemoveAll(tmpDir) }()
 
 		err := LoadTranslations(tmpDir)
 		if err != nil {
@@ -94,11 +94,11 @@ func TestLoadTranslations(t *testing.T) {
 		invalidJsonBytes := []byte(`{"greeting": "Bad", "farewell":`) // Invalid JSON
 
 		tmpDir := setupTestLocalesWithFiles(t, map[string][]byte{
-			"en.json":       enBytes,
-			"invalid.json":  invalidJsonBytes,
-			"another.json":  enBytes, // to ensure one valid is loaded after skip
+			"en.json":      enBytes,
+			"invalid.json": invalidJsonBytes,
+			"another.json": enBytes, // to ensure one valid is loaded after skip
 		})
-		defer os.RemoveAll(tmpDir)
+		defer func() { _ = os.RemoveAll(tmpDir) }()
 
 		// LoadTranslations logs errors for invalid JSON but doesn't return an error itself, it skips the file.
 		err := LoadTranslations(tmpDir)
@@ -126,7 +126,7 @@ func TestLoadTranslations(t *testing.T) {
 		tmpDir := setupTestLocalesWithFiles(t, map[string][]byte{
 			"empty.json": emptyJsonBytes,
 		})
-		defer os.RemoveAll(tmpDir)
+		defer func() { _ = os.RemoveAll(tmpDir) }()
 
 		err := LoadTranslations(tmpDir)
 		if err != nil {
@@ -153,7 +153,7 @@ func TestLocalize(t *testing.T) {
 		"en.json": enBytes, // en is default
 		"xx.json": xxBytes,
 	})
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	if err := LoadTranslations(tmpDir); err != nil {
 		t.Fatalf("LoadTranslations failed: %v", err)
@@ -197,7 +197,7 @@ func TestLocalize(t *testing.T) {
 	translations = make(map[string]map[string]string) // Clear all, including default
 	expectedMissingMsg := "[translation missing for lang: zz, key: any_key (default lang 'en' not loaded/found)]"
 	if got := Localize("zz", "any_key"); got != expectedMissingMsg {
-	    t.Errorf("Expected '%s' when default lang is missing, got '%s'", expectedMissingMsg, got)
+		t.Errorf("Expected '%s' when default lang is missing, got '%s'", expectedMissingMsg, got)
 	}
 
 }
@@ -214,7 +214,7 @@ func TestAvailableLanguages(t *testing.T) {
 		"xx.json": xxBytes,
 		"yy.json": yyBytes,
 	})
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	if err := LoadTranslations(tmpDir); err != nil {
 		t.Fatalf("LoadTranslations failed: %v", err)

@@ -52,7 +52,7 @@ func init() {
 
 	err := viper.ReadInConfig() // Find and read the config file
 	if err != nil {             // Handle errors reading the config file
-		panic(fmt.Errorf("Fatal error config file: %s", err))
+		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
 
 	initTPL()
@@ -92,7 +92,7 @@ func init() {
 		for _, useIDStr := range intAllowUsers {
 			userID, err := strconv.ParseInt(useIDStr, 10, 64)
 			if err != nil {
-				panic(fmt.Errorf("Fatal error config file: %s", err))
+				panic(fmt.Errorf("fatal error config file: %w", err))
 			}
 			AllowUsers = append(AllowUsers, userID)
 		}
@@ -155,12 +155,13 @@ func (t TplData) RenderLegacy(mode tb.ParseMode) (string, error) {
 	var buf []byte
 	wb := bytes.NewBuffer(buf)
 
-	if mode == tb.ModeMarkdown {
+	switch mode {
+	case tb.ModeMarkdown:
 		mkd := regexp.MustCompile("(\\[|\\*|\\`|\\_)")
 		t.SourceTitle = mkd.ReplaceAllString(t.SourceTitle, "\\$1")
 		t.ContentTitle = mkd.ReplaceAllString(t.ContentTitle, "\\$1")
 		t.PreviewText = mkd.ReplaceAllString(t.PreviewText, "\\$1")
-	} else if mode == tb.ModeHTML {
+	case tb.ModeHTML:
 		t.SourceTitle = t.replaceHTMLTags(t.SourceTitle)
 		t.ContentTitle = t.replaceHTMLTags(t.ContentTitle)
 		t.PreviewText = t.replaceHTMLTags(t.PreviewText)
