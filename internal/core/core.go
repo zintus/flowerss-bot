@@ -273,9 +273,10 @@ func (c *Core) CreateSource(ctx context.Context, sourceURL string) (*model.Sourc
 	}
 
 	s = &model.Source{
-		Title:      rssFeed.Title,
-		Link:       sourceURL,
-		ErrorCount: config.ErrorThreshold + 1, // 避免task更新
+		Title:           rssFeed.Title,
+		Link:            sourceURL,
+		ErrorCount:      config.ErrorThreshold + 1, // 避免task更新
+		LastPublishedAt: rssFeed.UpdatedParsed,     // NEW – initialise from feed
 	}
 
 	if err := c.sourceStorage.AddSource(ctx, s); err != nil {
@@ -396,6 +397,16 @@ func (c *Core) DisableSourceUpdate(ctx context.Context, sourceID uint) error {
 	}
 
 	source.ErrorCount = config.ErrorThreshold + 1
+	return c.sourceStorage.UpsertSource(ctx, sourceID, source)
+}
+
+// UpdateSourceLastPublishedAt sets LastPublishedAt and persists the change
+func (c *Core) UpdateSourceLastPublishedAt(ctx context.Context, sourceID uint, ts *time.Time) error {
+	source, err := c.GetSource(ctx, sourceID)
+	if err != nil {
+		return err
+	}
+	source.LastPublishedAt = ts
 	return c.sourceStorage.UpsertSource(ctx, sourceID, source)
 }
 

@@ -117,6 +117,12 @@ func (t *RssUpdateTask) getSourceNewContents(source *model.Source) ([]*model.Con
 		log.Errorf("failed to clear source error count: %v", clearErr)
 	}
 
+	if rssFeed.UpdatedParsed != nil {
+		if err := t.core.UpdateSourceLastPublishedAt(context.Background(), source.ID, rssFeed.UpdatedParsed); err != nil {
+			log.Errorf("failed to update source LastPublishedAt: %v", err)
+		}
+	}
+
 	newContents, err := t.saveNewContents(source, rssFeed.Items)
 	if err != nil {
 		return nil, err

@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	tb "gopkg.in/telebot.v3"
@@ -88,15 +89,33 @@ func (l *ListSubscription) Middlewares() []tb.MiddlewareFunc {
 }
 
 func (l *ListSubscription) replaySubscribedSources(ctx tb.Context, sources []*model.Source, langCode string) error {
-	// langCode is passed as a parameter now
 	if len(sources) == 0 {
 		return ctx.Send(i18n.Localize(langCode, "listsub_info_sub_list_empty"))
 	}
+
+	sort.Slice(sources, func(i, j int) bool {
+		a := sources[i].LastPublishedAt
+		b := sources[j].LastPublishedAt
+		if a == nil && b == nil {
+			return false // Maintain original order if both are nil
+		}
+		if a == nil {
+			return false // Nil dates come last
+		}
+		if b == nil {
+			return true // Nil dates come last
+		}
+		return a.After(*b)
+	})
 	var msg strings.Builder
 	msg.WriteString(i18n.Localize(langCode, "listsub_list_header_format", len(sources)))
 	count := 0
 	for i := range sources {
-		msg.WriteString(fmt.Sprintf("[[%d]] [%s](%s)\n", sources[i].ID, sources[i].Title, sources[i].Link))
+		publishedDate := "N/A"
+		if sources[i].LastPublishedAt != nil {
+			publishedDate = sources[i].LastPublishedAt.Format("2006-01-02 15:04:05")
+		}
+		msg.WriteString(fmt.Sprintf("[[%d]] [%s](%s) - %s\n", sources[i].ID, sources[i].Title, sources[i].Link, publishedDate))
 		count++
 		if count == MaxSubsSizePerPage {
 			if err := ctx.Send(msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown}); err != nil {
