@@ -38,7 +38,9 @@
       "Bash(/usr/bin/git commit:*)",
       "Bash(/usr/bin/git push:*)",
       "Bash(/usr/bin/git log --oneline -10)",
-      "Bash(/usr/bin/git add go.mod go.sum)"
+      "Bash(/usr/bin/git add go.mod go.sum)",
+      "Bash(git checkout:*)",
+      "Bash(gh:*)"
     ],
     "deny": []
   },

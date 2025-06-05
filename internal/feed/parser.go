@@ -40,5 +40,16 @@ func (p *FeedParser) ParseFromURL(ctx context.Context, URL string) (*gofeed.Feed
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
 		return nil, errors.New(resp.Status)
 	}
-	return p.parser.Parse(resp.Body)
+	feed, err := p.parser.Parse(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	// Use UpdatedParsed if available, otherwise PublishedParsed
+	if feed.UpdatedParsed != nil {
+		return feed, nil
+	}
+	if feed.PublishedParsed != nil {
+		feed.UpdatedParsed = feed.PublishedParsed
+	}
+	return feed, nil
 }

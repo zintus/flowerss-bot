@@ -76,11 +76,28 @@ func (s *SourceStorageImpl) Delete(ctx context.Context, id uint) error {
 }
 
 func (s *SourceStorageImpl) UpsertSource(ctx context.Context, sourceID uint, newSource *model.Source) error {
-	newSource.ID = sourceID
-	result := s.db.WithContext(ctx).Where("id = ?", sourceID).Save(newSource)
-	if result.Error != nil {
+	var oldSource model.Source
+	result := s.db.WithContext(ctx).Where("id = ?", sourceID).First(&oldSource)
+
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return result.Error
 	}
-	log.Debugf("update %d row,  sourceID %d new %#v", result.RowsAffected, sourceID, newSource)
-	return nil
+
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		// Source not found, create a new one
+		newSource.ID = sourceID
+		return s.db.WithContext(ctx).Create(newSource).Error
+	} else {
+		// Source found, update fields
+		oldSource.Link = newSource.Link
+		oldSource.Title = newSource.Title
+		oldSource.ErrorCount = newSource.ErrorCount
+		oldSource.LastPublishedAt = newSource.LastPublishedAt
+		result = s.db.WithContext(ctx).Save(&oldSource)
+		if result.Error != nil {
+			return result.Error
+		}
+		log.Debugf("update %d row, sourceID %d new %#v", result.RowsAffected, sourceID, oldSource)
+		return nil
+	}
 }
