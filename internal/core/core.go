@@ -325,6 +325,16 @@ func (c *Core) AddSourceContents(
 		}()
 	}
 	wg.Wait()
+
+	// Update LastContentAt with our local timestamp when content is added
+	if len(contents) > 0 {
+		now := time.Now()
+		source.LastContentAt = &now
+		if err := c.sourceStorage.UpsertSource(ctx, source.ID, source); err != nil {
+			log.Errorf("failed to update LastContentAt for source %d: %v", source.ID, err)
+		}
+	}
+
 	return contents, nil
 }
 

@@ -8,6 +8,7 @@ type Source struct {
 	Title           string
 	ErrorCount      uint
 	LastPublishedAt *time.Time
+	LastContentAt   *time.Time // When we last received content locally (our timestamp, not from feed)
 	Content         []Content
 	EditTime
 }

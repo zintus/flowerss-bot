@@ -94,8 +94,8 @@ func (l *ListSubscription) replaySubscribedSources(ctx tb.Context, sources []*mo
 	}
 
 	sort.Slice(sources, func(i, j int) bool {
-		a := sources[i].LastPublishedAt
-		b := sources[j].LastPublishedAt
+		a := sources[i].LastContentAt
+		b := sources[j].LastContentAt
 		if a == nil && b == nil {
 			return false // Maintain original order if both are nil
 		}
@@ -111,11 +111,11 @@ func (l *ListSubscription) replaySubscribedSources(ctx tb.Context, sources []*mo
 	msg.WriteString(i18n.Localize(langCode, "listsub_list_header_format", len(sources)))
 	count := 0
 	for i := range sources {
-		publishedDate := "N/A"
-		if sources[i].LastPublishedAt != nil {
-			publishedDate = sources[i].LastPublishedAt.Format("2006-01-02 15:04:05")
+		contentDate := "N/A"
+		if sources[i].LastContentAt != nil {
+			contentDate = sources[i].LastContentAt.Format("2006-01-02 15:04:05")
 		}
-		msg.WriteString(fmt.Sprintf("[[%d]] [%s](%s) - %s\n", sources[i].ID, sources[i].Title, sources[i].Link, publishedDate))
+		msg.WriteString(fmt.Sprintf("[[%d]] [%s](%s) - %s\n", sources[i].ID, sources[i].Title, sources[i].Link, contentDate))
 		count++
 		if count == MaxSubsSizePerPage {
 			if err := util.SendWithRetry(ctx, msg.String(), &tb.SendOptions{DisableWebPagePreview: true, ParseMode: tb.ModeMarkdown}); err != nil {

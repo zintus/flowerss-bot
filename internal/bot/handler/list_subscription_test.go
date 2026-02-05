@@ -113,10 +113,10 @@ func TestListSubscription_replaySubscribedSources_Sorted(t *testing.T) {
 	twoDaysAgo := now.Add(-48 * time.Hour)
 
 	sources := map[uint]*model.Source{
-		1: {ID: 1, Title: "Feed C", Link: "http://example.com/c", LastPublishedAt: &yesterday},
-		2: {ID: 2, Title: "Feed A", Link: "http://example.com/a", LastPublishedAt: &now},
-		3: {ID: 3, Title: "Feed B", Link: "http://example.com/b", LastPublishedAt: &twoDaysAgo},
-		4: {ID: 4, Title: "Feed D", Link: "http://example.com/d", LastPublishedAt: nil}, // nil date
+		1: {ID: 1, Title: "Feed C", Link: "http://example.com/c", LastContentAt: &yesterday},
+		2: {ID: 2, Title: "Feed A", Link: "http://example.com/a", LastContentAt: &now},
+		3: {ID: 3, Title: "Feed B", Link: "http://example.com/b", LastContentAt: &twoDaysAgo},
+		4: {ID: 4, Title: "Feed D", Link: "http://example.com/d", LastContentAt: nil}, // nil date
 	}
 
 	subscriptions := []*model.Subscribe{
