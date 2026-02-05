@@ -40,6 +40,12 @@ func TestTplData_Render(t1 *testing.T) {
 			"<b>[aaa] *123*</b>\n<a href=\"https://google.com\">google</a>\n\n",
 			false,
 		},
+		{"HTML Mode with special characters",
+			fields{SourceTitle: "Bert Hubert's writings", ContentTitle: "std::basic_string<> in C++", RawLink: "https://example.com"},
+			args{telebot.ModeHTML},
+			"<b>Bert Hubert&#39;s writings</b>\n<a href=\"https://example.com\">std::basic_string&lt;&gt; in C++</a>\n\n",
+			false,
+		},
 	}
 	for _, tt := range tests {
 		t1.Run(tt.name, func(t1 *testing.T) {

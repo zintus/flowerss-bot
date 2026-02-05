@@ -3,6 +3,7 @@ package config
 import (
 	"bytes" // Added
 	"fmt"
+	"html"
 	"text/template"
 
 	"github.com/go-sql-driver/mysql"
@@ -119,6 +120,21 @@ func (td *TplData) Render(mode tb.ParseMode) (string, error) {
 		tpl = defaultMessageTpl
 	}
 
+	// Create a copy of TplData with HTML-escaped fields for HTML mode
+	data := td
+	if mode == tb.ModeHTML {
+		data = &TplData{
+			SourceTitle:     html.EscapeString(td.SourceTitle),
+			ContentTitle:    html.EscapeString(td.ContentTitle),
+			RawLink:         td.RawLink, // URLs should not be escaped here as they're in href attributes
+			PreviewText:     html.EscapeString(td.PreviewText),
+			TelegraphURL:    td.TelegraphURL, // URLs should not be escaped here
+			Tags:            html.EscapeString(td.Tags),
+			EnableTelegraph: td.EnableTelegraph,
+			LangCode:        td.LangCode,
+		}
+	}
+
 	funcMap := template.FuncMap{
 		"L": func(key string, args ...interface{}) string {
 			langToUse := td.LangCode
@@ -135,7 +151,7 @@ func (td *TplData) Render(mode tb.ParseMode) (string, error) {
 		return "", err
 	}
 
-	if err := t.Execute(&buf, td); err != nil {
+	if err := t.Execute(&buf, data); err != nil {
 		return "", err
 	}
 	return buf.String(), nil
