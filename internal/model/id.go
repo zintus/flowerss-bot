@@ -6,8 +6,8 @@ import (
 )
 
 func GenHashID(sLink string, id string) string {
-	idString := string(sLink) + "||" + id
-	f := fnv.New32()
+	idString := sLink + "||" + id
+	f := fnv.New64()
 	f.Write([]byte(idString))
 
 	encoded := hex.EncodeToString(f.Sum(nil))

@@ -14,9 +14,9 @@ func Test_genHashID(t *testing.T) {
 	}{
 		{
 			"case1", args{"http://www.ruanyifeng.com/blog/atom.xml", "tag:www.ruanyifeng.com,2019:/blog//1.2054"},
-			"96b2e254",
+			"7d35fb910816ebb4",
 		},
-		{"case2", args{"https://rsshub.app/guokr/scientific", "https://www.guokr.com/article/445877/"}, "770fff44"},
+		{"case2", args{"https://rsshub.app/guokr/scientific", "https://www.guokr.com/article/445877/"}, "561e4b5acbae7324"},
 	}
 	for _, tt := range tests {
 		t.Run(

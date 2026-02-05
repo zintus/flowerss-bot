@@ -80,11 +80,10 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 	}
 
 	outlines, _ := opmlFile.GetFlattenOutlines()
-	var failImportList = make([]opml.Outline, len(outlines))
-	failIndex := 0
-	var successImportList = make([]opml.Outline, len(outlines))
-	successIndex := 0
-	wg := &sync.WaitGroup{}
+	var failImportList []opml.Outline
+	var successImportList []opml.Outline
+	var mu sync.Mutex
+	var wg sync.WaitGroup
 	for _, outline := range outlines {
 		outline := outline
 		wg.Add(1)
@@ -92,36 +91,37 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 			defer wg.Done()
 			source, err := o.core.CreateSource(context.Background(), outline.XMLURL)
 			if err != nil {
-				failImportList[failIndex] = outline
-				failIndex++
+				mu.Lock()
+				failImportList = append(failImportList, outline)
+				mu.Unlock()
 				return
 			}
 
 			err = o.core.AddSubscription(context.Background(), userID, source.ID)
 			if err != nil {
-				if errors.Is(err, core.ErrSubscriptionExist) { // Used errors.Is for consistency
-					successImportList[successIndex] = outline
-					successIndex++
+				mu.Lock()
+				if errors.Is(err, core.ErrSubscriptionExist) {
+					successImportList = append(successImportList, outline)
 				} else {
-					failImportList[failIndex] = outline
-					failIndex++
+					failImportList = append(failImportList, outline)
 				}
+				mu.Unlock()
 				return
 			}
 
 			log.Infof("%d subscribe [%d]%s %s", ctx.Chat().ID, source.ID, source.Title, source.Link)
-			successImportList[successIndex] = outline
-			successIndex++
+			mu.Lock()
+			successImportList = append(successImportList, outline)
+			mu.Unlock()
 		}()
 	}
 	wg.Wait()
 
 	var msg strings.Builder
-	msg.WriteString(i18n.Localize(langCode, "ondoc_import_summary_format", successIndex, failIndex))
-	if successIndex != 0 {
+	msg.WriteString(i18n.Localize(langCode, "ondoc_import_summary_format", len(successImportList), len(failImportList)))
+	if len(successImportList) != 0 {
 		msg.WriteString(i18n.Localize(langCode, "ondoc_import_success_header"))
-		for i := 0; i < successIndex; i++ {
-			line := successImportList[i]
+		for i, line := range successImportList {
 			if line.Text != "" {
 				msg.WriteString(
 					fmt.Sprintf("[%d] <a href=\"%s\">%s</a>\n", i+1, line.XMLURL, line.Text),
@@ -133,10 +133,9 @@ func (o *OnDocument) Handle(ctx tb.Context) error {
 		msg.WriteString("\n")
 	}
 
-	if failIndex != 0 {
+	if len(failImportList) != 0 {
 		msg.WriteString(i18n.Localize(langCode, "ondoc_import_failure_header"))
-		for i := 0; i < failIndex; i++ {
-			line := failImportList[i]
+		for i, line := range failImportList {
 			if line.Text != "" {
 				msg.WriteString(fmt.Sprintf("[%d] <a href=\"%s\">%s</a>\n", i+1, line.XMLURL, line.Text))
 			} else {
