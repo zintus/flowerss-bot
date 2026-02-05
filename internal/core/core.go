@@ -312,7 +312,7 @@ func (c *Core) AddSourceContents(
 			Description:  item.Content, //replace all kinds of <br> tag
 			SourceID:     source.ID,
 			RawID:        item.GUID,
-			HashID:       model.GenHashID(source.Link, item.GUID),
+			HashID:       model.GenHashID(source.Link, item.GUID, item.Link),
 			RawLink:      item.Link,
 			TelegraphURL: previewURL,
 		}
