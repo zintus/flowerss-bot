@@ -443,7 +443,9 @@ func (m *mockTelebotContextLanguage) PollAnswer() *tb.PollAnswer                
 func (m *mockTelebotContextLanguage) ChatMember() *tb.ChatMemberUpdate                 { return nil }
 func (m *mockTelebotContextLanguage) ChatJoinRequest() *tb.ChatJoinRequest             { return nil }
 func (m *mockTelebotContextLanguage) Migration() (int64, int64)                        { return 0, 0 }
-func (m *mockTelebotContextLanguage) Topic() string                                    { return "" }
+func (m *mockTelebotContextLanguage) Topic() *tb.Topic                                 { return nil }
+func (m *mockTelebotContextLanguage) Boost() *tb.BoostUpdated                          { return nil }
+func (m *mockTelebotContextLanguage) BoostRemoved() *tb.BoostRemoved                   { return nil }
 func (m *mockTelebotContextLanguage) SendAudio(a *tb.Audio, opts ...interface{}) error { return nil }
 func (m *mockTelebotContextLanguage) SendChatAction(action tb.ChatAction, opts ...interface{}) error {
 	return nil

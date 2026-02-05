@@ -151,7 +151,9 @@ func (m *mockTelebotContext) PollAnswer() *tb.PollAnswer                        
 func (m *mockTelebotContext) ChatMember() *tb.ChatMemberUpdate                  { return nil }
 func (m *mockTelebotContext) ChatJoinRequest() *tb.ChatJoinRequest              { return nil }
 func (m *mockTelebotContext) Migration() (int64, int64)                         { return 0, 0 }
-func (m *mockTelebotContext) Topic() string                                     { return "" }
+func (m *mockTelebotContext) Topic() *tb.Topic                                  { return nil }
+func (m *mockTelebotContext) Boost() *tb.BoostUpdated                           { return nil }
+func (m *mockTelebotContext) BoostRemoved() *tb.BoostRemoved                    { return nil }
 func (m *mockTelebotContext) Send(what interface{}, opts ...interface{}) error  { return nil }
 func (m *mockTelebotContext) Reply(what interface{}, opts ...interface{}) error { return nil }
 

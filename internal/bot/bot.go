@@ -12,6 +12,7 @@ import (
 	"github.com/zintus/flowerss-bot/internal/bot/middleware"
 	"github.com/zintus/flowerss-bot/internal/bot/preview"
 	"github.com/zintus/flowerss-bot/internal/bot/session"
+	"github.com/zintus/flowerss-bot/internal/bot/util"
 	"github.com/zintus/flowerss-bot/internal/config"
 	"github.com/zintus/flowerss-bot/internal/core"
 	"github.com/zintus/flowerss-bot/internal/i18n" // Added
@@ -203,7 +204,7 @@ func (b *Bot) BroadcastNews(source *model.Source, subs []*model.Subscribe, conte
 				Data:   data,
 			}
 			markup := &tb.ReplyMarkup{InlineKeyboard: [][]tb.InlineButton{{unsubBtn}}}
-			if _, err := b.tb.Send(u, msg, o, markup); err != nil {
+			if err := util.BotSendWithRetry(b.tb, u, msg, o, markup); err != nil {
 
 				if strings.Contains(err.Error(), "Forbidden") {
 					zap.S().Errorw(
@@ -257,8 +258,8 @@ func (b *Bot) BroadcastSourceError(source *model.Source) {
 
 		localizedMessage := i18n.Localize(langCode, "bot_broadcast_source_error_format", source.Title, source.Link, config.ErrorThreshold)
 		u.ID = sub.UserID
-		_, _ = b.tb.Send(
-			&u, localizedMessage, &tb.SendOptions{
+		_ = util.BotSendWithRetry(
+			b.tb, &u, localizedMessage, &tb.SendOptions{
 				ParseMode: tb.ModeMarkdown, // Assuming ModeMarkdown is desired for this error message
 			},
 		)
