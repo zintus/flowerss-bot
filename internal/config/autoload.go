@@ -148,6 +148,15 @@ func init() {
 	if viper.IsSet("log.db_log") {
 		DBLogMode = viper.GetBool("log.db_log")
 	}
+
+	UnrenderURL = os.Getenv("UNRENDER_URL")
+	if UnrenderURL == "" && viper.IsSet("unrender_url") {
+		UnrenderURL = viper.GetString("unrender_url")
+	}
+	UnrenderToken = os.Getenv("UNRENDER_TOKEN")
+	if UnrenderToken == "" && viper.IsSet("unrender_token") {
+		UnrenderToken = viper.GetString("unrender_token")
+	}
 }
 
 // RenderLegacy is the old render method kept for backward compatibility

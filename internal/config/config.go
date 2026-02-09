@@ -62,6 +62,11 @@ var (
 
 	// DBLogMode 是否打印数据库日志
 	DBLogMode bool = false
+
+	// UnrenderURL base URL of unrender service
+	UnrenderURL string
+	// UnrenderToken Bearer token for unrender service
+	UnrenderToken string
 )
 
 const (
