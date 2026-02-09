@@ -1,17 +1,20 @@
 package tgraph
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
 	"time"
 
+	"github.com/yuin/goldmark"
 	"github.com/zintus/flowerss-bot/internal/config"
 )
 
-// FetchMarkdown fetches clean markdown content from the unrender service for the given URL.
-// Returns an error if unrender is not configured or the request fails.
-func FetchMarkdown(rawLink string) (string, error) {
+// FetchHTML fetches content from the unrender service and returns it as HTML
+// suitable for Telegraph's CreatePageWithHTML. The unrender service returns
+// markdown, which is converted to HTML via goldmark.
+func FetchHTML(rawLink string) (string, error) {
 	if config.UnrenderURL == "" || config.UnrenderToken == "" {
 		return "", fmt.Errorf("unrender not configured")
 	}
@@ -40,5 +43,10 @@ func FetchMarkdown(rawLink string) (string, error) {
 		return "", fmt.Errorf("read unrender response: %w", err)
 	}
 
-	return string(body), nil
+	var buf bytes.Buffer
+	if err := goldmark.Convert(body, &buf); err != nil {
+		return "", fmt.Errorf("markdown to html conversion: %w", err)
+	}
+
+	return buf.String(), nil
 }

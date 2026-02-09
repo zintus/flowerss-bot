@@ -108,6 +108,15 @@ type TplData struct {
 	LangCode        string // Added for localization
 }
 
+// L returns a localized string for use in message templates.
+func (td *TplData) L(key string, args ...interface{}) string {
+	langToUse := td.LangCode
+	if langToUse == "" {
+		langToUse = "en"
+	}
+	return i18n.Localize(langToUse, key, args...)
+}
+
 // AppVersionInfo returns a localized string with version, commit and date.
 // It now accepts a langCode for localization.
 func AppVersionInfo(langCode string) string {
@@ -140,18 +149,8 @@ func (td *TplData) Render(mode tb.ParseMode) (string, error) {
 		}
 	}
 
-	funcMap := template.FuncMap{
-		"L": func(key string, args ...interface{}) string {
-			langToUse := td.LangCode
-			if langToUse == "" {
-				langToUse = "en" // Fallback to "en"
-			}
-			return i18n.Localize(langToUse, key, args...)
-		},
-	}
-
 	var buf bytes.Buffer
-	t, err := template.New("message").Funcs(funcMap).Parse(tpl)
+	t, err := template.New("message").Parse(tpl)
 	if err != nil {
 		return "", err
 	}

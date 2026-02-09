@@ -307,10 +307,10 @@ func (c *Core) AddSourceContents(
 		if config.EnableTelegraph && len([]rune(item.Content)) > config.PreviewText {
 			content := item.Content
 			if config.UnrenderURL != "" && config.UnrenderToken != "" && item.Link != "" {
-				if md, err := tgraph.FetchMarkdown(item.Link); err != nil {
+				if html, err := tgraph.FetchHTML(item.Link); err != nil {
 					log.Warnf("unrender fetch failed for %s: %v, falling back to raw content", item.Link, err)
 				} else {
-					content = md
+					content = html
 				}
 			}
 			previewURL, _ = tgraph.PublishHtml(source.Title, item.Title, item.Link, content)
