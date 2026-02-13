@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"github.com/yuin/goldmark"
@@ -19,10 +21,10 @@ func FetchHTML(rawLink string) (string, error) {
 		return "", fmt.Errorf("unrender not configured")
 	}
 
-	url := config.UnrenderURL + "/" + rawLink
+	requestURL := strings.TrimRight(config.UnrenderURL, "/") + "/" + url.PathEscape(rawLink)
 
 	client := &http.Client{Timeout: 2 * time.Minute}
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", requestURL, nil)
 	if err != nil {
 		return "", fmt.Errorf("create unrender request: %w", err)
 	}
