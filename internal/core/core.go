@@ -304,16 +304,25 @@ func (c *Core) AddSourceContents(
 	for _, item := range items {
 		wg.Add(1)
 		previewURL := ""
-		if config.EnableTelegraph && len([]rune(item.Content)) > config.PreviewText {
-			content := item.Content
+		if config.EnableTelegraph {
+			publishContent := ""
 			if config.UnrenderURL != "" && config.UnrenderToken != "" && item.Link != "" {
 				if html, err := tgraph.FetchHTML(item.Link); err != nil {
-					log.Warnf("unrender fetch failed for %s: %v, falling back to raw content", item.Link, err)
+					log.Warnf("unrender fetch failed for %s: %v, falling back to feed content", item.Link, err)
 				} else {
-					content = html
+					publishContent = html
 				}
 			}
-			previewURL, _ = tgraph.PublishHtml(source.Title, item.Title, item.Link, content)
+
+			if strings.TrimSpace(publishContent) == "" {
+				publishContent = item.Content
+			}
+			if strings.TrimSpace(publishContent) == "" {
+				publishContent = item.Description
+			}
+			if strings.TrimSpace(publishContent) != "" {
+				previewURL, _ = tgraph.PublishHtml(source.Title, item.Title, item.Link, publishContent)
+			}
 		}
 		content := &model.Content{
 			Title:        strings.Trim(item.Title, " "),
