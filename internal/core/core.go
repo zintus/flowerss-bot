@@ -178,7 +178,9 @@ func (c *Core) AddSubscription(ctx context.Context, userID int64, sourceID uint)
 	return c.subscriptionStorage.AddSubscription(ctx, subscription)
 }
 
-// Unsubscribe 添加订阅
+// Unsubscribe removes a user's subscription. Source cleanup (removing an
+// orphaned source) is best-effort: the subscription delete is what matters,
+// so errors from the cleanup phase are logged but not propagated.
 func (c *Core) Unsubscribe(ctx context.Context, userID int64, sourceID uint) error {
 	exist, err := c.subscriptionStorage.SubscriptionExist(ctx, userID, sourceID)
 	if err != nil {
@@ -195,10 +197,11 @@ func (c *Core) Unsubscribe(ctx context.Context, userID int64, sourceID uint) err
 		return err
 	}
 
-	// 获取源的订阅数量
+	// Best-effort: clean up the source if no subscribers remain.
 	count, err := c.subscriptionStorage.CountSourceSubscriptions(ctx, sourceID)
 	if err != nil {
-		return err
+		log.Errorf("count source %d subscriptions after unsubscribe failed: %v", sourceID, err)
+		return nil
 	}
 
 	if count != 0 {
@@ -207,7 +210,7 @@ func (c *Core) Unsubscribe(ctx context.Context, userID int64, sourceID uint) err
 
 	// 如果源不再有订阅用户，移除该订阅源
 	if err := c.removeSource(ctx, sourceID); err != nil {
-		return err
+		log.Errorf("remove orphaned source %d failed: %v", sourceID, err)
 	}
 	return nil
 }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	tb "gopkg.in/telebot.v3"
@@ -29,6 +30,7 @@ func (e *editCaptureCtx) Edit(what interface{}, opts ...interface{}) error {
 // --- mock storages ---
 type mockSourceStorage struct {
 	getSourceFunc func(ctx context.Context, id uint) (*model.Source, error)
+	deleteFunc    func(ctx context.Context, id uint) error
 }
 
 func (m *mockSourceStorage) Init(ctx context.Context) error { return nil }
@@ -48,7 +50,12 @@ func (m *mockSourceStorage) GetSources(ctx context.Context) ([]*model.Source, er
 func (m *mockSourceStorage) GetSourceByURL(ctx context.Context, url string) (*model.Source, error) {
 	panic("not implemented")
 }
-func (m *mockSourceStorage) Delete(ctx context.Context, id uint) error { return nil }
+func (m *mockSourceStorage) Delete(ctx context.Context, id uint) error {
+	if m.deleteFunc != nil {
+		return m.deleteFunc(ctx, id)
+	}
+	return nil
+}
 func (m *mockSourceStorage) UpsertSource(ctx context.Context, sourceID uint, newSource *model.Source) error {
 	panic("not implemented")
 }
@@ -182,5 +189,72 @@ func TestRemoveSubscriptionItemButton_Handle(t *testing.T) {
 	want := i18n.Localize("en", "unsub_success_button_format", sourceID, "http://example.com", "Example")
 	if ctx.last != want {
 		t.Errorf("expected '%s', got '%s'", want, ctx.last)
+	}
+}
+
+// TestRemoveSubscriptionItemButton_LastSubscriber reproduces the bug where the
+// last subscriber clicks unsubscribe: the subscription is deleted, but source
+// cleanup fails (e.g. source.Delete returns an error). Before the fix, this
+// caused Unsubscribe to return an error, so the handler displayed an error
+// message even though the subscription was successfully removed.
+func TestRemoveSubscriptionItemButton_LastSubscriber(t *testing.T) {
+	i18n.ResetTranslationsForTest()
+	if err := i18n.LoadTranslations("../../locales"); err != nil {
+		t.Fatalf("load translations: %v", err)
+	}
+
+	userID := int64(123)
+	sourceID := uint(1)
+
+	mockSrc := &mockSourceStorage{
+		getSourceFunc: func(ctx context.Context, id uint) (*model.Source, error) {
+			return &model.Source{ID: id, Link: "http://example.com", Title: "Example"}, nil
+		},
+	}
+	deleteCalled := false
+	mockSub := &mockSubscriptionStorage{
+		existFunc:  func(ctx context.Context, u int64, s uint) (bool, error) { return true, nil },
+		deleteFunc: func(ctx context.Context, u int64, s uint) (int64, error) { deleteCalled = true; return 1, nil },
+		// Last subscriber: after delete, count is 0.
+		countFunc: func(ctx context.Context, s uint) (int64, error) { return 0, nil },
+	}
+	// Source delete deliberately fails — simulates a transient DB error during
+	// cleanup. The important thing is the subscription delete already succeeded.
+	mockSrc.deleteFunc = func(ctx context.Context, id uint) error {
+		return fmt.Errorf("simulated source delete error")
+	}
+	c := core.NewCore(&mockUserStorage{}, &mockContentStorage{}, mockSrc, mockSub, nil, nil)
+
+	bot, err := tb.NewBot(tb.Settings{Token: "TEST", Offline: true})
+	if err != nil {
+		t.Fatalf("new bot: %v", err)
+	}
+	att := &session.Attachment{UserId: userID, SourceId: uint32(sourceID)}
+	data := session.Marshal(att)
+
+	msg := &tb.Message{ID: 1, Chat: &tb.Chat{ID: userID}}
+	cb := &tb.Callback{ID: "cb", Data: data, Message: msg, Sender: &tb.User{ID: userID}}
+	baseCtx := bot.NewContext(tb.Update{ID: 2, Callback: cb})
+
+	ctx := &editCaptureCtx{Context: baseCtx}
+	ctx.Set(util.UserLanguageKey, "en")
+
+	h := NewRemoveSubscriptionItemButton(c)
+	if err := h.Handle(ctx); err != nil {
+		t.Fatalf("handle returned error: %v", err)
+	}
+
+	if !deleteCalled {
+		t.Fatal("expected DeleteSubscription to be called")
+	}
+
+	// The handler must show the success message, NOT the error message.
+	wantSuccess := i18n.Localize("en", "unsub_success_button_format", sourceID, "http://example.com", "Example")
+	wantError := i18n.Localize("en", "unsub_err_button_action_failed")
+	if ctx.last == wantError {
+		t.Errorf("handler showed error message even though subscription was deleted")
+	}
+	if ctx.last != wantSuccess {
+		t.Errorf("expected success message %q, got %q", wantSuccess, ctx.last)
 	}
 }

@@ -188,12 +188,14 @@ func TestCore_Unsubscribe(t *testing.T) {
 	).AnyTimes()
 
 	t.Run(
-		"count subs", func(t *testing.T) {
+		"count subs error is best-effort", func(t *testing.T) {
+			// Even when CountSourceSubscriptions fails, Unsubscribe should
+			// succeed because the subscription itself was already deleted.
 			s.Subscription.EXPECT().CountSourceSubscriptions(ctx, sourceID1).Return(
 				int64(1), errors.New("err"),
 			).Times(1)
 			err := c.Unsubscribe(ctx, userID, sourceID1)
-			assert.Error(t, err)
+			assert.Nil(t, err)
 
 			s.Subscription.EXPECT().CountSourceSubscriptions(ctx, sourceID1).Return(
 				int64(1), nil,
@@ -208,19 +210,20 @@ func TestCore_Unsubscribe(t *testing.T) {
 	).AnyTimes()
 
 	t.Run(
-		"remove source", func(t *testing.T) {
+		"remove source error is best-effort", func(t *testing.T) {
+			// Source cleanup errors should not propagate — the subscription
+			// deletion already succeeded, which is what the caller cares about.
 			s.Source.EXPECT().Delete(ctx, sourceID1).Return(
 				errors.New("err"),
 			).Times(1)
-
 			err := c.Unsubscribe(ctx, userID, sourceID1)
-			assert.Error(t, err)
+			assert.Nil(t, err)
 
 			s.Source.EXPECT().Delete(ctx, sourceID1).Return(nil).AnyTimes()
 
 			s.Content.EXPECT().DeleteSourceContents(ctx, sourceID1).Return(int64(0), errors.New("err")).Times(1)
 			err = c.Unsubscribe(ctx, userID, sourceID1)
-			assert.Error(t, err)
+			assert.Nil(t, err)
 
 			s.Content.EXPECT().DeleteSourceContents(ctx, sourceID1).Return(int64(1), nil).Times(1)
 			err = c.Unsubscribe(ctx, userID, sourceID1)
